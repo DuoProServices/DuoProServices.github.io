@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Dashboard Endpoint</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #2563eb;
+      border-bottom: 3px solid #2563eb;
+      padding-bottom: 10px;
+    }
+    .test-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 5px;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    .result {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+    .success {
+      background: #d1fae5;
+      border: 2px solid #10b981;
+      color: #065f46;
+    }
+    .error {
+      background: #fee2e2;
+      border: 2px solid #ef4444;
+      color: #991b1b;
+    }
+    .info {
+      background: #dbeafe;
+      border: 2px solid #3b82f6;
+      color: #1e40af;
+    }
+    .endpoint {
+      background: #f3f4f6;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+      word-break: break-all;
+    }
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #2563eb;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      margin-left: 10px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 Test Dashboard Endpoint</h1>
+
+  <div class="test-section">
+    <h2>📍 Endpoint Information</h2>
+    <div class="endpoint">
+      <strong>Base URL:</strong> https://lqpmyvizjfwzddxspacv.supabase.co/functions/v1/make-server-c2a25be0
+    </div>
+    <div class="endpoint">
+      <strong>Test Route:</strong> /kv/getByPrefix?prefix=profile:
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>🧪 Run Tests</h2>
+    <button onclick="testHealthCheck()">1️⃣ Test Health Check</button>
+    <button onclick="testGetProfiles()">2️⃣ Test Get Profiles</button>
+    <button onclick="testGetFilings()">3️⃣ Test Get Tax Filings</button>
+    <button onclick="testGetInvoices()">4️⃣ Test Get Invoices</button>
+    <button onclick="runAllTests()">▶️ Run All Tests</button>
+    <div id="loading" style="display: none;">
+      <div class="loader"></div>
+      <span>Testing...</span>
+    </div>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const BASE_URL = 'https://lqpmyvizjfwzddxspacv.supabase.co/functions/v1/make-server-c2a25be0';
+    const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxcG15dml6amZ3emRkeHNwYWN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYxOTA5NTcsImV4cCI6MjA1MTc2Njk1N30.m5HtKBVg1Mh3Vb0_NKdmxE3o-PD38a5UNKqT7M2l40g';
+
+    function showLoading() {
+      document.getElementById('loading').style.display = 'block';
+    }
+
+    function hideLoading() {
+      document.getElementById('loading').style.display = 'none';
+    }
+
+    function displayResult(message, type = 'info') {
+      hideLoading();
+      const resultDiv = document.getElementById('result');
+      resultDiv.className = `result ${type}`;
+      resultDiv.textContent = message;
+    }
+
+    async function testHealthCheck() {
+      showLoading();
+      try {
+        const response = await fetch(`${BASE_URL}/health`);
+        const data = await response.json();
+        
+        if (response.ok) {
+          displayResult(`✅ Health Check SUCCESS!\n\nResponse:\n${JSON.stringify(data, null, 2)}`, 'success');
+        } else {
+          displayResult(`❌ Health Check FAILED!\n\nStatus: ${response.status}\nResponse:\n${JSON.stringify(data, null, 2)}`, 'error');
+        }
+      } catch (error) {
+        displayResult(`❌ Health Check ERROR!\n\n${error.message}\n\nThis means the server is NOT reachable or NOT deployed.`, 'error');
+      }
+    }
+
+    async function testGetProfiles() {
+      showLoading();
+      try {
+        const response = await fetch(
+          `${BASE_URL}/kv/getByPrefix?prefix=profile:`,
+          {
+            headers: { 
+              'Authorization': `Bearer ${ANON_KEY}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          displayResult(`✅ Get Profiles SUCCESS!\n\nFound ${data.values?.length || 0} profiles\n\nResponse:\n${JSON.stringify(data, null, 2)}`, 'success');
+        } else {
+          displayResult(`❌ Get Profiles FAILED!\n\nStatus: ${response.status}\nResponse:\n${JSON.stringify(data, null, 2)}`, 'error');
+        }
+      } catch (error) {
+        displayResult(`❌ Get Profiles ERROR!\n\n${error.message}\n\nPossible causes:\n- Backend not deployed\n- CORS issues\n- Route not configured`, 'error');
+      }
+    }
+
+    async function testGetFilings() {
+      showLoading();
+      try {
+        const response = await fetch(
+          `${BASE_URL}/kv/getByPrefix?prefix=tax_filing:`,
+          {
+            headers: { 
+              'Authorization': `Bearer ${ANON_KEY}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          displayResult(`✅ Get Tax Filings SUCCESS!\n\nFound ${data.values?.length || 0} tax filings\n\nResponse:\n${JSON.stringify(data, null, 2)}`, 'success');
+        } else {
+          displayResult(`❌ Get Tax Filings FAILED!\n\nStatus: ${response.status}\nResponse:\n${JSON.stringify(data, null, 2)}`, 'error');
+        }
+      } catch (error) {
+        displayResult(`❌ Get Tax Filings ERROR!\n\n${error.message}`, 'error');
+      }
+    }
+
+    async function testGetInvoices() {
+      showLoading();
+      try {
+        const response = await fetch(
+          `${BASE_URL}/kv/getByPrefix?prefix=invoice:`,
+          {
+            headers: { 
+              'Authorization': `Bearer ${ANON_KEY}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          displayResult(`✅ Get Invoices SUCCESS!\n\nFound ${data.values?.length || 0} invoices\n\nResponse:\n${JSON.stringify(data, null, 2)}`, 'success');
+        } else {
+          displayResult(`❌ Get Invoices FAILED!\n\nStatus: ${response.status}\nResponse:\n${JSON.stringify(data, null, 2)}`, 'error');
+        }
+      } catch (error) {
+        displayResult(`❌ Get Invoices ERROR!\n\n${error.message}`, 'error');
+      }
+    }
+
+    async function runAllTests() {
+      await testHealthCheck();
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      await testGetProfiles();
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      await testGetFilings();
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      await testGetInvoices();
+    }
+
+    // Auto-run health check on page load
+    window.addEventListener('load', () => {
+      setTimeout(testHealthCheck, 500);
+    });
+  </script>
+</body>
+</html>
