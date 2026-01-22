@@ -1,15 +1,27 @@
+<<<<<<< HEAD
 import { FileText, Upload, CheckCircle, Send, TrendingUp, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useState, memo } from "react";
 
 export const Process = memo(function Process() {
+=======
+import { Calendar, FileText, Search, Send, CheckCircle2, Users, ClipboardCheck, Rocket, CreditCard, Calculator } from "lucide-react";
+import { useLanguage } from "../contexts/LanguageContext";
+import { useState } from "react";
+
+export function Process() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<"personal" | "business">("personal");
   
   const personalSteps = [
     {
       number: "01",
+<<<<<<< HEAD
       icon: Upload,
+=======
+      icon: CreditCard,
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       titleKey: "process.step1Title",
       descKey: "process.step1Desc",
       timeKey: "process.step1Time"
@@ -23,21 +35,33 @@ export const Process = memo(function Process() {
     },
     {
       number: "03",
+<<<<<<< HEAD
       icon: CheckCircle,
+=======
+      icon: Calculator,
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       titleKey: "process.step3Title",
       descKey: "process.step3Desc",
       timeKey: "process.step3Time"
     },
     {
       number: "04",
+<<<<<<< HEAD
       icon: Send,
+=======
+      icon: CheckCircle2,
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       titleKey: "process.step4Title",
       descKey: "process.step4Desc",
       timeKey: "process.step4Time"
     },
     {
       number: "05",
+<<<<<<< HEAD
       icon: TrendingUp,
+=======
+      icon: Send,
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       titleKey: "process.step5Title",
       descKey: "process.step5Desc",
       timeKey: "process.step5Time"
@@ -47,27 +71,40 @@ export const Process = memo(function Process() {
   const businessSteps = [
     {
       number: "01",
+<<<<<<< HEAD
       icon: Upload,
+=======
+      icon: Calendar,
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       titleKey: "process.business1Title",
       descKey: "process.business1Desc",
       timeKey: "process.business1Time"
     },
     {
       number: "02",
+<<<<<<< HEAD
       icon: FileText,
+=======
+      icon: Users,
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       titleKey: "process.business2Title",
       descKey: "process.business2Desc",
       timeKey: "process.business2Time"
     },
     {
       number: "03",
+<<<<<<< HEAD
       icon: CheckCircle,
+=======
+      icon: ClipboardCheck,
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       titleKey: "process.business3Title",
       descKey: "process.business3Desc",
       timeKey: "process.business3Time"
     },
     {
       number: "04",
+<<<<<<< HEAD
       icon: Send,
       titleKey: "process.business4Title",
       descKey: "process.business4Desc",
@@ -79,6 +116,12 @@ export const Process = memo(function Process() {
       titleKey: "process.business5Title",
       descKey: "process.business5Desc",
       timeKey: "process.business5Time"
+=======
+      icon: Rocket,
+      titleKey: "process.business4Title",
+      descKey: "process.business4Desc",
+      timeKey: "process.business4Time"
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     }
   ];
 
@@ -126,7 +169,11 @@ export const Process = memo(function Process() {
           <div className="mb-12 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-8">
             <div className="flex items-start gap-4 max-w-4xl mx-auto">
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+<<<<<<< HEAD
                 <Upload className="w-6 h-6 text-green-600" />
+=======
+                <Calendar className="w-6 h-6 text-green-600" />
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
               </div>
               <div>
                 <h3 className="text-xl text-slate-900 mb-2">{t("process.businessBannerTitle")}</h3>
@@ -137,7 +184,11 @@ export const Process = memo(function Process() {
                   onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
                   className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
                 >
+<<<<<<< HEAD
                   <Upload className="w-4 h-4" />
+=======
+                  <Calendar className="w-4 h-4" />
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
                   {t("process.businessBannerButton")}
                 </button>
               </div>
@@ -225,4 +276,8 @@ export const Process = memo(function Process() {
       </div>
     </section>
   );
+<<<<<<< HEAD
 });
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

@@ -5,7 +5,11 @@ import { januaryPosts } from "../data/contentCalendar";
 import type { ContentPost } from "../data/contentCalendar";
 import { copyToClipboard } from "../utils/clipboard";
 
+<<<<<<< HEAD
 function ContentCalendarDashboard() {
+=======
+export function ContentCalendarDashboard() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const navigate = useNavigate();
   const [posts, setPosts] = useState<ContentPost[]>(januaryPosts);
   const [filterFormat, setFilterFormat] = useState<string>("all");
@@ -14,8 +18,11 @@ function ContentCalendarDashboard() {
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [editingPost, setEditingPost] = useState<ContentPost | null>(null);
   const [uploadingFile, setUploadingFile] = useState(false);
+<<<<<<< HEAD
   const [showNewPostForm, setShowNewPostForm] = useState(false);
   
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const [editForm, setEditForm] = useState<{
     owner: string;
     status: ContentPost["status"];
@@ -29,6 +36,7 @@ function ContentCalendarDashboard() {
     file: "",
     observations: ""
   });
+<<<<<<< HEAD
   
   const [newPostForm, setNewPostForm] = useState<{
     title: string;
@@ -47,6 +55,8 @@ function ContentCalendarDashboard() {
     publishDate: "",
     observations: ""
   });
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
   const getStatusColor = (status: ContentPost["status"]) => {
     const colors = {
@@ -183,7 +193,11 @@ function ContentCalendarDashboard() {
             </div>
             
             <button
+<<<<<<< HEAD
               onClick={() => setShowNewPostForm(true)}
+=======
+              onClick={() => navigate("/admin/marketing-dashboard")}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
               className="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-colors flex items-center gap-2"
             >
               <Plus className="w-5 h-5" />
@@ -361,7 +375,11 @@ function ContentCalendarDashboard() {
               Ajuste os filtros ou crie um novo post
             </p>
             <button
+<<<<<<< HEAD
               onClick={() => setShowNewPostForm(true)}
+=======
+              onClick={() => navigate("/admin/marketing-dashboard")}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
               className="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-colors inline-flex items-center gap-2"
             >
               <Plus className="w-5 h-5" />
@@ -751,6 +769,7 @@ function ContentCalendarDashboard() {
           </div>
         </div>
       )}
+<<<<<<< HEAD
 
       {/* New Post Form */}
       {showNewPostForm && (
@@ -925,3 +944,8 @@ function ContentCalendarDashboard() {
 }
 
 export default ContentCalendarDashboard;
+=======
+    </div>
+  );
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

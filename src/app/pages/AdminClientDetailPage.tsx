@@ -31,8 +31,13 @@ import {
   Wrench, // Added for fix button
 } from "lucide-react";
 import { isAdminEmail } from "../config/admins";
+<<<<<<< HEAD
 import { API_ENDPOINTS } from "@/config/api";
 import { projectId } from "/utils/supabase/info";
+=======
+import { API_ENDPOINTS } from "../../config/api";
+import { projectId } from "../../../utils/supabase/info";
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { SubmitReportModal } from "../components/admin/SubmitReportModal";
 import { SubmitReportModalWithSummary } from "../components/admin/SubmitReportModalWithSummary";
 import { UploadDocumentsModal } from "../components/admin/UploadDocumentsModal";
@@ -40,7 +45,10 @@ import { CreateTaxFilingModal } from "../components/admin/CreateTaxFilingModal";
 import { CRAAssessmentSection } from "../components/admin/CRAAssessmentSection";
 import { TaxFilingsSection } from "../components/admin/TaxFilingsSection";
 import { fixUserTaxFilings } from "../utils/fixCorruptedTaxFilings"; // Added import
+<<<<<<< HEAD
 import { fetchWithFallback } from "../utils/apiHelper";
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface ClientData {
   id: string;
@@ -80,7 +88,11 @@ interface DocumentsByYear {
   files: FileData[];
 }
 
+<<<<<<< HEAD
 function AdminClientDetailPage() {
+=======
+export function AdminClientDetailPage() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const { userId } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -100,9 +112,12 @@ function AdminClientDetailPage() {
   const [showUploadDocumentsModal, setShowUploadDocumentsModal] = useState(false);
   const [showCreateTaxFilingModal, setShowCreateTaxFilingModal] = useState(false);
 
+<<<<<<< HEAD
   // ✅ BACKEND IS DEPLOYED - usando Supabase real!
   const DEMO_MODE = false;
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   useEffect(() => {
     if (!user || !isAdminEmail(user.email)) {
       navigate("/login");
@@ -120,6 +135,7 @@ function AdminClientDetailPage() {
         throw new Error("No user ID provided");
       }
 
+<<<<<<< HEAD
       // ⚠️ DEMO MODE: Load client directly from Supabase
       if (DEMO_MODE) {
         console.log('📦 [AdminClientDetail] DEMO MODE: Loading client from Supabase KV store...');
@@ -174,6 +190,9 @@ function AdminClientDetailPage() {
       }
 
       // Backend mode - try to fetch from server
+=======
+      // Buscar sessão e token
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
       
       if (sessionError || !sessionData.session) {
@@ -391,6 +410,7 @@ function AdminClientDetailPage() {
         throw new Error("No user ID provided");
       }
 
+<<<<<<< HEAD
       // Tentar usar o backend primeiro, depois fallback para KV store direto
       const { data, isMocked } = await fetchWithFallback(
         `/messages?clientId=${userId}`,
@@ -406,6 +426,42 @@ function AdminClientDetailPage() {
       }
 
       console.log(`Loaded ${messages.length} messages`);
+=======
+      // Buscar mensagens do KV store
+      const { data: kvData, error: kvError } = await supabase
+        .from('kv_store_c2a25be0')
+        .select('key, value')
+        .eq('key', `user:${userId}:messages`);
+
+      if (kvError) {
+        console.error("Error fetching messages from KV:", kvError);
+        throw new Error("Failed to load messages");
+      }
+
+      let messages: Message[] = [];
+      
+      if (kvData && kvData.length > 0) {
+        const messagesData = kvData[0].value;
+        
+        if (Array.isArray(messagesData)) {
+          messages = messagesData.map((msg: any) => ({
+            id: msg.id,
+            clientId: msg.clientId,
+            senderId: msg.senderId,
+            senderRole: msg.senderRole,
+            senderName: msg.senderName,
+            subject: msg.subject,
+            content: msg.content,
+            isRead: msg.isRead,
+            createdAt: msg.createdAt,
+            updatedAt: msg.updatedAt,
+          }));
+        }
+      }
+
+      console.log(`Loaded ${messages.length} messages`);
+      setMessages(messages);
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     } catch (error) {
       console.error("Error loading messages:", error);
       toast.error(`Failed to load messages: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -471,6 +527,7 @@ function AdminClientDetailPage() {
     }
   };
 
+<<<<<<< HEAD
   const handleDeleteMessage = async (messageId: string, subject: string) => {
     if (!confirm(`Are you sure you want to delete the message "${subject}"?\n\nThis action cannot be undone.`)) {
       return;
@@ -505,6 +562,8 @@ function AdminClientDetailPage() {
     }
   };
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const loadAllDocuments = async () => {
     setLoadingAllDocuments(true);
     try {
@@ -512,6 +571,7 @@ function AdminClientDetailPage() {
         throw new Error("No user ID provided");
       }
 
+<<<<<<< HEAD
       // ⚠️ DEMO MODE: Load documents directly from Supabase KV store
       if (DEMO_MODE) {
         console.log('📦 [AdminClientDetail] DEMO MODE: Loading documents from KV store...');
@@ -592,6 +652,9 @@ function AdminClientDetailPage() {
       }
 
       // Backend mode - try to fetch from server
+=======
+      // 🔥 NOVO: Buscar via backend que usa Service Role Key
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
       
       if (sessionError || !sessionData.session) {
@@ -1046,6 +1109,7 @@ function AdminClientDetailPage() {
                     return (
                       <div
                         key={msg.id}
+<<<<<<< HEAD
                         className={`flex ${isFromAdmin ? 'justify-end' : 'justify-start'} group`}
                       >
                         <div className="flex items-start gap-2">
@@ -1074,6 +1138,26 @@ function AdminClientDetailPage() {
                           >
                             <AlertCircle className="w-4 h-4 text-red-500" />
                           </button>
+=======
+                        className={`flex ${isFromAdmin ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div
+                          className={`max-w-[70%] rounded-lg p-3 ${
+                            isFromAdmin
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-gray-100 border border-gray-200'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-xs font-semibold">
+                              {isFromAdmin ? 'You' : msg.senderName}
+                            </span>
+                            <span className={`text-xs ${isFromAdmin ? 'text-blue-100' : 'text-gray-500'}`}>
+                              {date.toLocaleDateString()} • {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          </div>
+                          <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
                         </div>
                       </div>
                     );
@@ -1207,7 +1291,11 @@ function AdminClientDetailPage() {
       </Button>
     </div>
   );
+<<<<<<< HEAD
 }
 
 // Add default export
 export default AdminClientDetailPage;
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

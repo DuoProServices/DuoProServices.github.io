@@ -6,7 +6,11 @@ import { Card } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { CheckCircle2 } from "lucide-react";
 
+<<<<<<< HEAD
 export default function OnboardingSuccessPage() {
+=======
+export function OnboardingSuccessPage() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const { user } = useAuth();
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -56,4 +60,8 @@ export default function OnboardingSuccessPage() {
       </Card>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

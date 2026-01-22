@@ -2,7 +2,11 @@ import { Card } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Download, ExternalLink } from 'lucide-react';
+<<<<<<< HEAD
 import { formatCAD, getPricingName } from '@/app/config/pricing';
+=======
+import { formatCAD, getPricingName } from '../../config/pricing';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface Transaction {
   id: string;

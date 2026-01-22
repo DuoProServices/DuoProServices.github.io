@@ -15,8 +15,12 @@ import {
   Megaphone,
   Calendar,
   Copy,
+<<<<<<< HEAD
   Check,
   Save
+=======
+  Check
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import html2canvas from "html2canvas";
@@ -25,8 +29,11 @@ import { januaryPosts, type ContentPost } from "../data/contentCalendar";
 import { Button } from "../components/ui/button";
 import { useLanguage } from "../contexts/LanguageContext";
 import { copyToClipboard } from "../utils/clipboard";
+<<<<<<< HEAD
 import { supabase } from "../utils/supabaseClient";
 import { toast } from "sonner";
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface Template {
   id: string;
@@ -85,7 +92,11 @@ const colorThemes = [
   { id: "dark", name: "Elegant Dark", bg: "#1f2937", text: "#ffffff", accent: "#60a5fa" },
 ];
 
+<<<<<<< HEAD
 function AdminMarketingDashboard() {
+=======
+export function AdminMarketingDashboard() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const navigate = useNavigate();
   const { t } = useLanguage();
   const [searchParams] = useSearchParams();
@@ -643,6 +654,10 @@ function AdminMarketingDashboard() {
       </main>
     </div>
   );
+<<<<<<< HEAD
 }
 
 export default AdminMarketingDashboard;
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

@@ -6,7 +6,11 @@ import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 import { Calendar, Loader2, DollarSign, Tag, Percent } from "lucide-react";
+<<<<<<< HEAD
 import { PRICING_PRESETS, formatCAD, getPricingPreset } from "@/app/config/pricing";
+=======
+import { PRICING_PRESETS, formatCAD, getPricingPreset } from "../../config/pricing";
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { DiscountType } from "../../types/taxFiling";
 import { calculateDiscount, calculateFinalAmount, DISCOUNT_CONFIGS, getDiscountLabel } from "../../utils/discounts";
 

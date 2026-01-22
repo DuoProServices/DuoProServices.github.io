@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { Button } from '../ui/button';
 import { CreditCard, Loader2, CheckCircle } from 'lucide-react';
+<<<<<<< HEAD
 import { projectId } from '/utils/supabase/info';
+=======
+import { projectId } from '../../../../utils/supabase/info';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { supabase } from '../../utils/supabaseClient';
 import { toast } from 'sonner';
 
@@ -66,6 +70,7 @@ export function PaymentButton({
 
       if (!response.ok) {
         const errorData = await response.json();
+<<<<<<< HEAD
         const errorMsg = errorData.error || 'Payment session creation failed';
         
         // Check if it's a demo mode message
@@ -104,6 +109,14 @@ export function PaymentButton({
       }
 
       // Redirect to real Stripe Checkout
+=======
+        throw new Error(errorData.error || 'Payment session creation failed');
+      }
+
+      const { url } = await response.json();
+
+      // Redirect to Stripe Checkout
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       window.location.href = url;
 
     } catch (error: any) {

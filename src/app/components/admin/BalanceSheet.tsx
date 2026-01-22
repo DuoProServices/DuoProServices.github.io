@@ -1,5 +1,9 @@
 import { Card } from '../ui/card';
+<<<<<<< HEAD
 import { formatCAD } from '@/app/config/pricing';
+=======
+import { formatCAD } from '../../config/pricing';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { TrendingUp, TrendingDown, DollarSign } from 'lucide-react';
 
 interface BalanceSheetProps {

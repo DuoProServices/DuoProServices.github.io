@@ -1,15 +1,27 @@
+<<<<<<< HEAD
 import { generateTaxReturnSummaryPDFBlob } from '@/app/utils/taxReturnPdfGenerator';
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Upload, X, Loader2, DollarSign, FileText, MapPin, FileCheck } from 'lucide-react';
 import { toast } from 'sonner';
+<<<<<<< HEAD
 import { supabase } from '@/app/utils/supabaseClient';
 import { PRICING_PRESETS, formatCAD } from '@/app/config/pricing';
 import { API_ENDPOINTS } from '@/config/api';
 import { TaxReturnSummaryForm } from './TaxReturnSummaryForm';
 import { TaxReturnSummary } from '@/app/types/taxFiling';
+=======
+import { supabase } from '../../utils/supabaseClient';
+import { PRICING_PRESETS, formatCAD } from '../../config/pricing';
+import { API_ENDPOINTS } from '../../../config/api';
+import { TaxReturnSummaryForm } from './TaxReturnSummaryForm';
+import { TaxReturnSummary } from '../../types/taxFiling';
+import { generateTaxReturnSummaryPDFBlob } from '../../utils/taxReturnPdfGenerator';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface SubmitReportModalProps {
   isOpen: boolean;

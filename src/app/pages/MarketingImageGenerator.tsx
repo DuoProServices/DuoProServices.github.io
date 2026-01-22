@@ -5,6 +5,7 @@ import html2canvas from "html2canvas";
 import { marketingTemplates, templateCategories, type MarketingTemplate } from "../data/marketingTemplates";
 import { useNavigate } from "react-router-dom";
 
+<<<<<<< HEAD
 // Template types
 interface Template {
   id: string;
@@ -54,6 +55,9 @@ const colorThemes: ColorTheme[] = [
 ];
 
 export default function MarketingImageGenerator() {
+=======
+export function MarketingImageGenerator() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const navigate = useNavigate();
   const [selectedTemplate, setSelectedTemplate] = useState<Template>(templates[0]);
   const [selectedImage, setSelectedImage] = useState(stockImages[0]);

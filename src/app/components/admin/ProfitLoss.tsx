@@ -1,6 +1,10 @@
 import { Card } from '../ui/card';
 import { Badge } from '../ui/badge';
+<<<<<<< HEAD
 import { formatCAD } from '@/app/config/pricing';
+=======
+import { formatCAD } from '../../config/pricing';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { TrendingUp, TrendingDown, DollarSign, Percent } from 'lucide-react';
 import { 
   BarChart, 

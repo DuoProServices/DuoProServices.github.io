@@ -7,11 +7,19 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+<<<<<<< HEAD
 import { supabase } from '@/app/utils/supabaseClient';
 import { TaxReturnSummary } from '@/app/types/taxFiling';
 import { TaxReturnSummaryPreview } from '../shared/TaxReturnSummaryPreview';
 import { generateTaxReturnSummaryPDFBlob } from '@/app/utils/taxReturnPdfGenerator';
 import { API_ENDPOINTS } from '@/config/api';
+=======
+import { supabase } from '../../utils/supabaseClient';
+import { TaxReturnSummary } from '../../types/taxFiling';
+import { TaxReturnSummaryPreview } from '../shared/TaxReturnSummaryPreview';
+import { generateTaxReturnSummaryPDFBlob } from '../../utils/taxReturnPdfGenerator';
+import { API_ENDPOINTS } from '../../../config/api';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
 import { Badge } from '../ui/badge';

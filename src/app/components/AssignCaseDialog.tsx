@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { Users, Loader2, CheckCircle2, ArrowRight } from 'lucide-react';
+<<<<<<< HEAD
 import { projectId, publicAnonKey } from '/utils/supabase/info';
+=======
+import { projectId, publicAnonKey } from '../../../utils/supabase/info';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { toast } from 'sonner';
 
 interface User {

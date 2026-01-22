@@ -28,7 +28,11 @@ import { ProfitLoss } from '../components/admin/ProfitLoss';
 import { ReceiptScanner } from '../components/bookkeeping/ReceiptScanner';
 import { exportToPDF } from '../utils/pdfExport';
 import { formatCAD } from '../config/pricing';
+<<<<<<< HEAD
 import { API_ENDPOINTS } from '@/config/api';
+=======
+import { API_ENDPOINTS } from '../../config/api';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { 
   LineChart, 
   Line, 
@@ -85,7 +89,11 @@ const CATEGORY_COLORS = [
   '#64748b'  // gray
 ];
 
+<<<<<<< HEAD
 function AdminBookkeepingDashboard() {
+=======
+export function AdminBookkeepingDashboard() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const navigate = useNavigate();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -670,7 +678,11 @@ function AdminBookkeepingDashboard() {
       </main>
     </div>
   );
+<<<<<<< HEAD
 }
 
 // Add default export
 export default AdminBookkeepingDashboard;
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

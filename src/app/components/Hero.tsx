@@ -105,4 +105,8 @@ export function Hero() {
       </div>
     </section>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

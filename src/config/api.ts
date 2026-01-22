@@ -9,9 +9,12 @@ export const API_ENDPOINTS = {
   signup: `${API_BASE_URL}/auth/signup`,
   session: `${API_BASE_URL}/auth/session`,
   
+<<<<<<< HEAD
   // Personal Info
   personalInfo: `${API_BASE_URL}/personal-info`,
   
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   // Documents
   documentsUpload: `${API_BASE_URL}/documents/upload`,
   documents: `${API_BASE_URL}/documents`,
@@ -34,7 +37,10 @@ export const API_ENDPOINTS = {
   adminSetupPolicies: `${API_BASE_URL}/admin/setup-storage-policies`,
   adminTaxDocumentNotify: `${API_BASE_URL}/admin/tax-document/notify`,
   adminCraAssessmentSend: `${API_BASE_URL}/admin/cra-assessment/send`,
+<<<<<<< HEAD
   adminInvoices: `${API_BASE_URL}/admin/invoices`,
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   
   // Tax Filing
   taxFilingCreate: `${API_BASE_URL}/tax-filing/create`,
@@ -48,6 +54,7 @@ export const API_ENDPOINTS = {
   taxPreviewSave: `${API_BASE_URL}/tax-preview/save`,
   taxPreviewGet: (userId: string, year: string) => `${API_BASE_URL}/tax-preview/${userId}/${year}`,
   
+<<<<<<< HEAD
   // Initial Payment & Invoices
   createInitialPaymentInvoice: `${API_BASE_URL}/payment/initial-invoice`,
   invoices: `${API_BASE_URL}/payment/invoices`,
@@ -59,10 +66,13 @@ export const API_ENDPOINTS = {
   // Stripe Webhooks
   stripeWebhook: `${API_BASE_URL}/stripe/webhook`,
   
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   // Bookkeeping
   bookkeepingSummary: `${API_BASE_URL}/bookkeeping/summary`,
   bookkeepingExpenses: `${API_BASE_URL}/bookkeeping/expenses`,
   bookkeepingExpense: (id: string) => `${API_BASE_URL}/bookkeeping/expenses/${id}`,
+<<<<<<< HEAD
   bookkeepingInvoices: `${API_BASE_URL}/bookkeeping/invoices`,
   bookkeepingInvoiceDelete: (invoiceNumber: string) => `${API_BASE_URL}/bookkeeping/invoices/${invoiceNumber}`,
   
@@ -78,6 +88,8 @@ export const API_ENDPOINTS = {
   
   // Contact Form
   contactSend: `${API_BASE_URL}/contact/send`,
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   
   // Health check
   health: `${API_BASE_URL}/health`,

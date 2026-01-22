@@ -14,12 +14,21 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Upload, X, Loader2, DollarSign, FileText, MapPin, FileCheck, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
+<<<<<<< HEAD
 import { supabase } from '@/app/utils/supabaseClient';
 import { PRICING_PRESETS, formatCAD } from '@/app/config/pricing';
 import { API_ENDPOINTS } from '@/config/api';
 import { TaxReturnSummaryForm } from './TaxReturnSummaryForm';
 import { TaxReturnSummary } from '@/app/types/taxFiling';
 import { generateTaxReturnSummaryPDFBlob } from '@/app/utils/taxReturnPdfGenerator';
+=======
+import { supabase } from '../../utils/supabaseClient';
+import { PRICING_PRESETS, formatCAD } from '../../config/pricing';
+import { API_ENDPOINTS } from '../../../config/api';
+import { TaxReturnSummaryForm } from './TaxReturnSummaryForm';
+import { TaxReturnSummary } from '../../types/taxFiling';
+import { generateTaxReturnSummaryPDFBlob } from '../../utils/taxReturnPdfGenerator';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface SubmitReportModalWithSummaryProps {
   isOpen: boolean;
@@ -615,4 +624,8 @@ export function SubmitReportModalWithSummary({
       </div>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

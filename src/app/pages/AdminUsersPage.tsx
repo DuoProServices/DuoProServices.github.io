@@ -14,19 +14,30 @@ import {
   Loader2,
   UserPlus,
 } from 'lucide-react';
+<<<<<<< HEAD
 import { projectId, publicAnonKey } from '/utils/supabase/info';
 import { toast } from 'sonner';
 import { fetchWithFallback } from '../utils/apiHelper';
+=======
+import { projectId, publicAnonKey } from '../../../utils/supabase/info';
+import { toast } from 'sonner';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface UserWithPermissions extends UserPermissions {
   casesCount?: number;
   pendingCases?: number;
   completedCases?: number;
+<<<<<<< HEAD
   userType?: 'staff' | 'client'; // NEW: distinguish between staff and clients
   onboardingComplete?: boolean; // NEW: for clients
 }
 
 function AdminUsersPage() {
+=======
+}
+
+export function AdminUsersPage() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const navigate = useNavigate();
   const { user } = useAuth();
   const { isAdmin, loading: permissionsLoading } = usePermissions();
@@ -51,7 +62,23 @@ function AdminUsersPage() {
 
   const loadUsers = async () => {
     try {
+<<<<<<< HEAD
       const { data } = await fetchWithFallback<UserWithPermissions[]>('/users/list');
+=======
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-c2a25be0/users/list`,
+        {
+          headers: {
+            'Authorization': `Bearer ${publicAnonKey}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error('Failed to load users');
+
+      const data = await response.json();
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       setUsers(data);
     } catch (error) {
       console.error('Error loading users:', error);
@@ -92,7 +119,10 @@ function AdminUsersPage() {
       case 'admin': return 'bg-purple-100 text-purple-700 border-purple-200';
       case 'accountant': return 'bg-blue-100 text-blue-700 border-blue-200';
       case 'viewer': return 'bg-gray-100 text-gray-700 border-gray-200';
+<<<<<<< HEAD
       case 'client': return 'bg-green-100 text-green-700 border-green-200'; // NEW: client badge
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       default: return 'bg-gray-100 text-gray-700 border-gray-200';
     }
   };
@@ -153,9 +183,12 @@ function AdminUsersPage() {
               <div>
                 <p className="text-sm text-gray-600">Total Users</p>
                 <p className="text-3xl font-bold text-gray-900 mt-1">{users.length}</p>
+<<<<<<< HEAD
                 <p className="text-xs text-gray-500 mt-1">
                   {users.filter(u => u.userType === 'client').length} clients, {users.filter(u => u.userType === 'staff').length} staff
                 </p>
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
               </div>
               <Users className="w-8 h-8 text-blue-500" />
             </div>
@@ -487,6 +520,7 @@ function AddUserDialog({ onClose, onAddUser }: AddUserDialogProps) {
         return;
       }
 
+<<<<<<< HEAD
       // Get auth token from Supabase
       const { supabase } = await import('../utils/supabaseClient');
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
@@ -503,6 +537,14 @@ function AddUserDialog({ onClose, onAddUser }: AddUserDialogProps) {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${sessionData.session.access_token}`,
+=======
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-c2a25be0/users/create`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${publicAnonKey}`,
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
@@ -516,6 +558,7 @@ function AddUserDialog({ onClose, onAddUser }: AddUserDialogProps) {
         }
       );
 
+<<<<<<< HEAD
       const data = await response.json();
 
       if (!response.ok) {
@@ -532,6 +575,16 @@ function AddUserDialog({ onClose, onAddUser }: AddUserDialogProps) {
       }
 
       console.log('User created successfully:', data);
+=======
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to add user');
+      }
+
+      const data = await response.json();
+      console.log('User created successfully:', data);
+
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       toast.success(`User ${name} created successfully!`);
       onAddUser();
       onClose();
@@ -677,6 +730,10 @@ function AddUserDialog({ onClose, onAddUser }: AddUserDialogProps) {
       </Card>
     </div>
   );
+<<<<<<< HEAD
 }
 
 export default AdminUsersPage;
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

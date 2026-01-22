@@ -5,7 +5,11 @@ import { useAuth } from "../contexts/AuthContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import { supabase } from "../utils/supabaseClient";
 import { isAdminEmail } from "../config/admins";
+<<<<<<< HEAD
 import { API_ENDPOINTS } from "@/config/api";
+=======
+import { API_ENDPOINTS } from "../../config/api";
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { Input } from "../components/ui/input";
@@ -45,7 +49,11 @@ interface Client {
   } | null;
 }
 
+<<<<<<< HEAD
 function AdminClientsPage() {
+=======
+export function AdminClientsPage() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const navigate = useNavigate();
   const { user } = useAuth();
   const { t } = useLanguage();
@@ -62,10 +70,13 @@ function AdminClientsPage() {
     currentAssignedTo?: string; 
   } | null>(null);
 
+<<<<<<< HEAD
   // ⚠️ DEMO MODE: Use sample data when backend is not available
   const DEMO_MODE = false; // ✅ BACKEND IS DEPLOYED - usando Supabase real!
   const STORAGE_KEY = 'admin-clients-demo';
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   useEffect(() => {
     if (!user || !isAdminEmail(user.email)) {
       navigate("/login");
@@ -77,6 +88,7 @@ function AdminClientsPage() {
   const loadClients = async () => {
     setLoading(true);
     try {
+<<<<<<< HEAD
       // ⚠️ DEMO MODE: Load REAL clients from Supabase
       if (DEMO_MODE) {
         console.log('📦 [Admin Clients] Loading REAL clients from Supabase KV store...');
@@ -226,6 +238,9 @@ function AdminClientsPage() {
       }
 
       // Backend mode - try to fetch from server
+=======
+      // Buscar sessão e token
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
       
       if (sessionError || !sessionData.session) {
@@ -235,6 +250,7 @@ function AdminClientsPage() {
       const accessToken = sessionData.session.access_token;
       console.log('🔑 Got access token, fetching clients from server...');
 
+<<<<<<< HEAD
       // ⚠️ DEMO MODE: Se backend falhar, busca direto do Supabase
       try {
         // Tentar buscar do servidor primeiro
@@ -309,6 +325,30 @@ function AdminClientsPage() {
         } else {
           toast.success(`✅ Loaded ${clientsData.length} client(s) from database`);
         }
+=======
+      // Usar a rota do servidor que tem permissão para listar usuários
+      const response = await fetch(
+        API_ENDPOINTS.adminClients,
+        {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to fetch clients');
+      }
+
+      const data = await response.json();
+      console.log("Fetched clients from server:", data.clients);
+
+      setClients(data.clients || []);
+      
+      if (!data.clients || data.clients.length === 0) {
+        toast.info("No customers found. Users need to sign up first.");
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       }
     } catch (error) {
       console.error("Error loading clients:", error);
@@ -642,6 +682,10 @@ function AdminClientsPage() {
       />
     </div>
   );
+<<<<<<< HEAD
 }
 
 export default AdminClientsPage;
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

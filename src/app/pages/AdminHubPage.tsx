@@ -1,4 +1,5 @@
 import { useAuth } from "../contexts/AuthContext";
+<<<<<<< HEAD
 import { useLanguage } from "../contexts/LanguageContext";
 import { formatCAD } from "../config/pricing";
 import { usePermissions } from "../hooks/usePermissions";
@@ -7,6 +8,31 @@ import { supabase } from "../utils/supabaseClient";
 import { API_ENDPOINTS } from "@/config/api";
 import { fetchWithFallback } from "../utils/apiHelper";
 import { DiagnosticPanel } from "../components/admin-hub/DiagnosticPanel";
+=======
+import { useNavigate } from "react-router-dom";
+import { Card } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { 
+  Users, 
+  Receipt, 
+  DollarSign, 
+  LayoutDashboard,
+  LogOut,
+  TrendingUp,
+  ArrowRight,
+  Loader2,
+  Megaphone,
+  Calendar,
+  Shield,
+  Award
+} from "lucide-react";
+import { useLanguage } from "../contexts/LanguageContext";
+import { useEffect, useState } from "react";
+import { supabase } from "../utils/supabaseClient";
+import { API_ENDPOINTS } from "../../config/api";
+import { formatCAD } from "../config/pricing";
+import { usePermissions } from "../hooks/usePermissions";
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface DashboardStats {
   totalCustomers: number;
@@ -44,6 +70,19 @@ const getIconComponent = (iconType: string) => {
 // Static module definitions - no functions, no Context dependencies
 const modules: Module[] = [
   {
+<<<<<<< HEAD
+=======
+    id: "dashboard",
+    title: "General Dashboard",
+    description: "Overview of all system operations and quick access to key functions",
+    iconType: "dashboard",
+    color: "from-blue-500 to-blue-600",
+    bgColor: "bg-blue-50",
+    borderColor: "border-blue-200",
+    route: "/admin/dashboard",
+  },
+  {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     id: "bookkeeping",
     title: "Bookkeeping Dashboard",
     description: "Track expenses, manage invoices, and handle day-to-day accounting",
@@ -64,6 +103,7 @@ const modules: Module[] = [
     route: "/admin/financial-dashboard",
   },
   {
+<<<<<<< HEAD
     id: "invoices",
     title: "Invoice Management",
     description: "View, manage, and download all client invoices",
@@ -84,6 +124,8 @@ const modules: Module[] = [
     route: "/admin/payment-setup",
   },
   {
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     id: "customers",
     title: "Customer Dashboard",
     description: "Manage all customers, view details, documents, and filing status",
@@ -94,6 +136,19 @@ const modules: Module[] = [
     route: "/admin/clients",
   },
   {
+<<<<<<< HEAD
+=======
+    id: "marketing",
+    title: "Marketing Dashboard",
+    description: "Create professional marketing images and manage campaigns",
+    iconType: "marketing",
+    color: "from-orange-500 to-orange-600",
+    bgColor: "bg-orange-50",
+    borderColor: "border-orange-200",
+    route: "/admin/marketing-dashboard",
+  },
+  {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     id: "content-calendar",
     title: "Content Calendar",
     description: "Manage your marketing calendar and create post images",
@@ -104,6 +159,7 @@ const modules: Module[] = [
     route: "/admin/content-calendar",
   },
   {
+<<<<<<< HEAD
     id: "roadmap",
     title: "🚀 Launch Roadmap",
     description: "Track February launch preparation with the team",
@@ -114,6 +170,8 @@ const modules: Module[] = [
     route: "/admin/roadmap",
   },
   {
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     id: "users",
     title: "User Management",
     description: "Manage team members, permissions, and access control",
@@ -123,9 +181,25 @@ const modules: Module[] = [
     borderColor: "border-pink-200",
     route: "/admin/users",
   },
+<<<<<<< HEAD
 ];
 
 function AdminHubPage() {
+=======
+  {
+    id: "productivity",
+    title: "Productivity Dashboard",
+    description: "Track team performance, case assignments, and accountability",
+    iconType: "productivity",
+    color: "from-amber-500 to-amber-600",
+    bgColor: "bg-amber-50",
+    borderColor: "border-amber-200",
+    route: "/admin/productivity",
+  },
+];
+
+export function AdminHubPage() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -146,6 +220,7 @@ function AdminHubPage() {
     }
   };
 
+<<<<<<< HEAD
   // Load dashboard stats
   const loadDashboardStats = async () => {
     setLoadingStats(true);
@@ -180,6 +255,45 @@ function AdminHubPage() {
           ).length || 0);
         }, 0) || 0;
 
+=======
+  const loadDashboardStats = async () => {
+    try {
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError || !sessionData.session) {
+        setLoadingStats(false);
+        return;
+      }
+
+      const accessToken = sessionData.session.access_token;
+
+      // Load clients
+      const clientsResponse = await fetch(API_ENDPOINTS.adminClients, {
+        headers: { 'Authorization': `Bearer ${accessToken}` },
+      });
+
+      // Load financial data for current year
+      const currentYear = new Date().getFullYear();
+      const financialResponse = await fetch(
+        `${API_ENDPOINTS.adminFinancials}?year=${currentYear}`,
+        {
+          headers: { 'Authorization': `Bearer ${accessToken}` },
+        }
+      );
+
+      if (clientsResponse.ok && financialResponse.ok) {
+        const clientsData = await clientsResponse.json();
+        const financialData = await financialResponse.json();
+
+        // Calculate active filings
+        const activeFilings = clientsData.clients?.reduce((count: number, client: any) => {
+          return count + (client.taxFilings?.filter((f: any) => 
+            f.status === 'in-progress' || f.status === 'under-review'
+          ).length || 0);
+        }, 0) || 0;
+
+        // Count pending invoices (awaiting-payment status)
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
         const pendingInvoices = clientsData.clients?.reduce((count: number, client: any) => {
           return count + (client.taxFilings?.filter((f: any) => 
             f.status === 'awaiting-payment' && f.payment?.status === 'pending'
@@ -278,11 +392,14 @@ function AdminHubPage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-12">
+<<<<<<< HEAD
         {/* Payment Config Status */}
         <div className="mb-6">
           <PaymentConfigStatus />
         </div>
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
         {/* Welcome Section */}
         <div className="mb-10">
           <h2 className="text-2xl font-semibold mb-2">Select a Category</h2>
@@ -375,6 +492,7 @@ function AdminHubPage() {
             </div>
           </div>
         </div>
+<<<<<<< HEAD
 
         {/* Diagnostic Panel */}
         <div className="mt-12">
@@ -387,3 +505,9 @@ function AdminHubPage() {
 
 // Add default export
 export default AdminHubPage;
+=======
+      </main>
+    </div>
+  );
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

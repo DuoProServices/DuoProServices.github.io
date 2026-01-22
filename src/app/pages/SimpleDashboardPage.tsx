@@ -4,7 +4,11 @@ import { Badge } from "../components/ui/badge";
 import { TaxDeadlines } from "../components/client/TaxDeadlines";
 import { MessageCenter } from "../components/client/MessageCenter";
 import { PaymentTimeline } from "../components/client/PaymentTimeline";
+<<<<<<< HEAD
 import { LogOut, User, Mail, Phone, MapPin, Calendar, CreditCard, Users, Home, Briefcase, Edit, FileText, Clock, CheckCircle, AlertCircle, ChevronRight, Receipt } from "lucide-react";
+=======
+import { LogOut, User, Mail, Phone, MapPin, Calendar, CreditCard, Users, Home, Briefcase, Edit, FileText, Clock, CheckCircle, AlertCircle, ChevronRight } from "lucide-react";
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -82,7 +86,11 @@ const getStatusConfig = (status: TaxFiling["status"]) => {
   }
 };
 
+<<<<<<< HEAD
 function SimpleDashboardPage() {
+=======
+export function SimpleDashboardPage() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -93,6 +101,7 @@ function SimpleDashboardPage() {
   // Load tax filings from Supabase
   const [taxFilings, setTaxFilings] = useState<TaxFiling[]>([]);
 
+<<<<<<< HEAD
   // 🔍 DEBUG: Log do email do usuário
   useEffect(() => {
     console.log('🔍 [DEBUG] User object:', user);
@@ -100,6 +109,8 @@ function SimpleDashboardPage() {
     console.log('🔍 [DEBUG] Is admin?', isAdminEmail(user?.email));
   }, [user]);
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   useEffect(() => {
     if (!user) {
       navigate("/login");
@@ -116,12 +127,15 @@ function SimpleDashboardPage() {
       const { data, error } = await supabase.auth.getUser();
 
       if (error) {
+<<<<<<< HEAD
         // ✅ Silencia erros de sessão - usuário não está logado
         if (error.message?.includes('session') || 
             error.message?.includes('Auth') || 
             error.message?.includes('authenticated')) {
           return;
         }
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
         console.error("Error fetching user:", error);
         return;
       }
@@ -303,6 +317,7 @@ function SimpleDashboardPage() {
           </div>
           
           <div className="flex items-center gap-2">
+<<<<<<< HEAD
             {/* 🔧 BOTÃO DE DEBUG TEMPORÁRIO - SEMPRE VISÍVEL */}
             <Button 
               onClick={() => {
@@ -321,16 +336,21 @@ function SimpleDashboardPage() {
             </Button>
             
             {/* Botão normal que verifica permissão */}
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
             {isAdminEmail(user?.email) && (
               <Button onClick={() => navigate("/admin")} variant="outline" size="sm">
                 <Users className="w-4 h-4 mr-2" />
                 Admin Panel
               </Button>
             )}
+<<<<<<< HEAD
             <Button onClick={() => navigate("/client/invoices")} variant="outline" size="sm">
               <Receipt className="w-4 h-4 mr-2" />
               Invoices
             </Button>
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
             <Button onClick={handleSignOut} variant="outline" size="sm">
               <LogOut className="w-4 h-4 mr-2" />
               Sign Out
@@ -669,6 +689,10 @@ function SimpleDashboardPage() {
       </main>
     </div>
   );
+<<<<<<< HEAD
 }
 
 export default SimpleDashboardPage;
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

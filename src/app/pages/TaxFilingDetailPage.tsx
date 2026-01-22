@@ -4,7 +4,11 @@ import { useForm } from "react-hook-form";
 import { supabase } from "../utils/supabaseClient";
 import { useAuth } from "../contexts/AuthContext";
 import { useLanguage } from "../contexts/LanguageContext";
+<<<<<<< HEAD
 import { projectId } from "/utils/supabase/info";
+=======
+import { projectId } from "../../../utils/supabase/info";
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -22,15 +26,31 @@ import {
   AlertCircle, 
   CheckCircle, 
   Clock,
+<<<<<<< HEAD
+=======
+  Calculator,
+  Eye,
+  Flag,
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   CreditCard
 } from "lucide-react";
 import { toast } from "sonner";
 import { getDocumentCategories, needsQuebecForms, getCategoryName, getCategoryDescription } from "../config/documentCategories";
 import { TaxDocumentsUploader } from "../components/client/TaxDocumentsUploader";
+<<<<<<< HEAD
 import { PaymentTimeline } from "../components/client/PaymentTimeline";
 import { PaymentVerification } from "../components/payment/PaymentVerification";
 import { usePaymentStatus } from "../hooks/usePaymentStatus";
 import { apiHelper } from "../utils/apiHelper";
+=======
+import { TaxReturnPreviewComponent } from "../components/tax/TaxReturnPreviewComponent";
+import { PaymentTimeline } from "../components/client/PaymentTimeline";
+import { PaymentVerification } from "../components/payment/PaymentVerification";
+import { usePaymentStatus } from "../hooks/usePaymentStatus";
+import { API_ENDPOINTS } from "../../config/api";
+import type { TaxReturnPreview, ParsedDocument, Province } from "../types/taxDocuments";
+import { calculateCanadianTax, type TaxCalculationInput } from "../utils/taxCalculator";
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface QuestionnaireData {
   immigrationStatusChanged: "yes" | "no" | "";
@@ -63,6 +83,10 @@ interface TaxFilingData {
   createdAt: string;
   updatedAt: string;
   submittedAt?: string;
+<<<<<<< HEAD
+=======
+  calculatedTax?: TaxReturnPreview; // 🔥 NEW: Store calculated tax preview
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   payment?: {
     initialPaid: boolean;
     initialAmount: number;
@@ -74,7 +98,11 @@ interface TaxFilingData {
 
 const BUCKET_NAME = "tax-documents-c2a25be0";
 
+<<<<<<< HEAD
 function TaxFilingDetailPage() {
+=======
+export function TaxFilingDetailPage() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const { year } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -86,8 +114,15 @@ function TaxFilingDetailPage() {
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [filingData, setFilingData] = useState<TaxFilingData | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
+<<<<<<< HEAD
 
   // 🔥 Payment status hook
+=======
+  const [taxReturnPreview, setTaxReturnPreview] = useState<TaxReturnPreview | null>(null);
+  const [calculating, setCalculating] = useState(false); // 🔥 NEW: Calculating state
+
+  // 🔥 NEW: Payment status hook
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const { paymentStatus, loading: paymentLoading, refetch: refetchPayment } = usePaymentStatus(Number(year));
 
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<QuestionnaireData>({
@@ -189,6 +224,7 @@ function TaxFilingDetailPage() {
       const accessToken = session?.access_token;
       
       if (!accessToken) {
+<<<<<<< HEAD
         // ✅ Sem auth token - retorna lista vazia silenciosamente
         setUploadedFiles([]);
         return;
@@ -198,12 +234,24 @@ function TaxFilingDetailPage() {
       const result = await apiHelper.get<{ files: UploadedFile[] }>(
         `https://${projectId}.supabase.co/functions/v1/make-server-c2a25be0/tax-documents/list/${year}`,
         {
+=======
+        console.error('No access token available');
+        return;
+      }
+
+      // Buscar documentos do KV store via backend
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-c2a25be0/tax-documents/list/${year}`,
+        {
+          method: 'GET',
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
           headers: {
             'Authorization': `Bearer ${accessToken}`
           }
         }
       );
 
+<<<<<<< HEAD
       setUploadedFiles(result.files || []);
       console.log('✅ Loaded files from KV store:', result.files);
     } catch (error: any) {
@@ -224,6 +272,20 @@ function TaxFilingDetailPage() {
         console.error("Error loading uploaded files:", error);
         setUploadedFiles([]);
       }
+=======
+      if (!response.ok) {
+        console.error('Failed to load documents:', await response.text());
+        setUploadedFiles([]);
+        return;
+      }
+
+      const result = await response.json();
+      setUploadedFiles(result.files || []);
+      console.log('✅ Loaded files from KV store:', result.files);
+    } catch (error) {
+      console.error("Error loading uploaded files:", error);
+      setUploadedFiles([]);
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     }
   };
 
@@ -382,6 +444,7 @@ function TaxFilingDetailPage() {
 
   const handleDownloadFile = async (file: UploadedFile) => {
     try {
+<<<<<<< HEAD
       // Get access token
       const { data: { session } } = await supabase.auth.getSession();
       const accessToken = session?.access_token;
@@ -420,6 +483,29 @@ function TaxFilingDetailPage() {
     } catch (error: any) {
       console.error("Error downloading file:", error);
       toast.error(`Error downloading file: ${error.message}`);
+=======
+      // If we have a URL from backend, use it directly
+      if (file.url) {
+        window.open(file.url, '_blank');
+        return;
+      }
+
+      // Otherwise, create signed URL via Storage (may fail with RLS)
+      const { data, error } = await supabase.storage
+        .from(BUCKET_NAME)
+        .createSignedUrl(file.path, 60);
+
+      if (error || !data) {
+        toast.error("Failed to download file");
+        return;
+      }
+
+      // Open in new tab
+      window.open(data.signedUrl, '_blank');
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      toast.error("Error downloading file");
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     }
   };
 
@@ -550,6 +636,146 @@ function TaxFilingDetailPage() {
     }
   };
 
+<<<<<<< HEAD
+=======
+  // 🔥 NEW: Auto-calculate tax from uploaded OCR documents
+  const handleCalculateTax = async () => {
+    if (!user || !year) return;
+
+    setCalculating(true);
+
+    try {
+      // 1. Get access token
+      const { data: { session } } = await supabase.auth.getSession();
+      const accessToken = session?.access_token;
+      
+      if (!accessToken) {
+        toast.error('Authentication error');
+        setCalculating(false);
+        return;
+      }
+
+      console.log('🔍 Step 1: Fetching parsed documents for year:', year);
+
+      // 2. Fetch parsed documents from backend
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-c2a25be0/tax-documents/${year}`,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        }
+      );
+
+      console.log('🔍 Step 2: Response status:', response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('❌ Error response:', errorData);
+        throw new Error(errorData.error || 'Failed to fetch parsed documents');
+      }
+
+      const responseData = await response.json();
+      console.log('🔍 Step 3: Response data:', responseData);
+      
+      const parsedDocs = responseData.documents;
+      console.log('📄 Fetched documents:', parsedDocs);
+      console.log('📊 Number of documents:', parsedDocs?.length || 0);
+      
+      if (!parsedDocs || parsedDocs.length === 0) {
+        toast.error('No parsed documents found. Please upload and SAVE tax documents first using the OCR uploader above.', {
+          duration: 6000
+        });
+        setCalculating(false);
+        return;
+      }
+
+      console.log('🔍 Step 4: Processing', parsedDocs.length, 'documents');
+
+      // 3. Get user data for calculation
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      
+      if (userError || !userData?.user) {
+        throw new Error('Failed to get user data');
+      }
+
+      const profile = userData.user.user_metadata?.profile || {};
+      const questionnaireData = filingData?.questionnaireData || {};
+
+      console.log('🔍 Step 5: User profile:', profile);
+      console.log('🔍 Step 6: Questionnaire data:', questionnaireData);
+
+      // 4. Prepare calculation input
+      const maritalStatus = questionnaireData.newMaritalStatus || profile.maritalStatus || 'single';
+      const numberOfChildren = questionnaireData.newDependentsCount 
+        ? parseInt(questionnaireData.newDependentsCount) 
+        : (profile.numberOfChildren || 0);
+
+      const calculationInput: TaxCalculationInput = {
+        province: (profile.province || 'ON') as Province,
+        maritalStatus: maritalStatus as 'single' | 'married' | 'common-law',
+        numberOfChildren: numberOfChildren,
+        childrenUnder6: Math.min(numberOfChildren, profile.childrenUnder6 || 0),
+        documents: parsedDocs as ParsedDocument[],
+        personalInfo: {
+          name: profile.fullName || userData.user.email || '',
+          sin: profile.sin
+        },
+        year: Number(year)
+      };
+
+      console.log('🧮 Step 7: Calculating tax with input:', calculationInput);
+
+      // 5. Calculate tax
+      const calculatedPreview = calculateCanadianTax(calculationInput);
+      calculatedPreview.userId = userData.user.id;
+
+      console.log('✅ Step 8: Tax calculated successfully!', calculatedPreview);
+      console.log('💰 Federal Tax:', calculatedPreview.federalTax.refundOrOwing);
+      console.log('💰 Provincial Tax:', calculatedPreview.provincialTax.refundOrOwing);
+      console.log('💰 Total:', calculatedPreview.totalRefundOrOwing);
+
+      // 6. Save to state
+      setTaxReturnPreview(calculatedPreview);
+
+      // 7. Save to user metadata for persistence
+      const taxFilings: TaxFilingData[] = userData.user.user_metadata?.taxFilings || [];
+      const filingIndex = taxFilings.findIndex(f => f.year === Number(year));
+      
+      if (filingIndex >= 0) {
+        taxFilings[filingIndex] = {
+          ...taxFilings[filingIndex],
+          calculatedTax: calculatedPreview,
+          updatedAt: new Date().toISOString()
+        };
+      } else {
+        taxFilings.push({
+          year: Number(year),
+          status: 'in-progress',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          calculatedTax: calculatedPreview
+        });
+      }
+
+      await supabase.auth.updateUser({
+        data: { taxFilings }
+      });
+
+      console.log('✅ Step 9: Saved to user metadata');
+
+      toast.success('✅ Tax calculation completed successfully!', { duration: 4000 });
+    } catch (error: any) {
+      console.error('❌ Error calculating tax:', error);
+      console.error('❌ Error stack:', error.stack);
+      toast.error(`Failed to calculate tax: ${error.message}`, { duration: 5000 });
+    } finally {
+      setCalculating(false);
+    }
+  };
+
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -884,15 +1110,22 @@ function TaxFilingDetailPage() {
           {/* 🔥 NEW: Tax Documents with OCR Section */}
           <Card className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
             <div className="flex items-center gap-2 mb-6 pb-4 border-b border-purple-200">
+<<<<<<< HEAD
               <Upload className="w-5 h-5 text-purple-600" />
               <div className="flex-1">
                 <h2 className="font-medium text-lg">📄 Smart Tax Document Upload (with OCR)</h2>
+=======
+              <Calculator className="w-5 h-5 text-purple-600" />
+              <div className="flex-1">
+                <h2 className="font-medium text-lg">🔥 Smart Tax Document Upload (with OCR)</h2>
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
                 <p className="text-sm text-gray-600">
                   Upload T4, Relevé 1, T5, T2202, RRSP receipts - We'll automatically extract the data!
                 </p>
               </div>
             </div>
 
+<<<<<<< HEAD
             {/* Free Upload Flow - Payment required only at submission */}
             <TaxDocumentsUploader 
               year={Number(year)}
@@ -903,6 +1136,218 @@ function TaxFilingDetailPage() {
               }}
             />
 
+=======
+            {paymentStatus?.initialPaid ? (
+              <>
+                <TaxDocumentsUploader 
+                  year={Number(year)}
+                  onDocumentsUploaded={(docs) => {
+                    console.log('📄 Documents uploaded with OCR:', docs);
+                    toast.success(`Uploaded ${docs.length} document(s) with automatic data extraction!`);
+                  }}
+                  onComplete={() => {
+                    toast.success('✅ All documents saved! Now you can calculate your taxes below.', {
+                      duration: 5000
+                    });
+                  }}
+                />
+
+                {/* Important Instructions */}
+                <div className="mt-4 p-4 bg-amber-50 border-2 border-amber-300 rounded-lg">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="font-semibold text-amber-900 mb-1">⚠️ Important: Save Before Calculating</p>
+                      <p className="text-sm text-amber-800">
+                        After uploading documents above, <strong>click the green &quot;Save All Documents&quot; button</strong> that appears. 
+                        Only then you can use the tax calculator below to see your refund or amount owing.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="p-8 bg-white/50 border-2 border-dashed border-amber-300 rounded-lg text-center backdrop-blur-sm">
+                <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CreditCard className="w-8 h-8 text-amber-600" />
+                </div>
+                <h3 className="font-semibold text-lg mb-2 text-gray-900">
+                  🔒 Initial Payment Required
+                </h3>
+                <p className="text-gray-600 mb-4 max-w-md mx-auto">
+                  To start uploading documents and using our advanced OCR technology, please complete the 
+                  <strong> $50 CAD initial deposit</strong> using the payment button in the timeline above.
+                </p>
+                <p className="text-sm text-gray-500">
+                  This deposit secures your spot and allows us to begin processing your tax return immediately.
+                </p>
+              </div>
+            )}
+
+
+          </Card>
+
+          {/* 🔥 NEW: Auto-Calculate Tax Section */}
+          <Card className="p-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border-blue-300">
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-blue-200">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                  <Calculator className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="font-medium text-lg">🧮 Automatic Tax Calculation</h2>
+                  <p className="text-sm text-gray-600">
+                    Calculate your tax return based on uploaded documents
+                  </p>
+                </div>
+              </div>
+              
+              <Button
+                type="button"
+                onClick={handleCalculateTax}
+                disabled={calculating}
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+              >
+                {calculating ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Calculating...
+                  </>
+                ) : (
+                  <>
+                    <Calculator className="w-4 h-4 mr-2" />
+                    Calculate Taxes
+                  </>
+                )}
+              </Button>
+            </div>
+
+            {!taxReturnPreview && !calculating && (
+              <div className="text-center py-8 px-4 bg-white rounded-lg border-2 border-dashed border-blue-200">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Eye className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="font-medium text-lg mb-2">No Tax Calculation Yet</h3>
+                <p className="text-sm text-gray-600 mb-4 max-w-md mx-auto">
+                  Upload your tax documents using the OCR uploader above, then click "Calculate Taxes" to see your estimated refund or amount owing.
+                </p>
+                <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span>Calculations are based on CRA 2025 tax rates</span>
+                </div>
+              </div>
+            )}
+
+            {calculating && (
+              <div className="text-center py-12 px-4">
+                <Loader2 className="w-12 h-12 animate-spin mx-auto mb-4 text-blue-600" />
+                <h3 className="font-medium text-lg mb-2">Calculating Your Taxes...</h3>
+                <p className="text-sm text-gray-600">
+                  Processing your documents and applying Canadian tax rates
+                </p>
+              </div>
+            )}
+
+            {taxReturnPreview && !calculating && (
+              <div className="space-y-6">
+                {/* Quick Summary */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-sm font-medium text-gray-500">Federal Tax</h3>
+                      <Flag className="w-5 h-5 text-red-600" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs text-gray-500">
+                        Refund: <span className="font-medium text-green-600">
+                          ${Math.abs(Math.min(0, taxReturnPreview.federalTax.refundOrOwing)).toFixed(2)}
+                        </span>
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Owing: <span className="font-medium text-red-600">
+                          ${Math.abs(Math.max(0, taxReturnPreview.federalTax.refundOrOwing)).toFixed(2)}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-sm font-medium text-gray-500">Provincial Tax</h3>
+                      <Flag className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs text-gray-500">
+                        Refund: <span className="font-medium text-green-600">
+                          ${Math.abs(Math.min(0, taxReturnPreview.provincialTax.refundOrOwing)).toFixed(2)}
+                        </span>
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Owing: <span className="font-medium text-red-600">
+                          ${Math.abs(Math.max(0, taxReturnPreview.provincialTax.refundOrOwing)).toFixed(2)}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Total Summary */}
+                <div className={`p-6 rounded-lg border-2 ${
+                  taxReturnPreview.totalRefundOrOwing < 0 
+                    ? 'bg-green-50 border-green-300' 
+                    : 'bg-red-50 border-red-300'
+                }`}>
+                  <div className="text-center">
+                    <p className="text-sm font-medium text-gray-600 mb-2">
+                      {taxReturnPreview.totalRefundOrOwing < 0 ? '🎉 Total Refund' : '💰 Total Owing'}
+                    </p>
+                    <p className={`text-4xl font-bold ${
+                      taxReturnPreview.totalRefundOrOwing < 0 ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      ${Math.abs(taxReturnPreview.totalRefundOrOwing).toFixed(2)}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Federal + Provincial (based on uploaded documents)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Annual Credits Info */}
+                {(taxReturnPreview as any).annualCredits && (
+                  <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-medium mb-4 text-sm">📋 Estimated Annual Benefits</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {(taxReturnPreview as any).annualCredits.gstHst > 0 && (
+                        <div className="text-center p-3 bg-blue-50 rounded">
+                          <p className="text-xs text-gray-600 mb-1">GST/HST Credit</p>
+                          <p className="font-medium text-blue-600">
+                            ${((taxReturnPreview as any).annualCredits.gstHst).toFixed(2)}/year
+                          </p>
+                        </div>
+                      )}
+                      {(taxReturnPreview as any).annualCredits.ccb > 0 && (
+                        <div className="text-center p-3 bg-purple-50 rounded">
+                          <p className="text-xs text-gray-600 mb-1">Canada Child Benefit</p>
+                          <p className="font-medium text-purple-600">
+                            ${((taxReturnPreview as any).annualCredits.ccb).toFixed(2)}/year
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Info Box */}
+                <div className="flex items-start gap-2 text-xs text-gray-600 bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <AlertCircle className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <p>
+                    <strong>Note:</strong> This is an estimated calculation based on the documents you've uploaded. 
+                    Final amounts may vary after professional review and may be subject to additional deductions or credits.
+                  </p>
+                </div>
+              </div>
+            )}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
           </Card>
 
           {/* Document Upload Section */}
@@ -947,15 +1392,33 @@ function TaxFilingDetailPage() {
                           variant="outline"
                           size="sm"
                           onClick={() => {
+<<<<<<< HEAD
                             document.getElementById(`upload-${category.id}`)?.click();
                           }}
                           disabled={loading && selectedCategory === category.id}
+=======
+                            if (!paymentStatus?.initialPaid) {
+                              toast.error('Please complete the initial $50 payment first');
+                              return;
+                            }
+                            document.getElementById(`upload-${category.id}`)?.click();
+                          }}
+                          disabled={(loading && selectedCategory === category.id) || !paymentStatus?.initialPaid}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
                         >
                           {loading && selectedCategory === category.id ? (
                             <>
                               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                               Uploading...
                             </>
+<<<<<<< HEAD
+=======
+                          ) : !paymentStatus?.initialPaid ? (
+                            <>
+                              <CreditCard className="w-4 h-4 mr-2" />
+                              Payment Required
+                            </>
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
                           ) : (
                             <>
                               <Upload className="w-4 h-4 mr-2" />
@@ -1094,6 +1557,10 @@ function TaxFilingDetailPage() {
       </main>
     </div>
   );
+<<<<<<< HEAD
 }
 
 export default TaxFilingDetailPage;
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

@@ -9,7 +9,11 @@ import { Label } from "../components/ui/label";
 import { Alert, AlertDescription } from "../components/ui/alert";
 import { Mail, ArrowLeft, CheckCircle } from "lucide-react";
 
+<<<<<<< HEAD
 function ForgotPasswordPage() {
+=======
+export function ForgotPasswordPage() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const { resetPassword } = useAuth();
   const { t } = useLanguage();
   const [email, setEmail] = useState("");
@@ -104,5 +108,8 @@ function ForgotPasswordPage() {
     </div>
   );
 }
+<<<<<<< HEAD
 
 export default ForgotPasswordPage;
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

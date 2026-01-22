@@ -16,7 +16,11 @@ import {
   Loader2,
   ArrowRight,
 } from 'lucide-react';
+<<<<<<< HEAD
 import { projectId, publicAnonKey } from '/utils/supabase/info';
+=======
+import { projectId, publicAnonKey } from '../../../utils/supabase/info';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { toast } from 'sonner';
 import { formatCAD } from '../config/pricing';
 
@@ -39,7 +43,11 @@ interface UserProductivity {
   }[];
 }
 
+<<<<<<< HEAD
 function AdminProductivityDashboard() {
+=======
+export function AdminProductivityDashboard() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const navigate = useNavigate();
   const { user } = useAuth();
   const { hasPermission, loading: permissionsLoading } = usePermissions();
@@ -311,5 +319,8 @@ function AdminProductivityDashboard() {
     </div>
   );
 }
+<<<<<<< HEAD
 
 export default AdminProductivityDashboard;
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

@@ -14,6 +14,7 @@ import { CheckCircle2, Building2, User, FileText, Users } from "lucide-react";
 import { toast } from "sonner";
 
 interface ProfileData {
+<<<<<<< HEAD
   // Contact
   name: string;
   phone: string;
@@ -86,6 +87,36 @@ interface ProfileData {
   notificationEmail: string;
   
   // Legacy fields
+=======
+  // Step 1: Basic Info
+  name: string;
+  phone: string;
+  email: string;
+  address: string;
+  city: string;
+  province: string;
+  postalCode: string;
+
+  // Step 2: Service Category
+  serviceCategory: "personal" | "small-business" | "bookkeeping" | "financial-reports" | "";
+
+  // Step 2.5: Filing Type (only if personal)
+  filingType: "individual" | "couple" | "";
+
+  // Step 2.5b: Spouse Info (only if couple)
+  spouseInfo?: {
+    name: string;
+    sin: string;
+    dateOfBirth: string;
+    relationship: "married" | "common-law" | "";
+  };
+
+  // Step 3: Tax Return Details (only if personal)
+  dateOfBirth: string;
+  sin: string;
+  maritalStatus: string;
+  numberOfDependents: string;
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   firstTimeInCanada: string;
   residencyStatus: string;
   incomeType: string;
@@ -111,7 +142,11 @@ const CANADIAN_PROVINCES = [
   { value: "YT", label: "Yukon" },
 ];
 
+<<<<<<< HEAD
 export default function OnboardingPage() {
+=======
+export function OnboardingPage() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const { user } = useAuth();
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -122,6 +157,7 @@ export default function OnboardingPage() {
     phone: "",
     email: user?.email || "",
     address: "",
+<<<<<<< HEAD
     addressUnit: "",
     streetNumber: "",
     streetName: "",
@@ -132,10 +168,16 @@ export default function OnboardingPage() {
     homePhoneNumber: "",
     careOf: "",
     hasNonCanadianAddress: "",
+=======
+    city: "",
+    province: "",
+    postalCode: "",
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     serviceCategory: "",
     filingType: "",
     dateOfBirth: "",
     sin: "",
+<<<<<<< HEAD
     middleName: "",
     preferredLanguage: "",
     gender: "",
@@ -169,6 +211,14 @@ export default function OnboardingPage() {
     signupRQOnlineMail: "",
     receiveRQNotifications: "",
     notificationEmail: "",
+=======
+    maritalStatus: "",
+    numberOfDependents: "",
+    firstTimeInCanada: "",
+    residencyStatus: "",
+    incomeType: "",
+    workProvince: "",
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     onboardingCompleted: false,
   });
 
@@ -196,12 +246,15 @@ export default function OnboardingPage() {
       const { data, error } = await supabase.auth.getUser();
 
       if (error) {
+<<<<<<< HEAD
         // ✅ Silencia erros de sessão - usuário não está logado
         if (error.message?.includes('session') || 
             error.message?.includes('Auth') || 
             error.message?.includes('authenticated')) {
           return;
         }
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
         console.error("Error fetching user:", error);
         return;
       }
@@ -268,9 +321,12 @@ export default function OnboardingPage() {
       toast.error(t("onboarding.fillAllFields"));
       return false;
     }
+<<<<<<< HEAD
     
     // numberOfDependents is optional - it will be saved as empty string or the value provided
     
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     return true;
   };
 
@@ -801,7 +857,11 @@ export default function OnboardingPage() {
               </div>
 
               <div>
+<<<<<<< HEAD
                 <Label htmlFor="numberOfDependents">{t("onboarding.numberOfDependents")}</Label>
+=======
+                <Label htmlFor="numberOfDependents">{t("onboarding.numberOfDependents")} *</Label>
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
                 <Input
                   id="numberOfDependents"
                   type="number"

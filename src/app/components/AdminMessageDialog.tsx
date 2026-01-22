@@ -1,10 +1,18 @@
 import { useState, useEffect } from "react";
+<<<<<<< HEAD
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
+=======
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Send, MessageSquare, Loader2 } from "lucide-react";
 import { useLanguage } from "../contexts/LanguageContext";
+<<<<<<< HEAD
 import { API_ENDPOINTS } from "@/config/api";
+=======
+import { API_ENDPOINTS } from "../../config/api";
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { supabase } from "../utils/supabaseClient";
 import { toast } from "sonner";
 
@@ -131,9 +139,12 @@ export function AdminMessageDialog({
             <MessageSquare className="w-5 h-5" />
             {t("messages.title")} - {clientName}
           </DialogTitle>
+<<<<<<< HEAD
           <DialogDescription>
             View and send messages to this client
           </DialogDescription>
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
         </DialogHeader>
 
         <div className="flex-1 overflow-hidden flex flex-col gap-4">

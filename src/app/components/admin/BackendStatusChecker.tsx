@@ -11,9 +11,15 @@ import {
   ExternalLink,
   AlertTriangle
 } from "lucide-react";
+<<<<<<< HEAD
 import { API_ENDPOINTS } from "@/config/api";
 import { toast } from "sonner";
 import { projectId } from "/utils/supabase/info";
+=======
+import { API_ENDPOINTS } from "../../../config/api";
+import { toast } from "sonner";
+import { projectId } from "../../../../utils/supabase/info";
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface EndpointStatus {
   name: string;

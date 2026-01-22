@@ -3,7 +3,10 @@ import { cors } from "npm:hono/cors";
 import { logger } from "npm:hono/logger";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import * as kv from "./kv_store.tsx";
+<<<<<<< HEAD
 import publicRoutesApp from "./public-routes.tsx";
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import timelineApp from "./timeline.tsx";
 import * as messages from "./messages.tsx";
 import { getEmailTemplate, shouldSendNotification } from "./emailTemplates.ts";
@@ -11,6 +14,7 @@ import { getCRAAssessmentEmail } from "./craAssessmentEmail.ts";
 import { generateTaxDocumentEmail } from "./taxDocumentEmail.tsx";
 import * as stripeService from "./stripe.tsx";
 import usersApp from "./users.tsx";
+<<<<<<< HEAD
 import roadmapApp from "./roadmap.tsx";
 import fixTaxFilingsApp from "./fix-tax-filings.tsx";
 import initialPaymentApp from "./initial-payment.tsx";
@@ -21,6 +25,8 @@ import adminHubApp from "./admin-hub.tsx";
 import contactEmailApp from "./contact-email.tsx";
 import adminConfirmUserApp from "./admin-confirm-user.tsx";
 import crmApp from "./crm.tsx";
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 const app = new Hono();
 
@@ -114,6 +120,7 @@ app.use(
   "/*",
   cors({
     origin: "*",
+<<<<<<< HEAD
     allowHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     exposeHeaders: ["Content-Length", "Content-Type"],
@@ -374,6 +381,22 @@ app.post("/make-server-c2a25be0/auth/complete-reset", async (c) => {
   }
 });
 
+=======
+    allowHeaders: ["Content-Type", "Authorization"],
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    exposeHeaders: ["Content-Length"],
+    maxAge: 600,
+  }),
+);
+
+// Health check endpoint
+app.get("/make-server-c2a25be0/health", (c) => {
+  return c.json({ status: "ok" });
+});
+
+// ==================== AUTH ROUTES ====================
+
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 // Sign up new client
 app.post("/make-server-c2a25be0/auth/signup", async (c) => {
   try {
@@ -415,6 +438,7 @@ app.post("/make-server-c2a25be0/auth/signup", async (c) => {
   }
 });
 
+<<<<<<< HEAD
 // Sign in existing user
 app.post("/make-server-c2a25be0/auth/signin", async (c) => {
   try {
@@ -456,6 +480,8 @@ app.post("/make-server-c2a25be0/auth/signin", async (c) => {
   }
 });
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 // Get current session
 app.get("/make-server-c2a25be0/auth/session", async (c) => {
   try {
@@ -487,6 +513,7 @@ app.get("/make-server-c2a25be0/auth/session", async (c) => {
   }
 });
 
+<<<<<<< HEAD
 // Save personal information
 app.post("/make-server-c2a25be0/personal-info/save", async (c) => {
   console.log('🚀 Personal info save endpoint called');
@@ -591,6 +618,8 @@ app.get("/make-server-c2a25be0/personal-info", async (c) => {
   }
 });
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 // ==================== DOCUMENT ROUTES ====================
 
 // Upload document
@@ -1166,6 +1195,7 @@ app.get("/make-server-c2a25be0/admin/clients/:userId", async (c) => {
   }
 });
 
+<<<<<<< HEAD
 // 🔥 NEW: Get dashboard stats (admin only)
 app.get("/make-server-c2a25be0/dashboard/stats", async (c) => {
   try {
@@ -1257,6 +1287,8 @@ app.get("/make-server-c2a25be0/dashboard/stats", async (c) => {
   }
 });
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 // Get client files for specific year (admin only)
 app.get("/make-server-c2a25be0/admin/clients/:userId/files/:year", async (c) => {
   try {
@@ -2191,11 +2223,16 @@ app.post("/make-server-c2a25be0/tax-filing/mark-paid", async (c) => {
       return c.json({ error: 'Tax filing not found for this year' }, 404);
     }
 
+<<<<<<< HEAD
     // Generate sequential invoice number
     const invoiceCounter = await kv.get('invoice:counter') || 0;
     const newCounter = invoiceCounter + 1;
     await kv.set('invoice:counter', newCounter);
     const invoiceNumber = String(newCounter).padStart(4, '0');
+=======
+    // Generate invoice number
+    const invoiceNumber = `INV-${year}-${Date.now().toString().slice(-6)}`;
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
     // Update payment status
     taxFilings[filingIndex] = {
@@ -2923,6 +2960,7 @@ app.get("/make-server-c2a25be0/bookkeeping/invoices", async (c) => {
   }
 });
 
+<<<<<<< HEAD
 // Delete invoice (Admin only)
 app.delete("/make-server-c2a25be0/bookkeeping/invoices/:invoiceNumber", async (c) => {
   try {
@@ -3022,6 +3060,8 @@ app.delete("/make-server-c2a25be0/bookkeeping/invoices/:invoiceNumber", async (c
   }
 });
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 // Get bookkeeping summary (Admin only)
 app.get("/make-server-c2a25be0/bookkeeping/summary", async (c) => {
   try {
@@ -3274,6 +3314,7 @@ app.get("/make-server-c2a25be0/messages/:clientId/unread-count", async (c) => {
   }
 });
 
+<<<<<<< HEAD
 // Delete a message (Admin only)
 app.delete("/make-server-c2a25be0/messages/:clientId/:messageId", async (c) => {
   try {
@@ -3310,6 +3351,8 @@ app.delete("/make-server-c2a25be0/messages/:clientId/:messageId", async (c) => {
   }
 });
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 // Get all clients with unread messages (admin only)
 app.get("/make-server-c2a25be0/messages/admin/clients-with-unread", async (c) => {
   try {
@@ -3825,6 +3868,7 @@ app.get("/make-server-c2a25be0/payments/:taxYear/status", async (c) => {
   }
 });
 
+<<<<<<< HEAD
 // ========================================
 // KV STORE GENERIC ROUTES
 // ========================================
@@ -3942,4 +3986,9 @@ console.log('✅ [Main Server] Admin Confirm User routes mounted successfully');
 
 console.log('🚀 [Main Server] All routes mounted. Server is ready!');
 
+=======
+// Mount users routes
+app.route('/', usersApp);
+
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 Deno.serve(app.fetch);

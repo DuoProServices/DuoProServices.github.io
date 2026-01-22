@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -11,6 +12,21 @@ import { SEO } from '../components/SEO';
 import { toast } from "sonner";
 
 export default function SignupPage() {
+=======
+import { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate, Link } from "react-router-dom";
+import { useLanguage } from "../contexts/LanguageContext";
+import { SEO } from "../components/SEO";
+import { Card } from "../components/ui/card";
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
+import { Label } from "../components/ui/label";
+import { Alert, AlertDescription } from "../components/ui/alert";
+import { toast } from "sonner";
+
+export function SignupPage() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const { signUp, user } = useAuth();
   const navigate = useNavigate();
   const { t, language } = useLanguage();
@@ -42,6 +58,7 @@ export default function SignupPage() {
 
     try {
       console.log("Creating account for:", email, "with name:", name);
+<<<<<<< HEAD
       console.log("🔍 DEBUG: Calling signUp function...");
       await signUp(email, password, name);
       console.log("✅ Account created successfully, navigating to onboarding");
@@ -51,15 +68,30 @@ export default function SignupPage() {
       console.error("❌ Error message:", err.message);
       console.error("❌ Error type:", typeof err);
       console.error("❌ Full error object:", JSON.stringify(err, null, 2));
+=======
+      await signUp(email, password, name);
+      console.log("Account created successfully, navigating to onboarding");
+      navigate("/onboarding");
+    } catch (err: any) {
+      console.error("Signup error details:", err);
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       
       let errorMessage = err.message || "Failed to create account";
       
       // Handle specific error cases
       if (errorMessage === "EMAIL_CONFIRMATION_REQUIRED") {
+<<<<<<< HEAD
         console.error("⚠️ EMAIL_CONFIRMATION_REQUIRED detected - This should NOT happen!");
         console.error("⚠️ The server should auto-confirm emails!");
         // Redirect to email confirmation page instead of showing error
         navigate("/email-confirmation-required");
+=======
+        setError("");
+        toast.success(language === "fr"
+          ? "✅ Compte créé! Veuillez vérifier votre email pour confirmer votre compte avant de vous connecter."
+          : "✅ Account created! Please check your email to confirm your account before logging in.");
+        setLoading(false);
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
         return;
       }
       

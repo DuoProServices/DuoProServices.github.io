@@ -1,6 +1,10 @@
 import { Card } from '../ui/card';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+<<<<<<< HEAD
 import { formatCAD } from '@/app/config/pricing';
+=======
+import { formatCAD } from '../../config/pricing';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface MonthlyRevenueChartProps {
   data: Array<{

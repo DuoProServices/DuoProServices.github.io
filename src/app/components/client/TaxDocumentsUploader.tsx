@@ -8,10 +8,18 @@ import React, { useState } from 'react';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
 import { Upload, FileText, CheckCircle, AlertCircle, X, Loader2 } from 'lucide-react';
+<<<<<<< HEAD
 import { ParsedDocument } from '../../types/taxDocuments';
 import { toast } from 'sonner';
 import { supabase } from '../../utils/supabaseClient';
 import { API_ENDPOINTS } from '@/config/api';
+=======
+import { parseTaxDocument, parseMultipleDocuments } from '../../utils/taxDocumentParser';
+import { ParsedDocument } from '../../types/taxDocuments';
+import { toast } from 'sonner';
+import { supabase } from '../../utils/supabaseClient';
+import { API_ENDPOINTS } from '../../../config/api';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface TaxDocumentsUploaderProps {
   year: number;
@@ -41,6 +49,7 @@ export function TaxDocumentsUploader({
     toast.info(`Processing ${files.length} document(s)...`);
 
     try {
+<<<<<<< HEAD
       // Simply create parsed documents from files without OCR
       const parsed: ParsedDocument[] = files.map(file => ({
         id: Math.random().toString(36).substr(2, 9),
@@ -54,13 +63,31 @@ export function TaxDocumentsUploader({
       setParsedDocs(prev => [...prev, ...parsed]);
       
       toast.success(`Successfully added ${parsed.length} document(s)!`);
+=======
+      // Parse documents
+      const parsed = await parseMultipleDocuments(files);
+      setParsedDocs(prev => [...prev, ...parsed]);
+      
+      toast.success(`Successfully parsed ${parsed.length} document(s)!`);
+      
+      // Show warnings for low confidence docs
+      const needsReview = parsed.filter(d => d.needsReview);
+      if (needsReview.length > 0) {
+        toast.warning(`${needsReview.length} document(s) may need manual review`);
+      }
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
       if (onDocumentsUploaded) {
         onDocumentsUploaded(parsed);
       }
     } catch (error) {
+<<<<<<< HEAD
       console.error('Error processing documents:', error);
       toast.error('Failed to process some documents');
+=======
+      console.error('Error parsing documents:', error);
+      toast.error('Failed to parse some documents');
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     } finally {
       setUploading(false);
       setParsing(false);

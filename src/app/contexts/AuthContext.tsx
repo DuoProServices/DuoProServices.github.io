@@ -26,6 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // Check for existing session
+<<<<<<< HEAD
     let isMounted = true;
     
     const checkSession = async () => {
@@ -72,6 +73,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+=======
+    checkSession();
+  }, []);
+
+  const checkSession = async () => {
+    try {
+      const { data, error } = await supabase.auth.getSession();
+      
+      if (error) throw error;
+      
+      if (data.session && data.session.user) {
+        // Use Supabase user data directly instead of backend
+        setUser({
+          id: data.session.user.id,
+          email: data.session.user.email!,
+          name: data.session.user.user_metadata?.name || data.session.user.email!
+        });
+      }
+    } catch (error) {
+      console.error('Error checking session:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const signIn = useCallback(async (email: string, password: string) => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -96,6 +123,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signUp = useCallback(async (email: string, password: string, name: string) => {
     try {
+<<<<<<< HEAD
       console.log("🚀 [AuthContext] Starting signup process for:", email);
       
       const serverUrl = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/make-server-c2a25be0/auth/signup`;
@@ -189,6 +217,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.error('❌ [AuthContext] Sign up error:', error);
       console.error('❌ [AuthContext] Error message:', error.message);
       console.error('❌ [AuthContext] Error stack:', error.stack);
+=======
+      console.log("Starting signup process for:", email);
+      
+      // Use Supabase native signup with email confirmation disabled for testing
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name: name
+          },
+          // This tells Supabase we want to auto-confirm for development
+          emailRedirectTo: `${window.location.origin}/onboarding`
+        }
+      });
+
+      if (error) {
+        console.error("Signup error from Supabase:", error);
+        throw error;
+      }
+
+      console.log("Signup response:", data);
+
+      // Check if user was created and session exists
+      if (data.user && data.session) {
+        console.log("User created with active session - auto-confirmed");
+        setUser({
+          id: data.user.id,
+          email: data.user.email!,
+          name: data.user.user_metadata?.name || name
+        });
+      } else if (data.user && !data.session) {
+        // User created but needs email confirmation
+        console.warn("User created but email confirmation required");
+        throw new Error("EMAIL_CONFIRMATION_REQUIRED");
+      }
+
+      return data;
+    } catch (error: any) {
+      console.error('Sign up error:', error);
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       throw error;
     }
   }, []);

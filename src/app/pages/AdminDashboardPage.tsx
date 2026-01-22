@@ -1,10 +1,14 @@
+<<<<<<< HEAD
 import { RLSInstructions } from "../components/admin/RLSInstructions";
 import { BackendStatusChecker } from "../components/admin/BackendStatusChecker";
 import { isAdminEmail } from "../config/admins"; // ✅ Using centralized admin config
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { supabase } from "../utils/supabaseClient";
+<<<<<<< HEAD
 import { API_ENDPOINTS } from "@/config/api";
 import { toast } from "sonner";
 import { Card } from "../components/ui/card";
@@ -30,6 +34,45 @@ import { CreateBucketsButton } from "../components/admin/CreateBucketsButton";
 import { MagicSetupButton } from "../components/admin/MagicSetupButton";
 import { RLSPolicyHelper } from "../components/admin/RLSPolicyHelper";
 import { StorageDiagnostics } from "../components/admin/StorageDiagnostics";
+=======
+import { API_ENDPOINTS } from "../../config/api";
+import { Card } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { 
+  Users, 
+  Activity, 
+  TrendingUp, 
+  Clock, 
+  CheckCircle, 
+  ArrowRight, 
+  Loader2,
+  Upload,
+  Settings,
+  FileText,
+  Send
+} from "lucide-react";
+import { toast } from "sonner";
+import { FILING_STATUSES, getStatusConfig } from "../config/filingStatus";
+import { StorageDiagnostics } from "../components/admin/StorageDiagnostics";
+import { RLSPolicyHelper } from "../components/admin/RLSPolicyHelper";
+import { QuickDiagnosticButton } from "../components/admin/QuickDiagnosticButton";
+import { MagicSetupButton } from "../components/admin/MagicSetupButton";
+import { CreateBucketsButton } from "../components/admin/CreateBucketsButton";
+import { DebugClientsButton } from "../components/admin/DebugClientsButton";
+import { RLSInstructions } from "../components/admin/RLSInstructions";
+import { BackendStatusChecker } from "../components/admin/BackendStatusChecker";
+
+const isAdminEmail = (email: string | undefined) => {
+  if (!email) return false;
+  const adminEmails = [
+    'gabriel@blumconsultoria.ca', 
+    'admin@blumconsultoria.ca',
+    'veprass@gmail.com'  // Added Verônica as admin
+  ];
+  return adminEmails.includes(email.toLowerCase());
+};
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface Client {
   id: string;
@@ -47,7 +90,11 @@ interface StatusStats {
   clients: Client[];
 }
 
+<<<<<<< HEAD
 function AdminDashboardPage() {
+=======
+export function AdminDashboardPage() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const navigate = useNavigate();
   const { user } = useAuth();
   const [clients, setClients] = useState<Client[]>([]);
@@ -55,10 +102,13 @@ function AdminDashboardPage() {
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+<<<<<<< HEAD
   // ⚠️ DEMO MODE: Use sample data when backend is not available
   const DEMO_MODE = true; // Set to false when Edge Functions are deployed
   const STORAGE_KEY = 'admin-clients-demo';
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   useEffect(() => {
     console.log('🔍 AdminDashboard mounted, user:', user?.email);
     
@@ -76,6 +126,7 @@ function AdminDashboardPage() {
     setLoading(true);
     setError(null);
     try {
+<<<<<<< HEAD
       // ⚠️ DEMO MODE: Load REAL clients from Supabase
       if (DEMO_MODE) {
         console.log('📦 [AdminDashboard] Loading REAL clients from Supabase KV store...');
@@ -141,6 +192,8 @@ function AdminDashboardPage() {
       }
 
       // Backend mode - try to fetch from server
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       console.log('📡 Fetching session...');
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
       
@@ -473,6 +526,10 @@ function AdminDashboardPage() {
       </main>
     </div>
   );
+<<<<<<< HEAD
 }
 
 export default AdminDashboardPage;
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

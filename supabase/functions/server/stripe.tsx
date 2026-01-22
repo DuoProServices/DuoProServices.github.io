@@ -2,6 +2,7 @@ import Stripe from 'npm:stripe';
 
 const stripeSecretKey = Deno.env.get('STRIPE_SECRET_KEY');
 
+<<<<<<< HEAD
 // Check if we're in demo mode (invalid or missing Stripe key)
 const isDemoMode = !stripeSecretKey || 
   stripeSecretKey === 'Bondade2026!' || 
@@ -17,6 +18,14 @@ if (isDemoMode) {
 
 // Initialize Stripe only if we have a valid key
 const stripe = (!isDemoMode && stripeSecretKey)
+=======
+if (!stripeSecretKey) {
+  console.error('❌ STRIPE_SECRET_KEY environment variable is not set');
+}
+
+// Initialize Stripe
+const stripe = stripeSecretKey
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   ? new Stripe(stripeSecretKey, {
       // @ts-ignore - Using latest Stripe API version
       apiVersion: '2023-10-16',
@@ -24,6 +33,7 @@ const stripe = (!isDemoMode && stripeSecretKey)
   : null;
 
 /**
+<<<<<<< HEAD
  * Generic payment session creator (supports both demo and real mode)
  * This is the main function used by the payment endpoints
  */
@@ -120,6 +130,9 @@ export async function createPaymentSession(params: {
 /**
  * Creates a Stripe Checkout Session for initial payment ($50 CAD)
  * LEGACY WRAPPER - Use createPaymentSession instead
+=======
+ * Creates a Stripe Checkout Session for initial payment ($50 CAD)
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
  */
 export async function createInitialPaymentSession(
   userId: string,
@@ -127,6 +140,7 @@ export async function createInitialPaymentSession(
   taxYear: number,
   returnUrl: string
 ): Promise<{ sessionId: string; url: string }> {
+<<<<<<< HEAD
   console.log(`📞 createInitialPaymentSession called for user ${userId}, year ${taxYear}`);
   
   const result = await createPaymentSession({
@@ -152,17 +166,57 @@ export async function createInitialPaymentSession(
   return {
     sessionId: result.sessionId,
     url: result.url,
+=======
+  if (!stripe) {
+    throw new Error('Stripe is not configured');
+  }
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: [
+      {
+        price_data: {
+          currency: 'cad',
+          product_data: {
+            name: `Tax Filing ${taxYear} - Initial Deposit`,
+            description: 'Initial deposit to start your tax filing process',
+          },
+          unit_amount: 5000, // $50.00 CAD in cents
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: `${returnUrl}?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${returnUrl}?payment=cancelled`,
+    client_reference_id: userId,
+    metadata: {
+      userId,
+      taxYear: taxYear.toString(),
+      paymentType: 'initial',
+    },
+    customer_email: userEmail,
+  });
+
+  return {
+    sessionId: session.id,
+    url: session.url!,
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   };
 }
 
 /**
  * Creates a Stripe Checkout Session for final payment (remaining balance)
+<<<<<<< HEAD
  * LEGACY WRAPPER - Use createPaymentSession instead
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
  */
 export async function createFinalPaymentSession(
   userId: string,
   userEmail: string,
   taxYear: number,
+<<<<<<< HEAD
   finalAmount: number,
   returnUrl: string
 ): Promise<{ sessionId: string; url: string }> {
@@ -180,6 +234,48 @@ export async function createFinalPaymentSession(
   return {
     sessionId: result.sessionId,
     url: result.url,
+=======
+  finalAmount: number, // In CAD dollars (e.g., 149.00)
+  returnUrl: string
+): Promise<{ sessionId: string; url: string }> {
+  if (!stripe) {
+    throw new Error('Stripe is not configured');
+  }
+
+  // Convert to cents
+  const amountInCents = Math.round(finalAmount * 100);
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: [
+      {
+        price_data: {
+          currency: 'cad',
+          product_data: {
+            name: `Tax Filing ${taxYear} - Final Payment`,
+            description: `Final balance for your ${taxYear} tax return preparation`,
+          },
+          unit_amount: amountInCents,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: `${returnUrl}?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${returnUrl}?payment=cancelled`,
+    client_reference_id: userId,
+    metadata: {
+      userId,
+      taxYear: taxYear.toString(),
+      paymentType: 'final',
+    },
+    customer_email: userEmail,
+  });
+
+  return {
+    sessionId: session.id,
+    url: session.url!,
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   };
 }
 
@@ -187,6 +283,7 @@ export async function createFinalPaymentSession(
  * Retrieves a Stripe Checkout Session to verify payment
  */
 export async function getCheckoutSession(sessionId: string) {
+<<<<<<< HEAD
   // DEMO MODE: Return simulated session
   if (isDemoMode || sessionId.startsWith('demo_session_')) {
     console.log(`🎭 DEMO MODE: Returning simulated session data for ${sessionId}`);
@@ -204,6 +301,8 @@ export async function getCheckoutSession(sessionId: string) {
     };
   }
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   if (!stripe) {
     throw new Error('Stripe is not configured');
   }
@@ -260,4 +359,8 @@ export async function createRefund(
     refundId: refund.id,
     status: refund.status,
   };
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

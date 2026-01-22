@@ -11,7 +11,11 @@ import { FinancialKPIs } from '../components/admin/FinancialKPIs';
 import { MonthlyRevenueChart, ServiceTypeChart } from '../components/admin/RevenueCharts';
 import { ProvinceBreakdown } from '../components/admin/ProvinceBreakdown';
 import { TransactionTable } from '../components/admin/TransactionTable';
+<<<<<<< HEAD
 import { API_ENDPOINTS } from '@/config/api';
+=======
+import { API_ENDPOINTS } from '../../config/api';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface FinancialData {
   summary: {
@@ -54,7 +58,11 @@ interface FinancialData {
   };
 }
 
+<<<<<<< HEAD
 function AdminFinancialDashboard() {
+=======
+export function AdminFinancialDashboard() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const navigate = useNavigate();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -328,7 +336,11 @@ function AdminFinancialDashboard() {
       </main>
     </div>
   );
+<<<<<<< HEAD
 }
 
 // Add default export
 export default AdminFinancialDashboard;
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

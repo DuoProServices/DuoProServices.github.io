@@ -1,8 +1,13 @@
 import { Check, Info } from "lucide-react";
 import { useLanguage } from "../contexts/LanguageContext";
+<<<<<<< HEAD
 import { memo } from "react";
 
 export const Pricing = memo(function Pricing() {
+=======
+
+export function Pricing() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const { t, language } = useLanguage();
 
   const pricing = {
@@ -46,9 +51,15 @@ export const Pricing = memo(function Pricing() {
         complex: { min: 1000, max: 1500, desc: "Complex cases / audit" }
       },
       packages: {
+<<<<<<< HEAD
         personal: { price: { min: 80, max: 200 }, items: ["T1 filing", "NOA review"] },
         newcomer: { price: { min: 150, max: 350 }, items: ["First T1", "Foreign income", "Benefits application"] },
         selfEmployed: { price: { min: 250, max: 700 }, items: ["T1 filing", "T2125 business", "GST/HST returns"] }
+=======
+        personal: { price: { min: 150, max: 180 }, items: ["T1 filing", "NOA review"] },
+        newcomer: { price: { min: 280, max: 320 }, items: ["First T1", "Foreign income", "Benefits application"] },
+        selfEmployed: { price: { min: 500, max: 650 }, items: ["T1 filing", "T2125 business", "GST/HST returns"] }
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       }
     },
     fr: {
@@ -91,9 +102,60 @@ export const Pricing = memo(function Pricing() {
         complex: { min: 1000, max: 1500, desc: "Cas complexes / vérification" }
       },
       packages: {
+<<<<<<< HEAD
         personal: { price: { min: 80, max: 200 }, items: ["Déclaration T1", "Révision avis"] },
         newcomer: { price: { min: 150, max: 350 }, items: ["Premier T1", "Revenus étrangers", "Demande prestations"] },
         selfEmployed: { price: { min: 250, max: 700 }, items: ["Déclaration T1", "Entreprise T2125", "Déclarations TPS/TVH"] }
+=======
+        personal: { price: { min: 150, max: 180 }, items: ["Déclaration T1", "Révision avis"] },
+        newcomer: { price: { min: 280, max: 320 }, items: ["Premier T1", "Revenus étrangers", "Demande prestations"] },
+        selfEmployed: { price: { min: 500, max: 650 }, items: ["Déclaration T1", "Entreprise T2125", "Déclarations TPS/TVH"] }
+      }
+    },
+    pt: {
+      personal: {
+        simple: { min: 80, max: 120, desc: "T1 simples (apenas T4)" },
+        investments: { min: 150, max: 200, desc: "Com investimentos / ganhos de capital" },
+        rental: { min: 180, max: 250, desc: "Com renda de aluguel" },
+        complex: { min: 200, max: null, desc: "Múltiplos formulários / deduções complexas" }
+      },
+      newcomer: {
+        firstTime: { min: 150, max: 220, desc: "Primeiro declarante + residência fiscal" },
+        foreign: { min: 220, max: 300, desc: "Renda estrangeira + tratado" },
+        complete: { min: 250, max: 350, desc: "Pacote completo (GST/HST + CCB + renda estrangeira)" }
+      },
+      business: {
+        simple: { min: 250, max: 350, desc: "T2125 simples (poucas despesas)" },
+        withDeductions: { min: 400, max: 600, desc: "Com escritório em casa + otimização + GST/HST" },
+        withBookkeeping: { min: 600, max: 700, desc: "Com contabilidade básica + planejamento trimestral" }
+      },
+      gst: {
+        simple: { min: 80, max: 150, desc: "Declaração simples" },
+        reconciliation: { min: 150, max: 250, desc: "Com reconciliação e ajustes" }
+      },
+      compliance: {
+        review: { min: 120, max: 250, desc: "Revisão anos anteriores" },
+        noa: { min: 100, max: 180, desc: "Revisão aviso de avaliação" },
+        adjustment: { min: 80, max: 150, desc: "T1-ADJ (emenda) por ano" },
+        missing: { min: 200, max: 400, desc: "Formulários ausentes / revisão conformidade" }
+      },
+      planning: {
+        hourly: { min: 120, max: 200, desc: "Consulta por hora" },
+        annual: { min: 250, max: 500, desc: "Planejamento anual pessoal" },
+        retirement: { min: 400, max: 800, desc: "Planejamento aposentadoria / investimentos" }
+      },
+      representation: {
+        simple: { min: 150, max: 300, desc: "Resposta simples à CRA" },
+        reassessment: { min: 300, max: 600, desc: "Pedido de reavaliação" },
+        payment: { min: 200, max: 400, desc: "Acordo de pagamento" },
+        penalty: { min: 400, max: 800, desc: "Isenção de multas e juros" },
+        complex: { min: 1000, max: 1500, desc: "Casos complexos / auditoria" }
+      },
+      packages: {
+        personal: { price: { min: 150, max: 180 }, items: ["Declaração T1", "Revisão aviso"] },
+        newcomer: { price: { min: 280, max: 320 }, items: ["Primeiro T1", "Renda estrangeira", "Aplicação benefícios"] },
+        selfEmployed: { price: { min: 500, max: 650 }, items: ["Declaração T1", "Negócio T2125", "Declarações GST/HST"] }
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       }
     }
   };
@@ -159,6 +221,36 @@ export const Pricing = memo(function Pricing() {
       note: "Note Importante",
       noteText: "La plupart des professionnels utilisent un prix de base + frais supplémentaires selon la complexité. Tarification finale déterminée après consultation initiale.",
       cta: "Obtenir un Devis Gratuit"
+<<<<<<< HEAD
+=======
+    },
+    pt: {
+      section: "Preços",
+      title: "Preços Transparentes para Serviços Fiscais Canadenses",
+      description: "Preços claros e transparentes sem taxas ocultas. Preços baseados na complexidade e suas necessidades específicas.",
+      personal: "T1 – Declarações de Imposto Pessoais",
+      personalDesc: "Declaração de imposto individual",
+      newcomer: "Serviços Fiscais para Recém-Chegados",
+      newcomerDesc: "Suporte especializado para novos residentes",
+      business: "Pequena Empresa / Autônomo",
+      businessDesc: "Serviços fiscais T2125 e negócios",
+      gst: "Declarações GST / HST",
+      gstDesc: "Declaração de impostos sobre vendas",
+      compliance: "Conformidade e Revisão Fiscais",
+      complianceDesc: "Revisões e emendas",
+      planning: "Planejamento e Consultoria Fiscais",
+      planningDesc: "Consultoria fiscal estratégica",
+      representation: "Representação junto à CRA",
+      representationDesc: "Suporte profissional com a CRA",
+      packages: "Pacotes de Serviços Populares",
+      packagesDesc: "Serviços agrupados com ótimo valor",
+      personalPackage: "Pacote Imposto Pessoal",
+      newcomerPackage: "Pacote Recém-Chegados",
+      businessPackage: "Pacote Autônomo",
+      note: "Nota Importante",
+      noteText: "A maioria dos profissionais usa preço base + taxas adicionais baseadas na complexidade. Preço final determinado após consulta inicial.",
+      cta: "Obter Orçamento Gratuito"
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     }
   };
 
@@ -208,7 +300,11 @@ export const Pricing = memo(function Pricing() {
             <div className="bg-gradient-to-br from-green-50 to-white border-2 border-green-300 rounded-2xl p-6 transform scale-105 shadow-lg">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                 <span className="bg-green-600 text-white px-4 py-1 rounded-full text-sm">
+<<<<<<< HEAD
                   {language === 'en' ? 'Most Popular' : 'Le Plus Populaire'}
+=======
+                  {language === 'en' ? 'Most Popular' : language === 'fr' ? 'Le Plus Populaire' : 'Mais Popular'}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
                 </span>
               </div>
               <div className="text-center mb-6 mt-4">
@@ -387,4 +483,8 @@ export const Pricing = memo(function Pricing() {
       </div>
     </section>
   );
+<<<<<<< HEAD
 });
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

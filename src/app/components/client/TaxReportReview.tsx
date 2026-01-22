@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { downloadTaxReturnSummaryPDF } from '@/app/utils/taxReturnPdfGenerator';
 import { useState, useEffect } from 'react';
 import { FileText, Download, DollarSign, CheckCircle, XCircle, AlertCircle, Calendar, CreditCard, Loader2, FileCheck } from 'lucide-react';
@@ -9,6 +10,22 @@ import { supabase } from '@/app/utils/supabaseClient';
 import { API_ENDPOINTS } from '@/config/api';
 import { InvoiceBreakdown } from '../shared/InvoiceBreakdown';
 import { TaxReturnSummaryPreview } from '../shared/TaxReturnSummaryPreview';
+=======
+import { useState } from 'react';
+import { Card } from '../ui/card';
+import { Button } from '../ui/button';
+import { Textarea } from '../ui/textarea';
+import { Badge } from '../ui/badge';
+import { FileText, CheckCircle, XCircle, AlertCircle, Download, Loader2, FileCheck } from 'lucide-react';
+import { toast } from 'sonner';
+import { supabase } from '../../utils/supabaseClient';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { getPricingName } from '../../config/pricing';
+import { API_ENDPOINTS } from '../../../config/api';
+import { InvoiceBreakdown } from '../shared/InvoiceBreakdown';
+import { TaxReturnSummaryPreview } from '../shared/TaxReturnSummaryPreview';
+import { downloadTaxReturnSummaryPDF } from '../../utils/taxReturnPdfGenerator';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface TaxReportReviewProps {
   filing: any;

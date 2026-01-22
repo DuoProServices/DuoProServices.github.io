@@ -12,6 +12,7 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 const translations = {
   en: {
+<<<<<<< HEAD
     // Navigation
     "nav.home": "Home",
     "nav.services": "Services",
@@ -19,6 +20,8 @@ const translations = {
     "nav.contact": "Contact",
     "nav.login": "Client Portal",
     
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     // Header
     "header.about": "About",
     "header.services": "Services",
@@ -34,12 +37,18 @@ const translations = {
     // Hero
     "hero.badge": "Trusted Canadian Tax Professional",
     "hero.title": "Complete Financial & Tax Solutions for Canadians",
+<<<<<<< HEAD
     "hero.subtitle": "Expert services in tax preparation, bookkeeping, and financial reporting for individuals, newcomers, and small businesses across Canada. Your partner in financial compliance and growth.",
     "hero.description": "Expert services in tax preparation, bookkeeping, and financial reporting for individuals, newcomers, and small businesses across Canada. Your partner in financial compliance and growth.",
     "hero.cta": "Get Started Today",
     "hero.ctaPrimary": "Get Started Today",
     "hero.ctaSecondary": "View Services",
     "hero.learn": "Learn More",
+=======
+    "hero.description": "Expert services in tax preparation, bookkeeping, and financial reporting for individuals, newcomers, and small businesses across Canada. Your partner in financial compliance and growth.",
+    "hero.ctaPrimary": "Get Started Today",
+    "hero.ctaSecondary": "View Services",
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     "hero.expertiseLabel": "Expertise in",
     "hero.expertiseValue": "T1 Personal Returns",
     "hero.supportingLabel": "Supporting",
@@ -84,12 +93,15 @@ const translations = {
     "services.section": "Services",
     "services.title": "Comprehensive Financial Services for Every Need",
     "services.description": "From personal tax returns to full bookkeeping and financial reporting, we offer complete solutions designed to meet your Canadian financial obligations with accuracy and efficiency.",
+<<<<<<< HEAD
     "services.personal": "Personal Tax Returns",
     "services.personal.desc": "Complete tax preparation and filing for individuals and newcomers to Canada",
     "services.business": "Small Business Tax",
     "services.business.desc": "Comprehensive tax solutions for entrepreneurs and small business owners",
     "services.newcomer": "Newcomer Services",
     "services.newcomer.desc": "Specialized support for new immigrants navigating Canadian taxes for the first time",
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     
     // Main Service Areas
     "services.main1Title": "Personal Tax",
@@ -264,7 +276,10 @@ const translations = {
     "contact.nameLabel": "Full Name",
     "contact.emailLabel": "Email Address",
     "contact.phoneLabel": "Phone Number",
+<<<<<<< HEAD
     "contact.whatsappLabel": "WhatsApp",
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     "contact.subjectLabel": "Subject",
     "contact.messageLabel": "Message",
     "contact.namePlaceholder": "John Smith",
@@ -391,12 +406,15 @@ const translations = {
     "messages.sending": "Sending...",
     "messages.loadMore": "Load more messages",
 
+<<<<<<< HEAD
     // Client Portal Tabs
     "portal.documents": "Documents",
     "portal.payments": "Payments",
     "portal.messages": "Messages",
     "portal.status": "Status",
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     // Onboarding
     "onboarding.title": "Complete Your Profile",
     "onboarding.subtitle": "Let's get your account set up",
@@ -569,6 +587,7 @@ const translations = {
     "taxFiling.backToDashboard": "Back to Dashboard"
   },
   fr: {
+<<<<<<< HEAD
     // Navigation
     "nav.home": "Accueil",
     "nav.services": "Services",
@@ -576,6 +595,8 @@ const translations = {
     "nav.contact": "Contact",
     "nav.login": "Portail Client",
     
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     // Header
     "header.about": "À propos",
     "header.services": "Services",
@@ -591,12 +612,18 @@ const translations = {
     // Hero
     "hero.badge": "Fiscaliste Canadien de Confiance",
     "hero.title": "Solutions Financières et Fiscales Complètes pour les Canadiens",
+<<<<<<< HEAD
     "hero.subtitle": "Services experts en préparation fiscale, comptabilité et rapports financiers pour particuliers, nouveaux arrivants et petites entreprises partout au Canada. Votre partenaire en conformité financière et croissance.",
     "hero.description": "Services experts en préparation fiscale, comptabilité et rapports financiers pour particuliers, nouveaux arrivants et petites entreprises partout au Canada. Votre partenaire en conformité financière et croissance.",
     "hero.cta": "Commencer Aujourd'hui",
     "hero.ctaPrimary": "Commencer Aujourd'hui",
     "hero.ctaSecondary": "Voir les Services",
     "hero.learn": "En Savoir Plus",
+=======
+    "hero.description": "Services experts en préparation fiscale, comptabilité et rapports financiers pour particuliers, nouveaux arrivants et petites entreprises partout au Canada. Votre partenaire en conformité financière et croissance.",
+    "hero.ctaPrimary": "Commencer Aujourd'hui",
+    "hero.ctaSecondary": "Voir les Services",
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     "hero.expertiseLabel": "Expertise en",
     "hero.expertiseValue": "Déclarations T1 Personnelles",
     "hero.supportingLabel": "Soutien aux",
@@ -641,12 +668,15 @@ const translations = {
     "services.section": "Services",
     "services.title": "Services Financiers Complets pour Tous les Besoins",
     "services.description": "Des déclarations fiscales personnelles à la comptabilité complète et aux rapports financiers, nous offrons des solutions complètes conçues pour répondre à vos obligations financières canadiennes avec précision et efficacité.",
+<<<<<<< HEAD
     "services.personal": "Déclarations d'Impôt Personnel",
     "services.personal.desc": "Préparation et production complètes de déclarations fiscales pour particuliers et nouveaux arrivants au Canada",
     "services.business": "Impôt des Petites Entreprises",
     "services.business.desc": "Solutions fiscales complètes pour entrepreneurs et propriétaires de petites entreprises",
     "services.newcomer": "Services pour Nouveaux Arrivants",
     "services.newcomer.desc": "Soutien spécialisé pour les nouveaux immigrants qui naviguent le système fiscal canadien pour la première fois",
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     
     // Main Service Areas
     "services.main1Title": "Impôt Personnel",
@@ -821,7 +851,10 @@ const translations = {
     "contact.nameLabel": "Nom Complet",
     "contact.emailLabel": "Adresse Email",
     "contact.phoneLabel": "Numéro de Téléphone",
+<<<<<<< HEAD
     "contact.whatsappLabel": "WhatsApp",
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     "contact.subjectLabel": "Sujet",
     "contact.messageLabel": "Message",
     "contact.namePlaceholder": "Jean Dupont",
@@ -948,12 +981,15 @@ const translations = {
     "messages.sending": "Envoi...",
     "messages.loadMore": "Charger plus de messages",
 
+<<<<<<< HEAD
     // Client Portal Tabs
     "portal.documents": "Documents",
     "portal.payments": "Paiements",
     "portal.messages": "Messages",
     "portal.status": "Statut",
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     // Onboarding
     "onboarding.title": "Complétez Votre Profil",
     "onboarding.subtitle": "Configurons votre compte",

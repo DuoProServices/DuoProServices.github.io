@@ -1,6 +1,11 @@
 import { Shield, Award, Heart, CheckCircle, Linkedin } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useLanguage } from "../contexts/LanguageContext";
+<<<<<<< HEAD
+=======
+import germanaPhoto from "figma:asset/e4c3a636df96c7bf05cc4388c6a72015c2d492dc.png";
+import veronicaPhoto from "figma:asset/8db36df8f7886ea6b6b7099cc4cb54e06504814c.png";
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 export function About() {
   const { t } = useLanguage();
@@ -26,11 +31,25 @@ export function About() {
   const team = [
     {
       name: t("about.team1Name"),
+<<<<<<< HEAD
       linkedin: "https://www.linkedin.com/in/veronicaprass"
     },
     {
       name: t("about.team2Name"),
       linkedin: "https://www.linkedin.com/in/germana-azevedo-a62ab832/"
+=======
+      title: t("about.team1Title"),
+      bio: t("about.team1Bio"),
+      linkedin: "https://www.linkedin.com/in/veronicaprass",
+      image: veronicaPhoto
+    },
+    {
+      name: t("about.team2Name"),
+      title: t("about.team2Title"),
+      bio: t("about.team2Bio"),
+      linkedin: "https://www.linkedin.com/in/germana-azevedo-a62ab832/",
+      image: germanaPhoto
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     }
   ];
 
@@ -102,6 +121,7 @@ export function About() {
             <h2 className="text-4xl text-slate-900">{t("about.teamTitle")}</h2>
           </div>
 
+<<<<<<< HEAD
           <div className="flex flex-wrap justify-center gap-6 max-w-2xl mx-auto">
             {team.map((member) => (
               <a
@@ -114,6 +134,33 @@ export function About() {
                 <Linkedin className="w-6 h-6 text-blue-600 group-hover:text-blue-700" />
                 <span className="text-lg text-slate-900 group-hover:text-blue-700">{member.name}</span>
               </a>
+=======
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {team.map((member) => (
+              <div key={member.name} className="bg-slate-50 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                <div className="aspect-[4/5] overflow-hidden">
+                  <ImageWithFallback
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl text-slate-900 mb-1">{member.name}</h3>
+                  <p className="text-blue-600 mb-3">{member.title}</p>
+                  <p className="text-slate-600 mb-4">{member.bio}</p>
+                  <a
+                    href={member.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
+                  >
+                    <Linkedin className="w-5 h-5" />
+                    <span>{t("about.viewLinkedIn")}</span>
+                  </a>
+                </div>
+              </div>
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
             ))}
           </div>
         </div>

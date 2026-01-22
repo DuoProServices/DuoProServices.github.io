@@ -4,7 +4,11 @@ import { Card } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { AlertCircle, Home, RefreshCw } from "lucide-react";
 
+<<<<<<< HEAD
 function ErrorBoundaryPage() {
+=======
+export function ErrorBoundaryPage() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
@@ -66,5 +70,8 @@ function ErrorBoundaryPage() {
     </div>
   );
 }
+<<<<<<< HEAD
 
 export default ErrorBoundaryPage;
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

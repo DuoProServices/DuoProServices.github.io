@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Loader2, CheckCircle, XCircle } from 'lucide-react';
 import { toast } from 'sonner';
+<<<<<<< HEAD
 import { projectId } from '/utils/supabase/info';
+=======
+import { projectId } from '../../../../utils/supabase/info';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { supabase } from '../../utils/supabaseClient';
 import { Button } from '../ui/button';
 

@@ -374,5 +374,8 @@ export function MarketingGuide() {
     </div>
   );
 }
+<<<<<<< HEAD
 
 export default MarketingGuide;
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

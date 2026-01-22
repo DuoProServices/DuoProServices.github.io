@@ -12,7 +12,11 @@ import { Textarea } from '../ui/textarea';
 import { Card } from '../ui/card';
 import { DollarSign, TrendingUp, TrendingDown, Gift, FileText } from 'lucide-react';
 import { TaxReturnSummary } from '../../types/taxFiling';
+<<<<<<< HEAD
 import { formatCAD } from '@/app/config/pricing';
+=======
+import { formatCAD } from '../../config/pricing';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface TaxReturnSummaryFormProps {
   initialData?: TaxReturnSummary;

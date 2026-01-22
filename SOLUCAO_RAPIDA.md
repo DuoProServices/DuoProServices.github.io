@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ⚡ SOLUÇÃO RÁPIDA - COPIAR & COLAR
 
 ## 🎯 O que você precisa fazer AGORA
@@ -25,10 +26,38 @@ npm install -g supabase
 supabase login
 supabase link --project-ref pwlacumydrxvshklvttp
 supabase functions deploy make-server-c2a25be0
+=======
+# ⚡ SOLUÇÃO RÁPIDA - 3 MINUTOS
+
+## ✅ **JÁ CORRIGI OS ERROS NO CÓDIGO!**
+
+### **Corrigido:**
+1. ✅ "Database is not defined" → Import adicionado
+2. ✅ Arquivo `.edge-config.json` criado para resolver JWT
+
+---
+
+## 🚀 **VOCÊ SÓ PRECISA FAZER REDEPLOY:**
+
+### **🪟 Windows (PowerShell):**
+```powershell
+.\deploy-agora.ps1
+```
+
+### **🍎 Mac/Linux (Terminal):**
+```bash
+./deploy-agora.sh
+```
+
+### **💻 Ou manualmente:**
+```bash
+supabase functions deploy server --project-ref lqpmyvizjfwzddxspacv --no-verify-jwt
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 ```
 
 ---
 
+<<<<<<< HEAD
 ## 📍 OPÇÃO 2: Copiar Manualmente
 
 Se o script não funcionar, execute estes comandos:
@@ -131,3 +160,25 @@ supabase functions deploy make-server-c2a25be0
 ```
 
 **Pronto!** 🚀
+=======
+## ✅ **DEPOIS:**
+
+1. **Limpe cache:** `Ctrl+Shift+Delete` (marque "Cached images")
+2. **Force reload:** `Ctrl+Shift+R`
+3. **Faça login**
+4. **✅ PRONTO!** Todos os erros corrigidos!
+
+---
+
+## 🧪 **TESTE:**
+
+Abra: https://lqpmyvizjfwzddxspacv.supabase.co/functions/v1/make-server-c2a25be0/health
+
+Deve retornar: `{"status":"ok"}`
+
+---
+
+**TEMPO: 3 minutos** ⏱️
+
+**Mais detalhes:** Leia `CORRECAO_ERROS_URGENTE.md`
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8

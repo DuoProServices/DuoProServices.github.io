@@ -4,7 +4,11 @@ import { Card } from '../ui/card';
 import { FolderPlus, Loader2, CheckCircle, AlertCircle, Database } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '../../utils/supabaseClient';
+<<<<<<< HEAD
 import { API_ENDPOINTS } from '@/config/api';
+=======
+import { API_ENDPOINTS } from '../../../config/api';
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 interface BucketResult {
   bucket: string;

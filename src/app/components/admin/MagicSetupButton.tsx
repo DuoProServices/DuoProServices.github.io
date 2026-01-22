@@ -5,7 +5,11 @@ import { Sparkles, Copy, CheckCircle, AlertCircle, Loader2, ExternalLink } from 
 import { toast } from "sonner";
 import { supabase } from "../../utils/supabaseClient";
 import { safeCopyToClipboard } from "../../utils/clipboard";
+<<<<<<< HEAD
 import { API_ENDPOINTS } from "@/config/api";
+=======
+import { API_ENDPOINTS } from "../../../config/api";
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 
 export function MagicSetupButton() {
   const [loading, setLoading] = useState(false);

@@ -1,15 +1,25 @@
+<<<<<<< HEAD
 import { Mail, Phone, MapPin, Clock, Send, Calendar, MessageCircle } from "lucide-react";
+=======
+import { useState } from "react";
+import { Mail, Phone, MapPin, Clock, Send, Calendar } from "lucide-react";
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
 import { useLanguage } from "../contexts/LanguageContext";
 import { toast } from "sonner";
+<<<<<<< HEAD
 import { API_ENDPOINTS } from "@/config/api";
 import { memo, useState } from "react";
 import { publicAnonKey } from "/utils/supabase/info";
 
 export const Contact = memo(function Contact() {
+=======
+
+export function Contact() {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const { t, language } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
@@ -20,16 +30,20 @@ export const Contact = memo(function Contact() {
   });
   const [submitting, setSubmitting] = useState(false);
 
+<<<<<<< HEAD
   // Toggle between Formspree (false) and Backend (true)
   // Formspree ativo até fazer deploy das Edge Functions no Supabase
   // Para ativar o backend: deploy Edge Functions + adicionar RESEND_API_KEY
   const USE_BACKEND_EMAIL = false; // ⚠️ Usando Formspree temporariamente (já funciona!)
 
+=======
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
 
     try {
+<<<<<<< HEAD
       console.log('📧 [Contact Form] Submitting form data:', {
         name: formData.name,
         email: formData.email,
@@ -69,6 +83,17 @@ export const Contact = memo(function Contact() {
         const responseData = await response.json();
         console.log('✅ [Contact Form] Success! Response:', responseData);
         
+=======
+      const response = await fetch("https://formspree.io/f/duoproservices.info@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
         const messages = {
           en: "Thank you for your inquiry! We'll get back to you soon.",
           fr: "Merci pour votre demande! Nous vous répondrons bientôt.",
@@ -77,6 +102,7 @@ export const Contact = memo(function Contact() {
         toast.success(messages[language]);
         setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
       } else {
+<<<<<<< HEAD
         const errorText = await response.text();
         console.error('❌ [Contact Form] Failed:', response.status, errorText);
         throw new Error(`Failed to send message: ${response.status}`);
@@ -87,6 +113,15 @@ export const Contact = memo(function Contact() {
         en: "Failed to send message. Please try again or email us directly at duopro@duoproservices.ca",
         fr: "Échec de l'envoi du message. Veuillez réessayer ou nous envoyer un e-mail directement à duopro@duoproservices.ca",
         pt: "Falha ao enviar mensagem. Tente novamente ou envie-nos um e-mail diretamente para duopro@duoproservices.ca"
+=======
+        throw new Error("Failed to send message");
+      }
+    } catch (error) {
+      const errorMessages = {
+        en: "Failed to send message. Please try again or email us directly.",
+        fr: "Échec de l'envoi du message. Veuillez réessayer ou nous envoyer un e-mail directement.",
+        pt: "Falha ao enviar mensagem. Tente novamente ou envie-nos um e-mail diretamente."
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       };
       toast.error(errorMessages[language]);
     } finally {
@@ -105,12 +140,18 @@ export const Contact = memo(function Contact() {
     {
       icon: Mail,
       labelKey: "contact.emailLabel",
+<<<<<<< HEAD
       value: "duopro@duoproservices.ca",
       link: "mailto:duopro@duoproservices.ca"
+=======
+      value: "duproservices@gmail.com",
+      link: "mailto:info@taxservices.ca"
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     },
     {
       icon: Phone,
       labelKey: "contact.phoneLabel",
+<<<<<<< HEAD
       value: "+514 562 7838",
       link: "tel:+15145627838"
     },
@@ -119,17 +160,29 @@ export const Contact = memo(function Contact() {
       labelKey: "contact.whatsappLabel",
       value: "+1 579 421 1620",
       link: "https://wa.me/15794211620"
+=======
+      value: "(555) 123-4567",
+      link: "tel:+15551234567"
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
     },
     {
       icon: MapPin,
       labelKey: "contact.locationLabel",
+<<<<<<< HEAD
       value: "Serving clients across Canada",
+=======
+      valueKey: "contact.locationValue",
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       link: null
     },
     {
       icon: Clock,
       labelKey: "contact.hoursLabel",
+<<<<<<< HEAD
       value: "Mon-Fri: 9am-6pm EST",
+=======
+      valueKey: "contact.hoursValue",
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
       link: null
     }
   ];
@@ -153,6 +206,7 @@ export const Contact = memo(function Contact() {
             <div>
               <h3 className="text-2xl text-slate-900 mb-6">{t("contact.infoTitle")}</h3>
               <div className="space-y-6">
+<<<<<<< HEAD
                 {contactInfo.map((item) => {
                   const isWhatsApp = item.labelKey === "contact.whatsappLabel";
                   const bgColor = isWhatsApp ? "bg-green-100" : "bg-blue-100";
@@ -182,6 +236,28 @@ export const Contact = memo(function Contact() {
                     </div>
                   );
                 })}
+=======
+                {contactInfo.map((item) => (
+                  <div key={item.labelKey} className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <item.icon className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <div className="text-sm text-slate-500 mb-1">{t(item.labelKey)}</div>
+                      {item.link ? (
+                        <a 
+                          href={item.link}
+                          className="text-slate-900 hover:text-blue-600 transition-colors"
+                        >
+                          {item.value}
+                        </a>
+                      ) : (
+                        <div className="text-slate-900">{item.valueKey ? t(item.valueKey) : item.value}</div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
               </div>
             </div>
 
@@ -326,4 +402,8 @@ export const Contact = memo(function Contact() {
       </div>
     </section>
   );
+<<<<<<< HEAD
 });
+=======
+}
+>>>>>>> 4611dd44203dcbfb0e686683575a9f9bd31460a8
