@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔬 Diagnose & Fix Login - DuoPro Services</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 900px;
+      width: 100%;
+    }
+    h1 { color: #333; margin-bottom: 10px; font-size: 28px; }
+    .subtitle { color: #666; margin-bottom: 30px; font-size: 14px; }
+    .info-box {
+      background: #ede9fe;
+      border: 2px solid #7c3aed;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .info-box strong { color: #5b21b6; }
+    .info-box ol { margin-left: 20px; margin-top: 10px; }
+    .info-box li { margin-bottom: 5px; }
+    .btn {
+      background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-bottom: 10px;
+    }
+    .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #7c3aed;
+    }
+    .log {
+      background: #1e1e1e;
+      color: #00ff00;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      max-height: 500px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      display: none;
+    }
+    .log.show { display: block; }
+    .log-line { margin-bottom: 5px; }
+    .success { color: #00ff00; }
+    .error { color: #ff4444; }
+    .info { color: #00aaff; }
+    .warning { color: #ffaa00; }
+    .highlight { color: #ffff00; font-weight: bold; }
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+    small { color: #666; display: block; margin-bottom: 15px; }
+    .user-card {
+      background: #f8f9fa;
+      border-left: 4px solid #7c3aed;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+    .user-card strong { display: block; margin-bottom: 5px; }
+    .user-card .detail { font-size: 12px; color: #666; margin-left: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔬 Diagnose & Fix Login</h1>
+    <p class="subtitle">DuoPro Services - Deep Diagnosis & Repair Tool</p>
+    
+    <div class="info-box">
+      <strong>🎯 THIS TOOL WILL:</strong>
+      <ol>
+        <li>CHECK if admin users exist in Supabase Auth</li>
+        <li>VERIFY email confirmation status</li>
+        <li>TEST login with current credentials</li>
+        <li>SHOW exact error messages from Supabase</li>
+        <li>FIX any issues found</li>
+      </ol>
+    </div>
+
+    <div>
+      <label>🔑 Supabase Service Role Key:</label>
+      <input type="password" id="serviceKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." />
+      <small>Get it from: https://supabase.com/dashboard/project/lqpmyvizjfwzddxspacv/settings/api</small>
+    </div>
+
+    <button class="btn" id="diagnoseBtn" onclick="diagnose()">🔬 Step 1: Diagnose Problem</button>
+    <button class="btn" id="fixBtn" onclick="fullFix()" style="display:none; background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);">🔧 Step 2: Fix Everything</button>
+    
+    <div class="log" id="log"></div>
+  </div>
+  
+  <script>
+    const SUPABASE_URL = 'https://lqpmyvizjfwzddxspacv.supabase.co';
+    const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxcG15dml6amZ3emRkeHNwYWN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYxNjY5NTgsImV4cCI6MjA4MTc0Mjk1OH0.h1tslLVJ3gD2rIjcM6f7NaVQn3s4BAZM1YdPFlAjT_U';
+    
+    const admins = [
+      { email: 'veprass@gmail.com', password: 'Admin@2026!', name: 'Veronica Prass' },
+      { email: 'germana.canada@gmail.com', password: 'Admin@2026!', name: 'Germana Canada' },
+      { email: 'jamila.coura15@gmail.com', password: 'Admin@2026!', name: 'Jamila Coura' }
+    ];
+    
+    let diagnosisResults = [];
+    
+    function log(message, type = 'info') {
+      const logEl = document.getElementById('log');
+      logEl.classList.add('show');
+      const line = document.createElement('div');
+      line.className = 'log-line ' + type;
+      line.textContent = '[' + new Date().toLocaleTimeString() + '] ' + message;
+      logEl.appendChild(line);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+    
+    async function diagnose() {
+      const serviceKey = document.getElementById('serviceKey').value.trim();
+      
+      if (!serviceKey) {
+        alert('❌ Please enter the Service Role Key!');
+        return;
+      }
+      
+      const btn = document.getElementById('diagnoseBtn');
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Diagnosing...<span class="spinner"></span>';
+      
+      document.getElementById('log').innerHTML = '';
+      diagnosisResults = [];
+      
+      log('═══════════════════════════════════════════════════════', 'info');
+      log('🔬 STARTING DEEP DIAGNOSIS', 'highlight');
+      log('═══════════════════════════════════════════════════════', 'info');
+      log('', 'info');
+      
+      // STEP 1: List all users
+      log('📋 STEP 1: Listing ALL users in Supabase Auth...', 'warning');
+      
+      try {
+        const listResponse = await fetch(SUPABASE_URL + '/auth/v1/admin/users', {
+          headers: {
+            'Authorization': 'Bearer ' + serviceKey,
+            'apikey': serviceKey
+          }
+        });
+        
+        if (!listResponse.ok) {
+          throw new Error('Failed to list users: HTTP ' + listResponse.status);
+        }
+        
+        const usersData = await listResponse.json();
+        log('✅ Successfully connected to Supabase Auth', 'success');
+        log('📊 Total users in database: ' + (usersData.users?.length || 0), 'info');
+        log('', 'info');
+        
+        // STEP 2: Check each admin
+        log('👥 STEP 2: Checking each admin account...', 'warning');
+        log('', 'info');
+        
+        for (const admin of admins) {
+          log('──────────────────────────────────────────────────────', 'info');
+          log('🔍 Checking: ' + admin.email, 'highlight');
+          
+          const user = usersData.users?.find(u => u.email === admin.email);
+          
+          if (!user) {
+            log('   ❌ USER NOT FOUND in database!', 'error');
+            diagnosisResults.push({ email: admin.email, status: 'missing', issue: 'User does not exist' });
+            continue;
+          }
+          
+          log('   ✅ User found!', 'success');
+          log('   📝 User ID: ' + user.id, 'info');
+          log('   📧 Email: ' + user.email, 'info');
+          log('   ✉️  Email Confirmed: ' + (user.email_confirmed_at ? 'YES ✅' : 'NO ❌'), user.email_confirmed_at ? 'success' : 'error');
+          log('   📅 Created: ' + new Date(user.created_at).toLocaleString(), 'info');
+          log('   🔄 Last Sign In: ' + (user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleString() : 'Never'), user.last_sign_in_at ? 'info' : 'warning');
+          log('   👤 Name in metadata: ' + (user.user_metadata?.name || 'Not set'), 'info');
+          
+          // STEP 3: Test login
+          log('   🔐 Testing login...', 'warning');
+          
+          try {
+            const loginResponse = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+              method: 'POST',
+              headers: {
+                'apikey': ANON_KEY,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                email: admin.email,
+                password: admin.password
+              })
+            });
+            
+            if (loginResponse.ok) {
+              const loginData = await loginResponse.json();
+              log('   ✅ LOGIN SUCCESS!', 'success');
+              log('   🎟️  Access token: ' + loginData.access_token.substring(0, 30) + '...', 'success');
+              diagnosisResults.push({ email: admin.email, status: 'ok', issue: null, userId: user.id });
+            } else {
+              const errorData = await loginResponse.json();
+              log('   ❌ LOGIN FAILED!', 'error');
+              log('   📛 Error: ' + (errorData.error_description || errorData.error || errorData.message || 'Unknown'), 'error');
+              log('   🔍 Error Code: ' + (errorData.error || 'none'), 'error');
+              log('   📄 Full error: ' + JSON.stringify(errorData), 'error');
+              
+              const issue = !user.email_confirmed_at ? 'Email not confirmed' : 'Invalid credentials';
+              diagnosisResults.push({ 
+                email: admin.email, 
+                status: 'login_failed', 
+                issue: issue,
+                userId: user.id,
+                errorDetails: errorData
+              });
+            }
+          } catch (loginError) {
+            log('   ❌ Login test error: ' + loginError.message, 'error');
+            diagnosisResults.push({ email: admin.email, status: 'login_error', issue: loginError.message, userId: user.id });
+          }
+          
+          log('', 'info');
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+        
+      } catch (error) {
+        log('❌ CRITICAL ERROR: ' + error.message, 'error');
+        log('   Make sure the Service Role Key is correct!', 'warning');
+        btn.disabled = false;
+        btn.innerHTML = '🔬 Step 1: Diagnose Problem';
+        return;
+      }
+      
+      // SUMMARY
+      log('═══════════════════════════════════════════════════════', 'info');
+      log('📊 DIAGNOSIS SUMMARY:', 'highlight');
+      log('═══════════════════════════════════════════════════════', 'info');
+      
+      const okCount = diagnosisResults.filter(r => r.status === 'ok').length;
+      const failedCount = diagnosisResults.filter(r => r.status !== 'ok').length;
+      
+      log('✅ Working accounts: ' + okCount + '/3', okCount === 3 ? 'success' : 'warning');
+      log('❌ Accounts with issues: ' + failedCount + '/3', failedCount > 0 ? 'error' : 'success');
+      log('', 'info');
+      
+      if (failedCount > 0) {
+        log('🔧 ISSUES FOUND:', 'warning');
+        diagnosisResults.filter(r => r.status !== 'ok').forEach(r => {
+          log('   • ' + r.email + ': ' + r.issue, 'error');
+        });
+        log('', 'info');
+        log('💡 RECOMMENDATION: Click "Step 2: Fix Everything" below', 'highlight');
+        document.getElementById('fixBtn').style.display = 'block';
+      } else {
+        log('🎉 ALL ACCOUNTS ARE WORKING!', 'success');
+        log('   You should be able to login now.', 'success');
+      }
+      
+      btn.disabled = false;
+      btn.innerHTML = okCount === 3 ? '✅ Diagnosis Complete - All OK!' : '⚠️ Diagnosis Complete - Issues Found';
+    }
+    
+    async function fullFix() {
+      const serviceKey = document.getElementById('serviceKey').value.trim();
+      
+      if (!serviceKey) {
+        alert('❌ Please enter the Service Role Key!');
+        return;
+      }
+      
+      const btn = document.getElementById('fixBtn');
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Fixing...<span class="spinner"></span>';
+      
+      log('', 'info');
+      log('═══════════════════════════════════════════════════════', 'info');
+      log('🔧 STARTING COMPLETE FIX', 'highlight');
+      log('═══════════════════════════════════════════════════════', 'info');
+      log('', 'info');
+      
+      let fixedCount = 0;
+      
+      for (const result of diagnosisResults) {
+        if (result.status === 'ok') {
+          log('✅ Skipping ' + result.email + ' (already working)', 'success');
+          continue;
+        }
+        
+        log('🔧 Fixing: ' + result.email, 'warning');
+        
+        try {
+          // Delete user
+          if (result.userId) {
+            log('   🗑️  Deleting old user...', 'info');
+            await fetch(SUPABASE_URL + '/auth/v1/admin/users/' + result.userId, {
+              method: 'DELETE',
+              headers: {
+                'Authorization': 'Bearer ' + serviceKey,
+                'apikey': serviceKey
+              }
+            });
+            log('   ✅ Deleted', 'success');
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
+          
+          // Create new user
+          log('   ✨ Creating new user with confirmed email...', 'info');
+          const admin = admins.find(a => a.email === result.email);
+          
+          const createResponse = await fetch(SUPABASE_URL + '/auth/v1/admin/users', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + serviceKey,
+              'apikey': serviceKey,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              email: admin.email,
+              password: admin.password,
+              email_confirm: true,
+              user_metadata: { name: admin.name }
+            })
+          });
+          
+          if (!createResponse.ok) {
+            const errorData = await createResponse.json();
+            throw new Error(errorData.msg || errorData.message || 'Failed to create user');
+          }
+          
+          const userData = await createResponse.json();
+          log('   ✅ Created new user (ID: ' + userData.id + ')', 'success');
+          
+          // Test login
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          log('   🔐 Testing login...', 'info');
+          
+          const loginResponse = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+            method: 'POST',
+            headers: {
+              'apikey': ANON_KEY,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              email: admin.email,
+              password: admin.password
+            })
+          });
+          
+          if (loginResponse.ok) {
+            log('   ✅ LOGIN WORKS!', 'success');
+            fixedCount++;
+          } else {
+            const errorData = await loginResponse.json();
+            log('   ❌ Login still fails: ' + (errorData.error_description || 'Unknown'), 'error');
+          }
+          
+        } catch (error) {
+          log('   ❌ Fix failed: ' + error.message, 'error');
+        }
+        
+        log('', 'info');
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+      
+      log('═══════════════════════════════════════════════════════', 'info');
+      log('📊 FIX COMPLETE!', 'highlight');
+      log('   Fixed: ' + fixedCount + ' account(s)', fixedCount > 0 ? 'success' : 'warning');
+      log('═══════════════════════════════════════════════════════', 'info');
+      
+      if (fixedCount > 0) {
+        log('', 'info');
+        log('🎉 You can now try logging in to your app!', 'success');
+      }
+      
+      btn.disabled = false;
+      btn.innerHTML = fixedCount > 0 ? '✅ Fix Complete!' : '❌ Fix Failed';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { LanguageProvider } from './contexts/LanguageContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { Toaster } from 'sonner';
+
+// Import all pages
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import DashboardPage from './pages/DashboardPage';
+import AdminPage from './pages/AdminPage';
+import OnboardingPage from './pages/OnboardingPageNew';
+import AuthDebugPage from './pages/AuthDebugPage';
+import OnboardingSuccessPage from './pages/OnboardingSuccessPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
+import SimpleDashboardPage from './pages/SimpleDashboardPage';
+import TaxFilingDetailPage from './pages/TaxFilingDetailPage';
+import AdminHubPage from './pages/AdminHubPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
+import AdminClientsPage from './pages/AdminClientsPage';
+import AdminClientDetailPage from './pages/AdminClientDetailPage';
+import AdminUsersPage from './pages/AdminUsersPage';
+import AdminUsersListPage from './pages/AdminUsersListPage';
+import AdminFinancialDashboard from './pages/AdminFinancialDashboard';
+import AdminBookkeepingDashboard from './pages/AdminBookkeepingDashboard';
+import AdminInvoicesPage from './pages/AdminInvoicesPage';
+import AdminPaymentSetupPage from './pages/AdminPaymentSetupPage';
+import ClientInvoicesPage from './pages/ClientInvoicesPage';
+import ContentCalendarDashboard from './pages/ContentCalendarDashboard';
+import ErrorBoundaryPage from './pages/ErrorBoundaryPage';
+import AdminControlPanelPage from './pages/AdminControlPanelPage';
+import AdminMarketingDashboard from './pages/AdminMarketingDashboard';
+import AdminProductivityDashboard from './pages/AdminProductivityDashboard';
+import AdminTeamActivityPage from './pages/AdminTeamActivityPage';
+
+export default function App() {
+  return (
+    <HelmetProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <BrowserRouter
+            basename="/"
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
+            <Helmet>
+              <title>DuoPro Services - Canadian Tax Services | Personal & Small Business Tax Returns</title>
+              <meta name="description" content="Professional Canadian tax services for individuals, newcomers, and small businesses. Expert personal and small business tax returns in English and French." />
+              <meta name="keywords" content="Canadian tax, tax return, personal tax, small business tax, newcomer tax, tax services Canada, fiscaliste Canada" />
+              <link rel="canonical" href="https://duoproservices.ca" />
+              
+              {/* Open Graph */}
+              <meta property="og:title" content="DuoPro Services - Canadian Tax Services" />
+              <meta property="og:description" content="Professional Canadian tax services for individuals, newcomers, and small businesses." />
+              <meta property="og:type" content="website" />
+              <meta property="og:url" content="https://duoproservices.ca" />
+              
+              {/* Twitter Card */}
+              <meta name="twitter:card" content="summary_large_image" />
+              <meta name="twitter:title" content="DuoPro Services - Canadian Tax Services" />
+              <meta name="twitter:description" content="Professional Canadian tax services for individuals, newcomers, and small businesses." />
+              
+              {/* Structured Data */}
+              <script type="application/ld+json">
+                {JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "AccountingService",
+                  "name": "DuoPro Services",
+                  "description": "Professional Canadian tax services for individuals, newcomers, and small businesses",
+                  "url": "https://duoproservices.ca",
+                  "areaServed": "CA",
+                  "serviceType": ["Tax Preparation", "Tax Filing", "Small Business Tax", "Personal Tax Returns"]
+                })}
+              </script>
+            </Helmet>
+            
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              
+              {/* Client Routes */}
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/simple-dashboard" element={<SimpleDashboardPage />} />
+              <Route path="/onboarding" element={<OnboardingPage />} />
+              <Route path="/onboarding-success" element={<OnboardingSuccessPage />} />
+              <Route path="/tax-filing/:yearId" element={<TaxFilingDetailPage />} />
+              <Route path="/client-invoices" element={<ClientInvoicesPage />} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/admin-hub" element={<AdminHubPage />} />
+              <Route path="/admin-dashboard" element={<AdminDashboardPage />} />
+              <Route path="/admin-control-panel" element={<AdminControlPanelPage />} />
+              <Route path="/admin/clients" element={<AdminClientsPage />} />
+              <Route path="/admin/clients/:clientId" element={<AdminClientDetailPage />} />
+              <Route path="/admin/users" element={<AdminUsersPage />} />
+              <Route path="/admin/users-list" element={<AdminUsersListPage />} />
+              <Route path="/admin/financial" element={<AdminFinancialDashboard />} />
+              <Route path="/admin/bookkeeping" element={<AdminBookkeepingDashboard />} />
+              <Route path="/admin/invoices" element={<AdminInvoicesPage />} />
+              <Route path="/admin/payment-setup" element={<AdminPaymentSetupPage />} />
+              <Route path="/admin/marketing" element={<AdminMarketingDashboard />} />
+              <Route path="/admin/productivity" element={<AdminProductivityDashboard />} />
+              <Route path="/admin/team-activity" element={<AdminTeamActivityPage />} />
+              <Route path="/content-calendar" element={<ContentCalendarDashboard />} />
+              
+              {/* Debug Routes */}
+              <Route path="/auth-debug" element={<AuthDebugPage />} />
+              <Route path="/error" element={<ErrorBoundaryPage />} />
+            </Routes>
+            
+            {/* Toast Notifications */}
+            <Toaster position="top-right" richColors closeButton />
+          </BrowserRouter>
+        </AuthProvider>
+      </LanguageProvider>
+    </HelmetProvider>
+  );
+}
