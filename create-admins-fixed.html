@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Admin Users - DuoPro Services</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+      width: 100%;
+    }
+    h1 { color: #333; margin-bottom: 10px; font-size: 28px; }
+    .subtitle { color: #666; margin-bottom: 30px; font-size: 14px; }
+    .admin-list { background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 30px; }
+    .admin-item { padding: 10px; border-left: 4px solid #667eea; margin-bottom: 10px; background: white; border-radius: 5px; }
+    .admin-item:last-child { margin-bottom: 0; }
+    .email { font-weight: bold; color: #333; }
+    .password { color: #666; font-family: 'Courier New', monospace; font-size: 12px; margin-top: 5px; }
+    .btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .log {
+      background: #1e1e1e;
+      color: #00ff00;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      display: none;
+    }
+    .log.show { display: block; }
+    .log-line { margin-bottom: 5px; }
+    .success { color: #00ff00; }
+    .error { color: #ff4444; }
+    .info { color: #00aaff; }
+    .warning { color: #ffaa00; }
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .result-summary { margin-top: 20px; padding: 20px; border-radius: 10px; display: none; }
+    .result-summary.success { background: #d4edda; border: 2px solid #28a745; color: #155724; }
+    .result-summary.error { background: #f8d7da; border: 2px solid #dc3545; color: #721c24; }
+    .result-summary.show { display: block; }
+    .result-summary h3 { margin-bottom: 10px; }
+    .copy-btn { background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 5px; font-size: 12px; cursor: pointer; margin-top: 10px; }
+    .copy-btn:hover { background: #218838; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 Create Admin Users</h1>
+    <p class="subtitle">DuoPro Services - Automatic Admin Setup</p>
+    <div class="admin-list">
+      <h3 style="margin-bottom: 15px; color: #333;">👥 Users to Create:</h3>
+      <div class="admin-item">
+        <div class="email">📧 veprass@gmail.com</div>
+        <div class="password">🔑 Password: Admin@2026!</div>
+      </div>
+      <div class="admin-item">
+        <div class="email">📧 germana.canada@gmail.com</div>
+        <div class="password">🔑 Password: Admin@2026!</div>
+      </div>
+      <div class="admin-item">
+        <div class="email">📧 jamila.coura15@gmail.com</div>
+        <div class="password">🔑 Password: Admin@2026!</div>
+      </div>
+    </div>
+    <button class="btn" id="createBtn" onclick="createAdmins()">🚀 Create All Admins</button>
+    <div class="log" id="log"></div>
+    <div class="result-summary" id="resultSummary">
+      <h3 id="resultTitle"></h3>
+      <div id="resultMessage"></div>
+      <button class="copy-btn" onclick="copyCredentials()">📋 Copy Credentials</button>
+    </div>
+  </div>
+  <script>
+    const API_BASE = 'https://lqpmyvizjfwzddxspacv.supabase.co/functions/v1/make-server-c2a25be0';
+    const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxcG15dml6amZ3emRkeHNwYWN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYxNjY5NTgsImV4cCI6MjA4MTc0Mjk1OH0.h1tslLVJ3gD2rIjcM6f7NaVQn3s4BAZM1YdPFlAjT_U';
+    const admins = [
+      { email: 'veprass@gmail.com', password: 'Admin@2026!', name: 'Veronica Prass' },
+      { email: 'germana.canada@gmail.com', password: 'Admin@2026!', name: 'Germana Canada' },
+      { email: 'jamila.coura15@gmail.com', password: 'Admin@2026!', name: 'Jamila Coura' }
+    ];
+    function log(message, type = 'info') {
+      const logEl = document.getElementById('log');
+      logEl.classList.add('show');
+      const line = document.createElement('div');
+      line.className = 'log-line ' + type;
+      line.textContent = '[' + new Date().toLocaleTimeString() + '] ' + message;
+      logEl.appendChild(line);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+    function showResult(success, title, message) {
+      const summary = document.getElementById('resultSummary');
+      summary.className = 'result-summary show ' + (success ? 'success' : 'error');
+      document.getElementById('resultTitle').textContent = title;
+      document.getElementById('resultMessage').innerHTML = message;
+    }
+    async function createAdmins() {
+      const btn = document.getElementById('createBtn');
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Checking Admins...<span class="spinner"></span>';
+      document.getElementById('log').innerHTML = '';
+      document.getElementById('resultSummary').classList.remove('show');
+      log('🚀 Starting admin verification process...', 'info');
+      log('📍 API Endpoint: ' + API_BASE + '/auth/signup', 'info');
+      log('', 'info');
+      let successCount = 0, errorCount = 0, existCount = 0;
+      for (let i = 0; i < admins.length; i++) {
+        const admin = admins[i];
+        log('👤 [' + (i + 1) + '/3] Checking: ' + admin.email, 'info');
+        try {
+          const response = await fetch(API_BASE + '/auth/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ANON_KEY },
+            body: JSON.stringify({ email: admin.email, password: admin.password, name: admin.name })
+          });
+          const data = await response.json();
+          if (response.ok && data.user) {
+            log('   ✅ SUCCESS! User created with ID: ' + data.user.id, 'success');
+            successCount++;
+          } else if (data.error && (
+            data.error.toLowerCase().includes('already registered') || 
+            data.error.toLowerCase().includes('already been registered') ||
+            data.error.toLowerCase().includes('already exists')
+          )) {
+            log('   ✅ User already exists - Ready to use!', 'success');
+            existCount++;
+            successCount++;
+          } else {
+            log('   ❌ ERROR: ' + (data.error || 'Unknown error'), 'error');
+            errorCount++;
+          }
+        } catch (error) {
+          log('   ❌ NETWORK ERROR: ' + error.message, 'error');
+          errorCount++;
+        }
+        log('', 'info');
+        if (i < admins.length - 1) await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+      log('📊 RESULTS: ' + successCount + ' ready (' + existCount + ' already existed)', successCount === 3 ? 'success' : 'warning');
+      log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+      if (successCount === 3) {
+        showResult(true, '🎉 All Admins Ready!', '<p><strong>All 3 admin accounts are ready to use!</strong></p>' + (existCount > 0 ? '<p style="margin-top:10px"><em>' + existCount + ' account(s) already existed.</em></p>' : '') + '<p style="margin-top:10px">You can login with:</p><ul style="margin-top:10px;margin-left:20px;"><li>veprass@gmail.com</li><li>germana.canada@gmail.com</li><li>jamila.coura15@gmail.com</li></ul><p style="margin-top:10px;"><strong>Password for all:</strong> Admin@2026!</p>');
+      } else if (successCount > 0) {
+        showResult(true, '⚠️ Partially Ready', '<p>' + successCount + ' out of 3 admins are ready.</p>');
+      } else {
+        showResult(false, '❌ Setup Failed', '<p>Could not verify any admin accounts. Check the log above.</p>');
+      }
+      btn.disabled = false;
+      btn.innerHTML = successCount === 3 ? '✅ All Admins Ready!' : '🔄 Try Again';
+    }
+    function copyCredentials() {
+      navigator.clipboard.writeText('veprass@gmail.com / Admin@2026!\ngermana.canada@gmail.com / Admin@2026!\njamila.coura15@gmail.com / Admin@2026!').then(() => alert('✅ Credentials copied to clipboard!'));
+    }
+    window.addEventListener('load', async () => {
+      try {
+        const response = await fetch(API_BASE + '/health', {
+          headers: { 'Authorization': 'Bearer ' + ANON_KEY }
+        });
+        if (response.ok) {
+          console.log('✅ Backend is online and ready!');
+        } else {
+          console.error('⚠️ Backend returned status:', response.status);
+        }
+      } catch (error) {
+        console.error('❌ Backend health check failed:', error);
+      }
+    });
+  </script>
+</body>
+</html>

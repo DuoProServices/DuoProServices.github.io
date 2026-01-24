@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete Admin Fix - DuoPro Services</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 800px;
+      width: 100%;
+    }
+    h1 { color: #333; margin-bottom: 10px; font-size: 28px; }
+    .subtitle { color: #666; margin-bottom: 30px; font-size: 14px; }
+    .info-box {
+      background: #dbeafe;
+      border: 2px solid #0891b2;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .info-box strong { color: #0c4a6e; }
+    .info-box ol { margin-left: 20px; margin-top: 10px; }
+    .info-box li { margin-bottom: 5px; }
+    .admin-list { background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 30px; }
+    .admin-item { padding: 10px; border-left: 4px solid #0891b2; margin-bottom: 10px; background: white; border-radius: 5px; }
+    .admin-item:last-child { margin-bottom: 0; }
+    .email { font-weight: bold; color: #333; }
+    .password { color: #666; font-family: 'Courier New', monospace; font-size: 12px; margin-top: 5px; }
+    .btn {
+      background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(8, 145, 178, 0.4); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #0891b2;
+    }
+    .log {
+      background: #1e1e1e;
+      color: #00ff00;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      display: none;
+    }
+    .log.show { display: block; }
+    .log-line { margin-bottom: 5px; }
+    .success { color: #00ff00; }
+    .error { color: #ff4444; }
+    .info { color: #00aaff; }
+    .warning { color: #ffaa00; }
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .result-summary { margin-top: 20px; padding: 20px; border-radius: 10px; display: none; }
+    .result-summary.success { background: #d4edda; border: 2px solid #28a745; color: #155724; }
+    .result-summary.error { background: #f8d7da; border: 2px solid #dc3545; color: #721c24; }
+    .result-summary.show { display: block; }
+    .result-summary h3 { margin-bottom: 10px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+    small { color: #666; display: block; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔧 Complete Admin Fix</h1>
+    <p class="subtitle">DuoPro Services - Delete, Recreate & Test Admin Accounts</p>
+    
+    <div class="info-box">
+      <strong>✨ THIS SCRIPT WILL:</strong>
+      <ol>
+        <li>Find and DELETE existing admin accounts (if any)</li>
+        <li>CREATE new admin accounts with confirmed emails</li>
+        <li>TEST login for each account automatically</li>
+        <li>Show you the results!</li>
+      </ol>
+    </div>
+
+    <div>
+      <label>🔑 Supabase Service Role Key:</label>
+      <input type="password" id="serviceKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." />
+      <small>Get it from: https://supabase.com/dashboard/project/lqpmyvizjfwzddxspacv/settings/api</small>
+    </div>
+
+    <div class="admin-list">
+      <h3 style="margin-bottom: 15px; color: #333;">👥 Admins to Create:</h3>
+      <div class="admin-item">
+        <div class="email">📧 veprass@gmail.com</div>
+        <div class="password">🔑 Password: Admin@2026!</div>
+      </div>
+      <div class="admin-item">
+        <div class="email">📧 germana.canada@gmail.com</div>
+        <div class="password">🔑 Password: Admin@2026!</div>
+      </div>
+      <div class="admin-item">
+        <div class="email">📧 jamila.coura15@gmail.com</div>
+        <div class="password">🔑 Password: Admin@2026!</div>
+      </div>
+    </div>
+    
+    <button class="btn" id="fixBtn" onclick="completeAdminFix()">🚀 Start Complete Fix</button>
+    
+    <div class="log" id="log"></div>
+    
+    <div class="result-summary" id="resultSummary">
+      <h3 id="resultTitle"></h3>
+      <div id="resultMessage"></div>
+    </div>
+  </div>
+  
+  <script>
+    const SUPABASE_URL = 'https://lqpmyvizjfwzddxspacv.supabase.co';
+    const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxcG15dml6amZ3emRkeHNwYWN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYxNjY5NTgsImV4cCI6MjA4MTc0Mjk1OH0.h1tslLVJ3gD2rIjcM6f7NaVQn3s4BAZM1YdPFlAjT_U';
+    
+    const admins = [
+      { email: 'veprass@gmail.com', password: 'Admin@2026!', name: 'Veronica Prass' },
+      { email: 'germana.canada@gmail.com', password: 'Admin@2026!', name: 'Germana Canada' },
+      { email: 'jamila.coura15@gmail.com', password: 'Admin@2026!', name: 'Jamila Coura' }
+    ];
+    
+    function log(message, type = 'info') {
+      const logEl = document.getElementById('log');
+      logEl.classList.add('show');
+      const line = document.createElement('div');
+      line.className = 'log-line ' + type;
+      line.textContent = '[' + new Date().toLocaleTimeString() + '] ' + message;
+      logEl.appendChild(line);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+    
+    function showResult(success, title, message) {
+      const summary = document.getElementById('resultSummary');
+      summary.className = 'result-summary show ' + (success ? 'success' : 'error');
+      document.getElementById('resultTitle').textContent = title;
+      document.getElementById('resultMessage').innerHTML = message;
+    }
+    
+    async function completeAdminFix() {
+      const serviceKey = document.getElementById('serviceKey').value.trim();
+      
+      if (!serviceKey) {
+        alert('❌ Please enter the Service Role Key!');
+        return;
+      }
+      
+      const btn = document.getElementById('fixBtn');
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Running Complete Fix...<span class="spinner"></span>';
+      
+      document.getElementById('log').innerHTML = '';
+      document.getElementById('resultSummary').classList.remove('show');
+      
+      log('═══════════════════════════════════════════════════════', 'info');
+      log('🚀 STARTING COMPLETE ADMIN FIX PROCESS', 'info');
+      log('═══════════════════════════════════════════════════════', 'info');
+      log('', 'info');
+      
+      let deleteCount = 0, createCount = 0, loginSuccess = 0;
+      
+      // ==================== STEP 1: DELETE EXISTING USERS ====================
+      log('🗑️  STEP 1: Deleting existing admin accounts...', 'warning');
+      log('', 'info');
+      
+      try {
+        const listResponse = await fetch(SUPABASE_URL + '/auth/v1/admin/users', {
+          headers: {
+            'Authorization': 'Bearer ' + serviceKey,
+            'apikey': serviceKey
+          }
+        });
+        
+        if (!listResponse.ok) throw new Error('Failed to list users');
+        
+        const usersData = await listResponse.json();
+        
+        for (const admin of admins) {
+          const user = usersData.users?.find(u => u.email === admin.email);
+          
+          if (user) {
+            log('   🔍 Found existing user: ' + admin.email + ' (ID: ' + user.id + ')', 'info');
+            
+            const deleteResponse = await fetch(SUPABASE_URL + '/auth/v1/admin/users/' + user.id, {
+              method: 'DELETE',
+              headers: {
+                'Authorization': 'Bearer ' + serviceKey,
+                'apikey': serviceKey
+              }
+            });
+            
+            if (deleteResponse.ok) {
+              log('   ✅ Deleted: ' + admin.email, 'success');
+              deleteCount++;
+            } else {
+              log('   ⚠️  Could not delete: ' + admin.email, 'warning');
+            }
+          } else {
+            log('   ℹ️  User does not exist: ' + admin.email, 'info');
+          }
+        }
+        
+        log('', 'info');
+        log('✅ Deletion phase complete: ' + deleteCount + ' users deleted', 'success');
+        
+        // Wait 2 seconds for database to sync
+        log('⏳ Waiting 2 seconds for database sync...', 'info');
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+      } catch (error) {
+        log('❌ Error during deletion: ' + error.message, 'error');
+      }
+      
+      log('', 'info');
+      log('', 'info');
+      
+      // ==================== STEP 2: CREATE NEW USERS ====================
+      log('👤 STEP 2: Creating new admin accounts...', 'warning');
+      log('', 'info');
+      
+      for (const admin of admins) {
+        log('   📝 Creating: ' + admin.email, 'info');
+        
+        try {
+          const createResponse = await fetch(SUPABASE_URL + '/auth/v1/admin/users', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + serviceKey,
+              'apikey': serviceKey,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              email: admin.email,
+              password: admin.password,
+              email_confirm: true,
+              user_metadata: { name: admin.name }
+            })
+          });
+          
+          if (createResponse.ok) {
+            const userData = await createResponse.json();
+            log('   ✅ Created: ' + admin.email + ' (ID: ' + userData.id + ')', 'success');
+            log('   📧 Email confirmed: YES', 'success');
+            createCount++;
+          } else {
+            const errorData = await createResponse.json();
+            log('   ❌ Failed to create: ' + (errorData.msg || errorData.message || 'Unknown error'), 'error');
+          }
+          
+        } catch (error) {
+          log('   ❌ Error: ' + error.message, 'error');
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      
+      log('', 'info');
+      log('✅ Creation phase complete: ' + createCount + ' users created', 'success');
+      log('', 'info');
+      log('', 'info');
+      
+      // ==================== STEP 3: TEST LOGIN ====================
+      log('🔐 STEP 3: Testing login for each admin...', 'warning');
+      log('', 'info');
+      
+      for (const admin of admins) {
+        log('   🔑 Testing login: ' + admin.email, 'info');
+        
+        try {
+          const loginResponse = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+            method: 'POST',
+            headers: {
+              'apikey': ANON_KEY,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              email: admin.email,
+              password: admin.password
+            })
+          });
+          
+          if (loginResponse.ok) {
+            const loginData = await loginResponse.json();
+            log('   ✅ LOGIN SUCCESS! Access token received.', 'success');
+            log('   👤 User ID: ' + loginData.user.id, 'success');
+            loginSuccess++;
+          } else {
+            const errorData = await loginResponse.json();
+            log('   ❌ LOGIN FAILED: ' + (errorData.error_description || errorData.message || 'Unknown error'), 'error');
+          }
+          
+        } catch (error) {
+          log('   ❌ Login test error: ' + error.message, 'error');
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      
+      log('', 'info');
+      log('═══════════════════════════════════════════════════════', 'info');
+      log('📊 FINAL RESULTS:', 'info');
+      log('   🗑️  Deleted: ' + deleteCount + ' users', 'info');
+      log('   ✨ Created: ' + createCount + ' users', 'info');
+      log('   🔐 Login Tests Passed: ' + loginSuccess + '/3', loginSuccess === 3 ? 'success' : 'warning');
+      log('═══════════════════════════════════════════════════════', 'info');
+      
+      if (createCount === 3 && loginSuccess === 3) {
+        showResult(true, '🎉 COMPLETE SUCCESS!', 
+          '<p><strong>All 3 admin accounts are ready and TESTED!</strong></p>' +
+          '<p style="margin-top:15px">✅ Login works for:</p>' +
+          '<ul style="margin-top:10px;margin-left:20px;">' +
+          '<li><strong>veprass@gmail.com</strong> / Admin@2026!</li>' +
+          '<li><strong>germana.canada@gmail.com</strong> / Admin@2026!</li>' +
+          '<li><strong>jamila.coura15@gmail.com</strong> / Admin@2026!</li>' +
+          '</ul>' +
+          '<p style="margin-top:15px;color:#28a745;font-weight:bold;">🚀 You can now login to your app!</p>'
+        );
+      } else if (createCount === 3 && loginSuccess > 0) {
+        showResult(true, '⚠️ Partially Working', 
+          '<p><strong>' + createCount + ' users created, but only ' + loginSuccess + ' login tests passed.</strong></p>' +
+          '<p style="margin-top:10px">Check the log above for details.</p>'
+        );
+      } else {
+        showResult(false, '❌ Fix Failed', 
+          '<p><strong>Could not complete the fix successfully.</strong></p>' +
+          '<p style="margin-top:10px">Created: ' + createCount + '/3 users</p>' +
+          '<p>Login tests passed: ' + loginSuccess + '/3</p>' +
+          '<p style="margin-top:10px">Please check the Service Role Key and try again.</p>'
+        );
+      }
+      
+      btn.disabled = false;
+      btn.innerHTML = loginSuccess === 3 ? '✅ All Working!' : '🔄 Try Again';
+    }
+  </script>
+</body>
+</html>

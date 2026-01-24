@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Teste Backend - DuoPro Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+        }
+
+        .test-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-top: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .success {
+            border-left-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .warning {
+            border-left-color: #ffc107;
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .badge-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-error {
+            background: #dc3545;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .summary h2 {
+            margin-bottom: 15px;
+        }
+
+        .summary-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Teste Backend</h1>
+        <p class="subtitle">DuoPro Services - Verificação de Conexão</p>
+
+        <div class="summary">
+            <h2>📊 Resumo dos Testes</h2>
+            <div class="summary-stats">
+                <div class="stat">
+                    <div class="stat-number" id="totalTests">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="passedTests">0</div>
+                    <div class="stat-label">✅ Sucesso</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="failedTests">0</div>
+                    <div class="stat-label">❌ Falha</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">🔍 Testes Rápidos</h3>
+            <div class="test-grid">
+                <button class="btn" onclick="testHealth()">1. Health Check</button>
+                <button class="btn" onclick="testServerAlive()">2. Server Alive</button>
+                <button class="btn" onclick="testListUsers()">3. List Users</button>
+                <button class="btn" onclick="testDashboardStats()">4. Dashboard Stats</button>
+            </div>
+            <button class="btn" onclick="runAllTests()" style="background: #28a745; margin-top: 20px;">
+                🚀 EXECUTAR TODOS OS TESTES
+            </button>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const PROJECT_ID = 'lqpmyvizjfwzddxspacv';
+        const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxcG15dml6amZ3emRkeHNwYWN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY4OTgwMTksImV4cCI6MjA1MjQ3NDAxOX0.UlaTqcWBIr3FS5mZ3wXnPrq95L1YlCIQcX4-Fme9g14';
+        const BASE_URL = `https://${PROJECT_ID}.supabase.co/functions/v1/make-server-c2a25be0`;
+
+        let totalTests = 0;
+        let passedTests = 0;
+        let failedTests = 0;
+
+        function updateStats() {
+            document.getElementById('totalTests').textContent = totalTests;
+            document.getElementById('passedTests').textContent = passedTests;
+            document.getElementById('failedTests').textContent = failedTests;
+        }
+
+        function addResult(title, success, message, data = null) {
+            totalTests++;
+            if (success) passedTests++;
+            else failedTests++;
+            updateStats();
+
+            const resultsDiv = document.getElementById('results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'test-section';
+            
+            const badge = success ? 
+                '<span class="status-badge badge-success">✅ SUCESSO</span>' :
+                '<span class="status-badge badge-error">❌ FALHA</span>';
+            
+            resultDiv.innerHTML = `
+                <h3 class="test-title">${badge}${title}</h3>
+                <div class="result ${success ? 'success' : 'error'}">
+${message}
+
+${data ? `\n📦 Dados:\n${JSON.stringify(data, null, 2)}` : ''}
+                </div>
+            `;
+            
+            resultsDiv.insertBefore(resultDiv, resultsDiv.firstChild);
+        }
+
+        function showLoading(title) {
+            const resultsDiv = document.getElementById('results');
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'loading';
+            loadingDiv.className = 'loading';
+            loadingDiv.innerHTML = `
+                <div class="spinner"></div>
+                <p>Testando: ${title}...</p>
+            `;
+            resultsDiv.insertBefore(loadingDiv, resultsDiv.firstChild);
+        }
+
+        function hideLoading() {
+            const loading = document.getElementById('loading');
+            if (loading) loading.remove();
+        }
+
+        async function testHealth() {
+            showLoading('Health Check');
+            try {
+                const response = await fetch(`${BASE_URL}/health`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+                hideLoading();
+
+                if (response.ok && data.status === 'ok') {
+                    addResult('🏥 Health Check', true, 
+                        `✅ Backend está ONLINE e funcionando!\nTimestamp: ${data.timestamp}`, 
+                        data
+                    );
+                } else {
+                    addResult('🏥 Health Check', false, 
+                        `❌ Backend retornou status inesperado: ${response.status}`, 
+                        data
+                    );
+                }
+            } catch (error) {
+                hideLoading();
+                addResult('🏥 Health Check', false, 
+                    `❌ Erro ao conectar com backend:\n${error.message}`
+                );
+            }
+        }
+
+        async function testServerAlive() {
+            showLoading('Server Alive Check');
+            try {
+                const response = await fetch(`${BASE_URL}/server-alive`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+                hideLoading();
+
+                if (response.ok && data.status === 'alive') {
+                    addResult('💓 Server Alive', true, 
+                        `✅ Servidor está VIVO e todas as rotas estão montadas!\n${data.message}`, 
+                        data
+                    );
+                } else {
+                    addResult('💓 Server Alive', false, 
+                        `❌ Resposta inesperada do servidor`, 
+                        data
+                    );
+                }
+            } catch (error) {
+                hideLoading();
+                addResult('💓 Server Alive', false, 
+                    `❌ Erro ao verificar servidor:\n${error.message}`
+                );
+            }
+        }
+
+        async function testListUsers() {
+            showLoading('List Users');
+            try {
+                const response = await fetch(`${BASE_URL}/auth/list-users`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${ANON_KEY}`
+                    }
+                });
+
+                const data = await response.json();
+                hideLoading();
+
+                if (response.ok) {
+                    const userCount = data.users?.length || 0;
+                    addResult('👥 List Users', true, 
+                        `✅ Rota /auth/list-users está funcionando!\nTotal de usuários: ${userCount}`, 
+                        { userCount, users: data.users?.map(u => ({ id: u.id, email: u.email })) }
+                    );
+                } else {
+                    addResult('👥 List Users', false, 
+                        `⚠️ Rota respondeu mas com erro:\n${data.error || 'Erro desconhecido'}`, 
+                        data
+                    );
+                }
+            } catch (error) {
+                hideLoading();
+                addResult('👥 List Users', false, 
+                    `❌ Erro ao listar usuários:\n${error.message}`
+                );
+            }
+        }
+
+        async function testDashboardStats() {
+            showLoading('Dashboard Stats');
+            try {
+                const response = await fetch(`${BASE_URL}/dashboard/stats`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${ANON_KEY}`
+                    }
+                });
+
+                const data = await response.json();
+                hideLoading();
+
+                if (response.ok && !data.error) {
+                    addResult('📊 Dashboard Stats', true, 
+                        `✅ Rota /dashboard/stats está funcionando!
+Total de Clientes: ${data.totalClients || 0}
+Documentos Pendentes: ${data.pendingDocuments || 0}
+Declarações Ativas: ${data.activeReturns || 0}
+Receita Mensal: $${data.monthlyRevenue || 0}`, 
+                        data
+                    );
+                } else {
+                    addResult('📊 Dashboard Stats', false, 
+                        `⚠️ Rota respondeu mas pode haver erro:\n${data.error || 'Possível erro de autenticação (esperado se não for admin)'}`, 
+                        data
+                    );
+                }
+            } catch (error) {
+                hideLoading();
+                addResult('📊 Dashboard Stats', false, 
+                    `❌ Erro ao buscar estatísticas:\n${error.message}`
+                );
+            }
+        }
+
+        async function runAllTests() {
+            // Reset stats
+            totalTests = 0;
+            passedTests = 0;
+            failedTests = 0;
+            updateStats();
+            document.getElementById('results').innerHTML = '';
+
+            // Run all tests sequentially
+            await testHealth();
+            await new Promise(r => setTimeout(r, 500));
+            await testServerAlive();
+            await new Promise(r => setTimeout(r, 500));
+            await testListUsers();
+            await new Promise(r => setTimeout(r, 500));
+            await testDashboardStats();
+
+            // Show final summary
+            setTimeout(() => {
+                alert(`🎉 TESTES CONCLUÍDOS!\n\n✅ Sucesso: ${passedTests}\n❌ Falha: ${failedTests}\n📊 Total: ${totalTests}`);
+            }, 500);
+        }
+
+        // Auto-run all tests on page load
+        window.addEventListener('load', () => {
+            console.log('🚀 Executando testes automaticamente...');
+            setTimeout(runAllTests, 1000);
+        });
+    </script>
+</body>
+</html>
