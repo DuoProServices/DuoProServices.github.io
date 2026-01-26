@@ -26,6 +26,8 @@ export default function QuickAdminSetup() {
     setLogs([]);
     
     addLog('🚀 Iniciando criação de contas admin...');
+    addLog(`📅 Data: ${new Date().toLocaleString()}`);
+    addLog(`🌐 URL atual: ${window.location.href}`);
     
     const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
     const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -84,6 +86,8 @@ export default function QuickAdminSetup() {
 
       } catch (error: any) {
         addLog(`   ❌ Erro de rede: ${error.message}`);
+        addLog(`   🔍 Tipo de erro: ${error.name}`);
+        addLog(`   🔍 Stack: ${error.stack?.substring(0, 200)}`);
         errorCount++;
       }
 
@@ -114,6 +118,25 @@ export default function QuickAdminSetup() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 p-4 sm:p-8">
       <div className="max-w-4xl mx-auto">
+        {/* Cache Warning */}
+        <div className="mb-6 p-4 bg-yellow-50 border-2 border-yellow-400 rounded-lg">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl">⚠️</span>
+            <div>
+              <p className="font-bold text-yellow-900 mb-1">
+                🔄 Se você está vendo uma página diferente:
+              </p>
+              <p className="text-sm text-yellow-800 mb-2">
+                Pressione <kbd className="px-2 py-1 bg-yellow-200 rounded font-mono text-xs">Ctrl + Shift + R</kbd> (Windows/Linux) 
+                ou <kbd className="px-2 py-1 bg-yellow-200 rounded font-mono text-xs">Cmd + Shift + R</kbd> (Mac) para recarregar sem cache
+              </p>
+              <p className="text-xs text-yellow-700">
+                Versão da página: 2.0.0 - QuickAdminSetup ativa
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full mb-4">

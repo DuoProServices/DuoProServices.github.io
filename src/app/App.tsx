@@ -6,6 +6,7 @@ import { Toaster } from 'sonner';
 import { logger } from '@/app/utils/logger';
 import React from 'react';
 import ErrorBoundary from '@/app/ErrorBoundary';
+import CacheWarning from '@/app/components/CacheWarning';
 
 // Import pages directly
 import HomePage from '@/app/pages/HomePage';
@@ -20,7 +21,7 @@ import DirectResetPasswordPage from '@/app/pages/DirectResetPasswordPage';
 import ResetAdminPasswordsPage from '@/app/pages/ResetAdminPasswordsPage';
 import AdminDiagnosticPage from '@/app/pages/AdminDiagnosticPage';
 import SystemStatusPage from '@/app/pages/SystemStatusPage';
-import AdminCheckPage from '@/app/pages/AdminCheckPage';
+import DiagnosticPage from '@/app/pages/DiagnosticPage';
 
 // Admin pages
 import AdminIndexPage from '@/app/pages/AdminIndexPage';
@@ -83,6 +84,7 @@ const App: React.FC = () => {
     SupabaseAuthManager,
     AdminDiagnosticPage,
     SystemStatusPage,
+    DiagnosticPage,
     AdminControlPanelPage,
     AdminHubPage,
     AdminClientsPage,
@@ -107,6 +109,7 @@ const App: React.FC = () => {
         <LanguageProvider>
           <AuthProvider>
             <BrowserRouter>
+              <CacheWarning />
               <Helmet>
                 <title>DuoPro Services - Canadian Tax Services</title>
                 <meta name="description" content="Professional Canadian tax services for individuals, newcomers, and small businesses." />
@@ -124,7 +127,7 @@ const App: React.FC = () => {
                 <Route path="/auth-debug" element={<SupabaseAuthManager />} />
                 <Route path="/auth-debug-old" element={<AuthDebugPage />} />
                 <Route path="/system-status" element={<SystemStatusPage />} />
-                <Route path="/admin-check" element={<AdminCheckPage />} />
+                <Route path="/diagnostic" element={<DiagnosticPage />} />
                 
                 {/* Client Dashboard */}
                 <Route 
