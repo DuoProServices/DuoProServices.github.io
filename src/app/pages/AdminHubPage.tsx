@@ -281,9 +281,6 @@ function AdminHubPage() {
             </div>
 
             <div className="flex items-center gap-2">
-              <Button onClick={() => navigate("/dashboard")} variant="outline">
-                {t("admin.clientPortal")}
-              </Button>
               <Button onClick={handleSignOut} variant="ghost">
                 <LogOut className="w-4 h-4 mr-2" />
                 {t("admin.signOut")}

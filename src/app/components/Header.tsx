@@ -43,14 +43,6 @@ export default function Header() {
               <Globe className="w-4 h-4" />
               <span className="text-sm font-medium">{language === 'en' ? 'FR' : 'EN'}</span>
             </button>
-
-            {/* Client Portal Button */}
-            <Link
-              to="/login"
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-            >
-              {t('nav.login')}
-            </Link>
           </div>
         </div>
       </div>

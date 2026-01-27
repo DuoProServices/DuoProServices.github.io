@@ -27,10 +27,10 @@ export default function LoginPage() {
       await signIn(email, password);
       
       // Check if admin
-      if (email === 'admin@duoproservices.ca') {
+      if (email === 'admin@duoproservices.ca' || email === 'veprass@gmail.com' || email === 'germana.canada@gmail.com' || email === 'jamila.coura15@gmail.com') {
         navigate('/admin');
       } else {
-        navigate('/dashboard');
+        navigate('/');
       }
       
       toast.success(language === 'en' 

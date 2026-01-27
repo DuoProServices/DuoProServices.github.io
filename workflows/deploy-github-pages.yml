@@ -33,9 +33,10 @@ jobs:
         run: |
           rm -rf node_modules package-lock.json
           npm install
+          npm rebuild
 
-      - name: 🏗️ Build
-        run: npm run build
+      - name: 🏗️ Build with npx
+        run: npx tsc && npx vite build
 
       - name: 📤 Upload artifact
         uses: actions/upload-pages-artifact@v3

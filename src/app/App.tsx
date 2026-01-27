@@ -11,7 +11,6 @@ import CacheWarning from '@/app/components/CacheWarning';
 // Import pages directly
 import HomePage from '@/app/pages/HomePage';
 import LoginPage from '@/app/pages/LoginPage';
-import DashboardPage from '@/app/pages/DashboardPage';
 import AuthDebugPage from '@/app/pages/AuthDebugPage';
 import SupabaseAuthManager from '@/app/pages/SupabaseAuthManager';
 import QuickAdminSetup from '@/app/pages/QuickAdminSetup';
@@ -57,13 +56,13 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; requireAdmin?: boole
   }
 
   if (!user) {
-    logger.warn('ProtectedRoute: User not authenticated, redirecting to login');
+    logger.warning('ProtectedRoute: User not authenticated, redirecting to login', 'AUTH');
     return <Navigate to="/login" replace />;
   }
 
   if (requireAdmin && !isAdmin) {
-    logger.warn('ProtectedRoute: User not admin, redirecting to dashboard');
-    return <Navigate to="/dashboard" replace />;
+    logger.warning('ProtectedRoute: User not admin, redirecting to home', 'AUTH');
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;
@@ -74,7 +73,6 @@ const App: React.FC = () => {
   const requiredPages = {
     HomePage,
     LoginPage,
-    DashboardPage,
     AuthDebugPage,
     QuickAdminSetup,
     QuickCreateAdminPage,
@@ -129,16 +127,6 @@ const App: React.FC = () => {
                 <Route path="/system-status" element={<SystemStatusPage />} />
                 <Route path="/diagnostic" element={<DiagnosticPage />} />
                 
-                {/* Client Dashboard */}
-                <Route 
-                  path="/dashboard" 
-                  element={
-                    <ProtectedRoute>
-                      <DashboardPage />
-                    </ProtectedRoute>
-                  } 
-                />
-
                 {/* Admin Routes - Require Admin Access */}
                 <Route 
                   path="/admin" 

@@ -429,9 +429,6 @@ function AdminClientsPage() {
               <Button onClick={() => navigate("/admin")} variant="ghost">
                 {t("admin.backToHub")}
               </Button>
-              <Button onClick={() => navigate("/dashboard")} variant="outline">
-                {t("admin.clientPortal")}
-              </Button>
               <Button onClick={() => navigate("/")} variant="ghost">
                 Home
               </Button>
