@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quebec Restaurant P&L & Tax Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        .input-group label { display: block; font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 4px; }
+        .input-field { width: 100%; padding: 8px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 1rem; background: #f8fafc; transition: border-color 0.2s; }
+        .input-field:focus { border-color: #2563eb; outline: none; background: white; }
+        .tab-btn { padding: 10px 15px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.3s; font-size: 0.9rem; }
+        .tab-btn.active { border-bottom-color: #2563eb; color: #2563eb; }
+        .variable-badge { font-size: 0.65rem; background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 5px; }
+    </style>
+</head>
+<body class="bg-slate-50 p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-8 flex flex-col md:flex-row justify-between items-end gap-4">
+            <div>
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight">Quebec Financial Management</h1>
+                <p class="text-slate-500">P&L, Tax Remittance & Cash Flow Analysis</p>
+            </div>
+            <div class="flex gap-1 bg-white p-1 rounded-lg shadow-sm border border-slate-200">
+                <div id="tab-pl" class="tab-btn active" onclick="switchTab('pl')">P&L (Profit)</div>
+                <div id="tab-tax" class="tab-btn" onclick="switchTab('tax')">Tax Remittance</div>
+                <div id="tab-cash" class="tab-btn" onclick="switchTab('cash')">Cash Flow</div>
+            </div>
+        </header>
+
+        <!-- INPUT SECTION (Shared) -->
+        <div class="card p-6 border-l-4 border-blue-600 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="input-group">
+                    <label class="text-blue-700 font-bold">Monthly Net Sales (Hors Taxes)</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-2 text-slate-400">$</span>
+                        <input type="number" id="vendas" value="30000" class="input-field pl-8 font-bold text-lg bg-blue-50">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>COGS (33%)</label>
+                    <input type="number" id="cogs_val" class="input-field">
+                </div>
+                <div class="input-group">
+                    <label>Gross Payroll</label>
+                    <input type="number" id="labor_val" value="9000" class="input-field">
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 1: P&L -->
+        <div id="view-pl" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-7 space-y-6">
+                <div class="card p-6">
+                    <h2 class="text-xl font-bold mb-6 text-slate-800">Operational Expenses</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="input-group">
+                            <label>Delivery Apps (10%)</label>
+                            <input type="number" id="uber_val" class="input-field">
+                        </div>
+                        <div class="input-group">
+                            <label>Card Fees (2.5%)</label>
+                            <input type="number" id="card_val" class="input-field">
+                        </div>
+                        <div class="input-group">
+                            <label>Rent (Fixed)</label>
+                            <input type="number" id="rent_val" value="3500" class="input-field">
+                        </div>
+                        <div class="input-group">
+                            <label>Utilities (Fixed)</label>
+                            <input type="number" id="utils_val" value="1200" class="input-field">
+                        </div>
+                    </div>
+
+                    <div class="mt-8 p-6 rounded-xl bg-slate-900 text-white">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="text-blue-400 font-bold uppercase text-xs tracking-widest">Net Monthly Profit</h3>
+                                <p class="text-[10px] text-slate-400">Final earnings after all taxes</p>
+                            </div>
+                            <div class="text-right">
+                                <span id="final_profit" class="text-3xl font-black text-white">$0.00</span>
+                                <div id="profit_perc_badge" class="mt-1 inline-block px-2 py-1 rounded text-xs font-bold bg-green-500">0%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:col-span-5">
+                <div class="card p-6">
+                    <h2 class="text-lg font-bold mb-4">Breakdown</h2>
+                    <div class="h-64"><canvas id="lucroChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: TAX REMITTANCE -->
+        <div id="view-tax" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-12">
+                <div class="card p-6 border-t-4 border-amber-500">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h2 class="text-xl font-bold mb-6">GST/QST Summary</h2>
+                            <div class="space-y-4">
+                                <div class="p-4 bg-amber-50 rounded border border-amber-100">
+                                    <p class="text-sm font-bold text-amber-900">Collected from Customers (+14.975%)</p>
+                                    <div class="flex justify-between text-lg font-black mt-2">
+                                        <span>Total Collected:</span>
+                                        <span id="tax_collected_total">$0</span>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-blue-50 rounded border border-blue-100">
+                                    <p class="text-sm font-bold text-blue-900">Paid to Suppliers (ITCs / ITRs)</p>
+                                    <div class="flex justify-between text-lg font-black mt-2">
+                                        <span>Total Credits:</span>
+                                        <span id="tax_credits_total">$0</span>
+                                    </div>
+                                </div>
+                                <div class="p-6 bg-red-600 text-white rounded-xl text-center">
+                                    <p class="text-xs font-bold uppercase tracking-widest opacity-80">Monthly Tax Liability</p>
+                                    <div class="text-4xl font-black" id="tax_remittance">$0.00</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                            <h3 class="font-bold mb-4">The Restaurant Tax Trap</h3>
+                            <ul class="space-y-4 text-sm text-slate-600">
+                                <li class="flex gap-2"><span>❌</span> <strong>No Credits on COGS:</strong> Since raw food is 0% tax, you don't recover any GST/QST on 33% of your costs.</li>
+                                <li class="flex gap-2"><span>❌</span> <strong>No Credits on Wages:</strong> Salaries (30% of sales) have no GST/QST.</li>
+                                <li class="flex gap-2"><span>✅</span> <strong>Only Fixed/Apps:</strong> You only get credits on rent, utilities, and delivery fees.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: CASH FLOW -->
+        <div id="view-cash" class="hidden space-y-6">
+            <div class="card p-6 border-t-4 border-green-600">
+                <h2 class="text-xl font-bold mb-6">Monthly Cash Flow Movement</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 border-y border-slate-200 text-slate-500 uppercase text-[10px] font-bold">
+                            <tr>
+                                <th class="px-4 py-3">Description</th>
+                                <th class="px-4 py-3 text-right">Inflow (+)</th>
+                                <th class="px-4 py-3 text-right">Outflow (-)</th>
+                                <th class="px-4 py-3 text-right">Net Cash Impact</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr>
+                                <td class="px-4 py-3 font-semibold">Total Revenue (Gross Sales + Taxes)</td>
+                                <td id="cash_vendas_in" class="px-4 py-3 text-right text-green-600 font-bold">$0</td>
+                                <td class="px-4 py-3 text-right">-</td>
+                                <td id="cash_vendas_net" class="px-4 py-3 text-right font-bold">$0</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3">Purchases (Food/Supplies)</td>
+                                <td class="px-4 py-3 text-right">-</td>
+                                <td id="cash_cogs_out" class="px-4 py-3 text-right text-red-600">$0</td>
+                                <td id="cash_cogs_net" class="px-4 py-3 text-right text-red-600">-$0</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3">Payroll (Salaries + Employer Taxes)</td>
+                                <td class="px-4 py-3 text-right">-</td>
+                                <td id="cash_labor_out" class="px-4 py-3 text-right text-red-600">$0</td>
+                                <td id="cash_labor_net" class="px-4 py-3 text-right text-red-600">-$0</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3">Operating Expenses (Rent, Utils, Apps)</td>
+                                <td class="px-4 py-3 text-right">-</td>
+                                <td id="cash_ops_out" class="px-4 py-3 text-right text-red-600">$0</td>
+                                <td id="cash_ops_net" class="px-4 py-3 text-right text-red-600">-$0</td>
+                            </tr>
+                            <tr class="bg-amber-50 font-bold">
+                                <td class="px-4 py-3">Current Operational Balance (Bank)</td>
+                                <td colspan="2" class="px-4 py-3"></td>
+                                <td id="cash_bank_bal" class="px-4 py-3 text-right text-lg">$0</td>
+                            </tr>
+                            <tr class="border-t-2 border-slate-300">
+                                <td class="px-4 py-3 text-red-700 font-bold">LESS: Tax Reserve (GST/QST Due)</td>
+                                <td class="px-4 py-3 text-right">-</td>
+                                <td id="cash_tax_out" class="px-4 py-3 text-right text-red-700">$0</td>
+                                <td id="cash_tax_net" class="px-4 py-3 text-right text-red-700">-$0</td>
+                            </tr>
+                            <tr class="bg-slate-900 text-white font-black text-lg">
+                                <td class="px-4 py-3">FREE CASH FLOW (Disposable)</td>
+                                <td colspan="2" class="px-4 py-3"></td>
+                                <td id="cash_final_net" class="px-4 py-3 text-right">$0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-6 p-4 bg-green-50 rounded-lg border border-green-200 text-xs text-green-800">
+                    <strong>💡 Insight:</strong> The Operational Balance shows how much money is in your bank account, but the <strong>Free Cash Flow</strong> is what you can actually keep. The difference is the tax you are holding for the government.
+                </div>
+            </div>
+        </div>
+
+        <div id="alerts_container" class="mt-6 space-y-3"></div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('lucroChart').getContext('2d');
+        let chart;
+
+        function switchTab(tab) {
+            document.getElementById('view-pl').classList.toggle('hidden', tab !== 'pl');
+            document.getElementById('view-tax').classList.toggle('hidden', tab !== 'tax');
+            document.getElementById('view-cash').classList.toggle('hidden', tab !== 'cash');
+            
+            document.getElementById('tab-pl').classList.toggle('active', tab === 'pl');
+            document.getElementById('tab-tax').classList.toggle('active', tab === 'tax');
+            document.getElementById('tab-cash').classList.toggle('active', tab === 'cash');
+        }
+
+        function updateChart(dataValues) {
+            const data = {
+                labels: ['Food', 'Payroll', 'Gov', 'Rent', 'Variable', 'Profit'],
+                datasets: [{
+                    data: dataValues,
+                    backgroundColor: ['#f87171', '#60a5fa', '#fbbf24', '#818cf8', '#f472b6', '#34d399'],
+                    borderWidth: 0
+                }]
+            };
+            if (chart) chart.destroy();
+            chart = new Chart(ctx, {
+                type: 'doughnut',
+                data: data,
+                options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 10 } } } } }
+            });
+        }
+
+        function calculate(isManualInput = false) {
+            const vendas = parseFloat(document.getElementById('vendas').value) || 0;
+            
+            if (!isManualInput) {
+                document.getElementById('cogs_val').value = (vendas * 0.33).toFixed(0);
+                document.getElementById('uber_val').value = (vendas * 0.10).toFixed(0);
+                document.getElementById('card_val').value = (vendas * 0.025).toFixed(0);
+            }
+
+            const cogs = parseFloat(document.getElementById('cogs_val').value) || 0;
+            const labor = parseFloat(document.getElementById('labor_val').value) || 0;
+            const uber = parseFloat(document.getElementById('uber_val').value) || 0;
+            const card = parseFloat(document.getElementById('card_val').value) || 0;
+            const rent = parseFloat(document.getElementById('rent_val').value) || 0;
+            const utils = parseFloat(document.getElementById('utils_val').value) || 0;
+
+            // --- TAXES ---
+            const gstCollected = vendas * 0.05;
+            const qstCollected = vendas * 0.09975;
+            const taxCollectedTotal = gstCollected + qstCollected;
+            
+            const creditBase = rent + utils + uber; 
+            const itc = creditBase * 0.05;
+            const itr = creditBase * 0.09975;
+            const taxCreditsTotal = itc + itr;
+            
+            const taxRemittance = taxCollectedTotal - taxCreditsTotal;
+
+            // --- P&L ---
+            const das = labor * 0.135; 
+            const totalOp = cogs + labor + das + uber + card + rent + utils;
+            const ebitda = vendas - totalOp;
+            const corpTax = ebitda > 0 ? ebitda * 0.122 : 0;
+            const netProfit = ebitda - corpTax;
+
+            // --- CASH FLOW LOGIC ---
+            const cashIn = vendas + taxCollectedTotal;
+            const cashOutCogs = cogs; // Food is 0%
+            const cashOutLabor = labor + das;
+            const cashOutOps = (rent + utils + uber) * 1.14975 + card;
+            const operationalBalance = cashIn - cashOutCogs - cashOutLabor - cashOutOps;
+            const freeCashFlow = operationalBalance - taxRemittance - corpTax;
+
+            // --- UI UPDATE ---
+            document.getElementById('final_profit').innerText = '$' + Math.max(0, netProfit).toLocaleString(undefined, {minimumFractionDigits: 2});
+            const pPerc = vendas > 0 ? (netProfit / vendas * 100).toFixed(1) : 0;
+            document.getElementById('profit_perc_badge').innerText = pPerc + '%';
+            
+            document.getElementById('tax_collected_total').innerText = '$' + taxCollectedTotal.toLocaleString();
+            document.getElementById('tax_credits_total').innerText = '$' + taxCreditsTotal.toLocaleString();
+            document.getElementById('tax_remittance').innerText = '$' + Math.max(0, taxRemittance).toLocaleString(undefined, {minimumFractionDigits: 2});
+
+            // Cash Flow Table
+            document.getElementById('cash_vendas_in').innerText = '$' + cashIn.toLocaleString();
+            document.getElementById('cash_vendas_net').innerText = '$' + cashIn.toLocaleString();
+            document.getElementById('cash_cogs_out').innerText = '$' + cashOutCogs.toLocaleString();
+            document.getElementById('cash_cogs_net').innerText = '-$' + cashOutCogs.toLocaleString();
+            document.getElementById('cash_labor_out').innerText = '$' + cashOutLabor.toLocaleString();
+            document.getElementById('cash_labor_net').innerText = '-$' + cashOutLabor.toLocaleString();
+            document.getElementById('cash_ops_out').innerText = '$' + cashOutOps.toLocaleString();
+            document.getElementById('cash_ops_net').innerText = '-$' + cashOutOps.toLocaleString();
+            document.getElementById('cash_bank_bal').innerText = '$' + operationalBalance.toLocaleString();
+            document.getElementById('cash_tax_out').innerText = '$' + (taxRemittance + corpTax).toLocaleString();
+            document.getElementById('cash_tax_net').innerText = '-$' + (taxRemittance + corpTax).toLocaleString();
+            document.getElementById('cash_final_net').innerText = '$' + freeCashFlow.toLocaleString(undefined, {minimumFractionDigits: 2});
+
+            updateChart([cogs, labor, das + corpTax, rent + utils, uber + card, Math.max(0, netProfit)]);
+
+            // Alerts
+            const alerts = document.getElementById('alerts_container');
+            alerts.innerHTML = '';
+            if (vendas > 0 && freeCashFlow < 0) {
+                alerts.innerHTML += `<div class="p-3 bg-red-100 border-l-4 border-red-500 text-red-700 text-[11px] font-bold">⚠️ CRITICAL: Negative Free Cash Flow. You are spending your tax reserve!</div>`;
+            }
+        }
+
+        document.getElementById('vendas').addEventListener('input', () => calculate(false));
+        document.querySelectorAll('input').forEach(input => {
+            if(input.id !== 'vendas') input.addEventListener('input', () => calculate(true));
+        });
+
+        calculate();
+    </script>
+</body>
+</html>
