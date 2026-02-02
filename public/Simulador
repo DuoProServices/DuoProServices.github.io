@@ -14,6 +14,9 @@
         .tab-btn { padding: 10px 15px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.3s; font-size: 0.9rem; }
         .tab-btn.active { border-bottom-color: #2563eb; color: #2563eb; }
         .variable-badge { font-size: 0.65rem; background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-left: 5px; }
+        .legal-toggle { cursor: pointer; padding: 8px 16px; border-radius: 8px; font-weight: bold; font-size: 0.8rem; transition: 0.2s; }
+        .legal-toggle.active { background: #1e293b; color: white; }
+        .legal-toggle.inactive { background: #f1f5f9; color: #64748b; }
     </style>
 </head>
 <body class="bg-slate-50 p-4 md:p-8">
@@ -30,24 +33,36 @@
             </div>
         </header>
 
-        <!-- INPUT SECTION (Shared) -->
-        <div class="card p-6 border-l-4 border-blue-600 mb-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="input-group">
-                    <label class="text-blue-700 font-bold">Monthly Net Sales (Hors Taxes)</label>
-                    <div class="relative">
-                        <span class="absolute left-3 top-2 text-slate-400">$</span>
-                        <input type="number" id="vendas" value="30000" class="input-field pl-8 font-bold text-lg bg-blue-50">
+        <!-- TOP CONTROLS -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+            <div class="lg:col-span-8 card p-6 border-l-4 border-blue-600">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="input-group">
+                        <label class="text-blue-700 font-bold">Monthly Net Sales (Hors Taxes)</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-2 text-slate-400">$</span>
+                            <input type="number" id="vendas" value="30000" class="input-field pl-8 font-bold text-lg bg-blue-50">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>COGS (33%)</label>
+                        <input type="number" id="cogs_val" class="input-field">
+                    </div>
+                    <div class="input-group">
+                        <label>Gross Payroll (Employees)</label>
+                        <input type="number" id="labor_val" value="9000" class="input-field">
                     </div>
                 </div>
-                <div class="input-group">
-                    <label>COGS (33%)</label>
-                    <input type="number" id="cogs_val" class="input-field">
+            </div>
+            <div class="lg:col-span-4 card p-6 border-l-4 border-slate-800">
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-3">Legal Structure</label>
+                <div class="flex gap-2">
+                    <button id="btn-inc" class="legal-toggle active flex-1" onclick="setLegal('inc')">Corporation (Inc.)</button>
+                    <button id="btn-part" class="legal-toggle inactive flex-1" onclick="setLegal('part')">Partnership/Sole</button>
                 </div>
-                <div class="input-group">
-                    <label>Gross Payroll</label>
-                    <input type="number" id="labor_val" value="9000" class="input-field">
-                </div>
+                <p id="legal-desc" class="mt-3 text-[10px] text-slate-500 italic">
+                    Inc: Taxed at 12.2% (Quebec SBD). Owner pays themselves via salary or dividends.
+                </p>
             </div>
         </div>
 
@@ -79,7 +94,7 @@
                         <div class="flex justify-between items-center">
                             <div>
                                 <h3 class="text-blue-400 font-bold uppercase text-xs tracking-widest">Net Monthly Profit</h3>
-                                <p class="text-[10px] text-slate-400">Final earnings after all taxes</p>
+                                <p class="text-[10px] text-slate-400">Final earnings after business taxes</p>
                             </div>
                             <div class="text-right">
                                 <span id="final_profit" class="text-3xl font-black text-white">$0.00</span>
@@ -126,11 +141,10 @@
                             </div>
                         </div>
                         <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
-                            <h3 class="font-bold mb-4">The Restaurant Tax Trap</h3>
+                            <h3 class="font-bold mb-4">Quebec Tax Specifics</h3>
                             <ul class="space-y-4 text-sm text-slate-600">
-                                <li class="flex gap-2"><span>❌</span> <strong>No Credits on COGS:</strong> Since raw food is 0% tax, you don't recover any GST/QST on 33% of your costs.</li>
-                                <li class="flex gap-2"><span>❌</span> <strong>No Credits on Wages:</strong> Salaries (30% of sales) have no GST/QST.</li>
-                                <li class="flex gap-2"><span>✅</span> <strong>Only Fixed/Apps:</strong> You only get credits on rent, utilities, and delivery fees.</li>
+                                <li class="flex gap-2"><span>⚠️</span> <strong>COGS Warning:</strong> Raw groceries (meat, veg) are 0% tax. You pay $0 tax but collect 14.975% on the meal. This creates a large debt.</li>
+                                <li id="legal-tax-info" class="flex gap-2"><span>ℹ️</span> <strong>Corp Tax:</strong> Small Business Deduction rate in Quebec is approx 12.2% on first $500k profit.</li>
                             </ul>
                         </div>
                     </div>
@@ -154,7 +168,7 @@
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                             <tr>
-                                <td class="px-4 py-3 font-semibold">Total Revenue (Gross Sales + Taxes)</td>
+                                <td class="px-4 py-3 font-semibold">Total Revenue (Gross Sales + Sales Taxes)</td>
                                 <td id="cash_vendas_in" class="px-4 py-3 text-right text-green-600 font-bold">$0</td>
                                 <td class="px-4 py-3 text-right">-</td>
                                 <td id="cash_vendas_net" class="px-4 py-3 text-right font-bold">$0</td>
@@ -166,7 +180,7 @@
                                 <td id="cash_cogs_net" class="px-4 py-3 text-right text-red-600">-$0</td>
                             </tr>
                             <tr>
-                                <td class="px-4 py-3">Payroll (Salaries + Employer Taxes)</td>
+                                <td class="px-4 py-3">Payroll & DAS (Source Deductions)</td>
                                 <td class="px-4 py-3 text-right">-</td>
                                 <td id="cash_labor_out" class="px-4 py-3 text-right text-red-600">$0</td>
                                 <td id="cash_labor_net" class="px-4 py-3 text-right text-red-600">-$0</td>
@@ -178,26 +192,23 @@
                                 <td id="cash_ops_net" class="px-4 py-3 text-right text-red-600">-$0</td>
                             </tr>
                             <tr class="bg-amber-50 font-bold">
-                                <td class="px-4 py-3">Current Operational Balance (Bank)</td>
+                                <td class="px-4 py-3">Operational Balance (Bank Account)</td>
                                 <td colspan="2" class="px-4 py-3"></td>
                                 <td id="cash_bank_bal" class="px-4 py-3 text-right text-lg">$0</td>
                             </tr>
                             <tr class="border-t-2 border-slate-300">
-                                <td class="px-4 py-3 text-red-700 font-bold">LESS: Tax Reserve (GST/QST Due)</td>
+                                <td class="px-4 py-3 text-red-700 font-bold">LESS: Government Obligations (Tax Reserve)</td>
                                 <td class="px-4 py-3 text-right">-</td>
                                 <td id="cash_tax_out" class="px-4 py-3 text-right text-red-700">$0</td>
                                 <td id="cash_tax_net" class="px-4 py-3 text-right text-red-700">-$0</td>
                             </tr>
                             <tr class="bg-slate-900 text-white font-black text-lg">
-                                <td class="px-4 py-3">FREE CASH FLOW (Disposable)</td>
+                                <td class="px-4 py-3">RETAINED CASH FLOW</td>
                                 <td colspan="2" class="px-4 py-3"></td>
                                 <td id="cash_final_net" class="px-4 py-3 text-right">$0</td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class="mt-6 p-4 bg-green-50 rounded-lg border border-green-200 text-xs text-green-800">
-                    <strong>💡 Insight:</strong> The Operational Balance shows how much money is in your bank account, but the <strong>Free Cash Flow</strong> is what you can actually keep. The difference is the tax you are holding for the government.
                 </div>
             </div>
         </div>
@@ -208,6 +219,7 @@
     <script>
         const ctx = document.getElementById('lucroChart').getContext('2d');
         let chart;
+        let legalStructure = 'inc'; // Default to Incorporated
 
         function switchTab(tab) {
             document.getElementById('view-pl').classList.toggle('hidden', tab !== 'pl');
@@ -219,9 +231,27 @@
             document.getElementById('tab-cash').classList.toggle('active', tab === 'cash');
         }
 
+        function setLegal(type) {
+            legalStructure = type;
+            document.getElementById('btn-inc').className = `legal-toggle flex-1 ${type === 'inc' ? 'active' : 'inactive'}`;
+            document.getElementById('btn-part').className = `legal-toggle flex-1 ${type === 'part' ? 'active' : 'inactive'}`;
+            
+            const desc = document.getElementById('legal-desc');
+            const taxInfo = document.getElementById('legal-tax-info');
+            
+            if (type === 'inc') {
+                desc.innerText = "Inc: Taxed at 12.2% (Quebec SBD). Owner pays themselves via salary or dividends.";
+                taxInfo.innerHTML = "<span>ℹ️</span> <strong>Corp Tax:</strong> Small Business Deduction rate in Quebec is approx 12.2% on first $500k profit.";
+            } else {
+                desc.innerText = "Partnership: Profits are taxed at owner's personal rate (approx 25-40%). Higher personal DAS.";
+                taxInfo.innerHTML = "<span>ℹ️</span> <strong>Personal Tax:</strong> As a partnership, you pay personal income tax on every dollar of profit, even if left in the bank.";
+            }
+            calculate(true);
+        }
+
         function updateChart(dataValues) {
             const data = {
-                labels: ['Food', 'Payroll', 'Gov', 'Rent', 'Variable', 'Profit'],
+                labels: ['Food', 'Payroll', 'Gov/Taxes', 'Fixed Costs', 'Variable', 'Net Profit'],
                 datasets: [{
                     data: dataValues,
                     backgroundColor: ['#f87171', '#60a5fa', '#fbbf24', '#818cf8', '#f472b6', '#34d399'],
@@ -252,32 +282,41 @@
             const rent = parseFloat(document.getElementById('rent_val').value) || 0;
             const utils = parseFloat(document.getElementById('utils_val').value) || 0;
 
-            // --- TAXES ---
+            // --- TAXES (GST/QST) ---
             const gstCollected = vendas * 0.05;
             const qstCollected = vendas * 0.09975;
             const taxCollectedTotal = gstCollected + qstCollected;
-            
             const creditBase = rent + utils + uber; 
             const itc = creditBase * 0.05;
             const itr = creditBase * 0.09975;
             const taxCreditsTotal = itc + itr;
-            
             const taxRemittance = taxCollectedTotal - taxCreditsTotal;
 
             // --- P&L ---
+            // Employer DAS (Source Deductions)
             const das = labor * 0.135; 
             const totalOp = cogs + labor + das + uber + card + rent + utils;
             const ebitda = vendas - totalOp;
-            const corpTax = ebitda > 0 ? ebitda * 0.122 : 0;
-            const netProfit = ebitda - corpTax;
+            
+            // Income Tax Calculation based on Legal Structure
+            let incomeTax = 0;
+            if (legalStructure === 'inc') {
+                incomeTax = ebitda > 0 ? ebitda * 0.122 : 0; // Corp Rate 12.2%
+            } else {
+                // Simplified personal tax for Partnership (est. 30% avg including extra DAS)
+                incomeTax = ebitda > 0 ? ebitda * 0.30 : 0;
+            }
+            
+            const netProfit = ebitda - incomeTax;
 
             // --- CASH FLOW LOGIC ---
             const cashIn = vendas + taxCollectedTotal;
-            const cashOutCogs = cogs; // Food is 0%
+            const cashOutCogs = cogs; 
             const cashOutLabor = labor + das;
             const cashOutOps = (rent + utils + uber) * 1.14975 + card;
             const operationalBalance = cashIn - cashOutCogs - cashOutLabor - cashOutOps;
-            const freeCashFlow = operationalBalance - taxRemittance - corpTax;
+            const totalGovDue = taxRemittance + incomeTax;
+            const freeCashFlow = operationalBalance - totalGovDue;
 
             // --- UI UPDATE ---
             document.getElementById('final_profit').innerText = '$' + Math.max(0, netProfit).toLocaleString(undefined, {minimumFractionDigits: 2});
@@ -298,17 +337,20 @@
             document.getElementById('cash_ops_out').innerText = '$' + cashOutOps.toLocaleString();
             document.getElementById('cash_ops_net').innerText = '-$' + cashOutOps.toLocaleString();
             document.getElementById('cash_bank_bal').innerText = '$' + operationalBalance.toLocaleString();
-            document.getElementById('cash_tax_out').innerText = '$' + (taxRemittance + corpTax).toLocaleString();
-            document.getElementById('cash_tax_net').innerText = '-$' + (taxRemittance + corpTax).toLocaleString();
+            document.getElementById('cash_tax_out').innerText = '$' + totalGovDue.toLocaleString();
+            document.getElementById('cash_tax_net').innerText = '-$' + totalGovDue.toLocaleString();
             document.getElementById('cash_final_net').innerText = '$' + freeCashFlow.toLocaleString(undefined, {minimumFractionDigits: 2});
 
-            updateChart([cogs, labor, das + corpTax, rent + utils, uber + card, Math.max(0, netProfit)]);
+            updateChart([cogs, labor, das + incomeTax, rent + utils, uber + card, Math.max(0, netProfit)]);
 
             // Alerts
             const alerts = document.getElementById('alerts_container');
             alerts.innerHTML = '';
             if (vendas > 0 && freeCashFlow < 0) {
-                alerts.innerHTML += `<div class="p-3 bg-red-100 border-l-4 border-red-500 text-red-700 text-[11px] font-bold">⚠️ CRITICAL: Negative Free Cash Flow. You are spending your tax reserve!</div>`;
+                alerts.innerHTML += `<div class="p-3 bg-red-100 border-l-4 border-red-500 text-red-700 text-[11px] font-bold">⚠️ CRITICAL: Negative Free Cash Flow. Business is consuming its own tax liability!</div>`;
+            }
+            if (legalStructure === 'part' && netProfit > 10000) {
+                 alerts.innerHTML += `<div class="p-3 bg-blue-100 border-l-4 border-blue-500 text-blue-700 text-[11px] font-bold">💡 Advice: Since profit is high, consider Incorporating (Inc.) to reduce immediate tax burden.</div>`;
             }
         }
 
