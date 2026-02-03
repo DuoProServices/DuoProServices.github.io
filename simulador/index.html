@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quebec Restaurant P&L & Tax Simulator</title>
+    <title>Quebec Restaurant P&amp;L &amp; Tax Simulator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -24,10 +24,10 @@
         <header class="mb-8 flex flex-col md:flex-row justify-between items-end gap-4">
             <div>
                 <h1 class="text-3xl font-black text-slate-900 tracking-tight">Quebec Financial Management</h1>
-                <p class="text-slate-500">P&L, Tax Remittance & Cash Flow Analysis</p>
+                <p class="text-slate-500">P&amp;L, Tax Remittance &amp; Cash Flow Analysis</p>
             </div>
             <div class="flex gap-1 bg-white p-1 rounded-lg shadow-sm border border-slate-200">
-                <div id="tab-pl" class="tab-btn active" onclick="switchTab('pl')">P&L (Profit)</div>
+                <div id="tab-pl" class="tab-btn active" onclick="switchTab('pl')">P&amp;L (Profit)</div>
                 <div id="tab-tax" class="tab-btn" onclick="switchTab('tax')">Tax Remittance</div>
                 <div id="tab-cash" class="tab-btn" onclick="switchTab('cash')">Cash Flow</div>
             </div>
@@ -66,7 +66,7 @@
             </div>
         </div>
 
-        <!-- TAB 1: P&L -->
+        <!-- TAB 1: P&amp;L -->
         <div id="view-pl" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div class="lg:col-span-7 space-y-6">
                 <div class="card p-6">
@@ -143,8 +143,8 @@
                         <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
                             <h3 class="font-bold mb-4">Quebec Tax Specifics</h3>
                             <ul class="space-y-4 text-sm text-slate-600">
-                                <li class="flex gap-2"><span>⚠️</span> <strong>COGS Warning:</strong> Raw groceries (meat, veg) are 0% tax. You pay $0 tax but collect 14.975% on the meal. This creates a large debt.</li>
-                                <li id="legal-tax-info" class="flex gap-2"><span>ℹ️</span> <strong>Corp Tax:</strong> Small Business Deduction rate in Quebec is approx 12.2% on first $500k profit.</li>
+                                <li class="flex gap-2"><span>⚠️</span> <strong>COGS Warning:</strong> Raw groceries (meat, veg) are 0% tax. You pay $0 tax but collect 14.975% on the meal. This cre[...]>
+                                <li id="legal-tax-info" class="flex gap-2"><span>ℹ️</span> <strong>Corp Tax:</strong> Small Business Deduction rate in Quebec is approx 12.2% on first $500k profit.[...]>
                             </ul>
                         </div>
                     </div>
@@ -180,7 +180,7 @@
                                 <td id="cash_cogs_net" class="px-4 py-3 text-right text-red-600">-$0</td>
                             </tr>
                             <tr>
-                                <td class="px-4 py-3">Payroll & DAS (Source Deductions)</td>
+                                <td class="px-4 py-3">Payroll &amp; DAS (Source Deductions)</td>
                                 <td class="px-4 py-3 text-right">-</td>
                                 <td id="cash_labor_out" class="px-4 py-3 text-right text-red-600">$0</td>
                                 <td id="cash_labor_net" class="px-4 py-3 text-right text-red-600">-$0</td>
@@ -292,7 +292,7 @@
             const taxCreditsTotal = itc + itr;
             const taxRemittance = taxCollectedTotal - taxCreditsTotal;
 
-            // --- P&L ---
+            // --- P&amp;L ---
             // Employer DAS (Source Deductions)
             const das = labor * 0.135; 
             const totalOp = cogs + labor + das + uber + card + rent + utils;
@@ -347,10 +347,10 @@
             const alerts = document.getElementById('alerts_container');
             alerts.innerHTML = '';
             if (vendas > 0 && freeCashFlow < 0) {
-                alerts.innerHTML += `<div class="p-3 bg-red-100 border-l-4 border-red-500 text-red-700 text-[11px] font-bold">⚠️ CRITICAL: Negative Free Cash Flow. Business is consuming its own tax liability!</div>`;
+                alerts.innerHTML += `<div class="p-3 bg-red-100 border-l-4 border-red-500 text-red-700 text-[11px] font-bold">⚠️ CRITICAL: Negative Free Cash Flow. Business is consuming its own ta[...]>
             }
             if (legalStructure === 'part' && netProfit > 10000) {
-                 alerts.innerHTML += `<div class="p-3 bg-blue-100 border-l-4 border-blue-500 text-blue-700 text-[11px] font-bold">💡 Advice: Since profit is high, consider Incorporating (Inc.) to reduce immediate tax burden.</div>`;
+                 alerts.innerHTML += `<div class="p-3 bg-blue-100 border-l-4 border-blue-500 text-blue-700 text-[11px] font-bold">💡 Advice: Since profit is high, consider Incorporating (Inc.) to re[...]>
             }
         }
 
